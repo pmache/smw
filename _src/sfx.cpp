@@ -3,12 +3,6 @@
 #include <string>
 using namespace std;
 
-#ifdef _WIN32
-	#ifndef _XBOX
-		#pragma comment(lib, "SDL_mixer.lib")
-	#endif
-#endif
-
 extern bool fResumeMusic;
 extern void DECLSPEC soundfinished(int channel);
 extern void DECLSPEC musicfinished();

@@ -86,7 +86,7 @@ class MapPlatform
 			if(!preview)
 			{
 				preview = SDL_CreateRGBSurface(screen->flags, 160, 120, screen->format->BitsPerPixel, 0, 0, 0, 0);
-				SDL_SetColorKey(preview, SDL_SRCCOLORKEY, SDL_MapRGB(preview->format, 255, 0, 255));
+				SDL_SetColorKey(preview, SDL_TRUE, SDL_MapRGB(preview->format, 255, 0, 255));
 			}
 
 			SDL_FillRect(preview, NULL, SDL_MapRGB(preview->format, 255, 0, 255));
@@ -414,7 +414,7 @@ int main(int argc, char *argv[])
 	//Add all of the maps that are world only so we can edit them
 	maplist.addWorldMaps();
 
-	SDL_WM_SetCaption(MAPTITLESTRING, "leveleditor.ico");
+	SDL_SetWindowTitle(g_window, MAPTITLESTRING);
 
 	printf("\n---------------- loading graphics ----------------\n");
 
@@ -500,17 +500,17 @@ int main(int argc, char *argv[])
 		spr_hazard_pirhanaplant[i].SetWrap(true, 640 >> i);
 	}
 
-	if( SDL_SetColorKey(s_platform, SDL_SRCCOLORKEY, SDL_MapRGB(s_platform->format, 255, 0, 255)) < 0)
+	if( SDL_SetColorKey(s_platform, SDL_TRUE, SDL_MapRGB(s_platform->format, 255, 0, 255)) < 0)
 	{
 		printf("\n ERROR: Couldn't set ColorKey + RLE: %s\n", SDL_GetError());
 	}
 
-	if( SDL_SetColorKey(s_platformpathbuttons, SDL_SRCCOLORKEY, SDL_MapRGB(s_platformpathbuttons->format, 255, 0, 255)) < 0)
+	if( SDL_SetColorKey(s_platformpathbuttons, SDL_TRUE, SDL_MapRGB(s_platformpathbuttons->format, 255, 0, 255)) < 0)
 	{
 		printf("\n ERROR: Couldn't set ColorKey + RLE: %s\n", SDL_GetError());
 	}
 
-	if( SDL_SetColorKey(s_maphazardbuttons, SDL_SRCCOLORKEY, SDL_MapRGB(s_maphazardbuttons->format, 255, 0, 255)) < 0)
+	if( SDL_SetColorKey(s_maphazardbuttons, SDL_TRUE, SDL_MapRGB(s_maphazardbuttons->format, 255, 0, 255)) < 0)
 	{
 		printf("\n ERROR: Couldn't set ColorKey + RLE: %s\n", SDL_GetError());
 	}
@@ -811,7 +811,7 @@ int editor_edit()
 				{
 					case SDL_KEYDOWN:
 					{
-						SDLKey key = event.key.keysym.sym;
+						SDL_Keycode key = event.key.keysym.sym;
 
 						if(key == SDLK_LEFT)
 						{
@@ -843,7 +843,7 @@ int editor_edit()
 			//handle messages
 			while(SDL_PollEvent(&event))
 			{
-				Uint8 * keystate = SDL_GetKeyState(NULL);
+				Uint8 * keystate = SDL_GetKeyboardState(NULL);
 
 				switch(event.type)
 				{
@@ -855,7 +855,7 @@ int editor_edit()
 
 					case SDL_KEYDOWN:
 					{
-						SDLKey key = event.key.keysym.sym;
+						SDL_Keycode key = event.key.keysym.sym;
 
 						if(key == SDLK_ESCAPE)
 						{
@@ -956,7 +956,7 @@ int editor_edit()
 							spr_background.init(convertPath(backgroundlist.current_name()));
 							strcpy(g_map.szBackgroundFile, getFileFromPath(backgroundlist.current_name()).c_str());
 
-							if(!keystate[SDLK_LSHIFT] && !keystate[SDLK_RSHIFT])
+							if(!keystate[SDL_SCANCODE_LSHIFT] && !keystate[SDL_SCANCODE_RSHIFT])
 							{
 								//Set music to background default
 								for(short iCategory = 0; iCategory < MAXMUSICCATEGORY; iCategory++)
@@ -980,7 +980,7 @@ int editor_edit()
 						
 						if(key == SDLK_s )
 						{
-							if(keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT])
+							if(keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT])
 								return SAVE_AS;
 
 							return SAVE;
@@ -988,13 +988,13 @@ int editor_edit()
 
 						if(key == SDLK_f )
 						{
-							if(keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT] || findstring[0] == '\0')
+							if(keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT] || findstring[0] == '\0')
 								return FIND;
 
 							findcurrentstring();
 						}
 
-						if(key == SDLK_DELETE && (keystate[SDLK_LCTRL] || keystate[SDLK_RCTRL]))
+						if(key == SDLK_DELETE && (keystate[SDL_SCANCODE_LCTRL] || keystate[SDL_SCANCODE_RCTRL]))
 						{
 							return CLEAR_MAP;
 						}
@@ -1267,7 +1267,7 @@ int editor_edit()
 									}
 									else
 									{
-										if(!keystate[SDLK_LSHIFT] && !keystate[SDLK_RSHIFT] && !keystate[SDLK_LCTRL])
+										if(!keystate[SDL_SCANCODE_LSHIFT] && !keystate[SDL_SCANCODE_RSHIFT] && !keystate[SDL_SCANCODE_LCTRL])
 											resetselectedtiles();
 
 										if(move_nodrag)
@@ -1775,7 +1775,7 @@ int editor_edit()
 			DrawMessage();
 		}
 
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -1887,9 +1887,9 @@ void drawmap(bool fScreenshot, short iBlockSize, bool fWithPlatforms)
 		dstrect.w = iBlockSize * 20;
 		dstrect.h = iBlockSize * 15;
 
-		if(SDL_SoftStretch(spr_background.getSurface(), &srcrect, blitdest, &dstrect) < 0)
+		if(SDL_BlitScaled(spr_background.getSurface(), &srcrect, blitdest, &dstrect) < 0)
 		{
-			fprintf(stderr, "SDL_SoftStretch error: %s\n", SDL_GetError());
+			fprintf(stderr, "SDL_BlitScaled error: %s\n", SDL_GetError());
 			return;
 		}
 	}
@@ -2138,7 +2138,7 @@ int editor_warp()
 		menu_font_small.drawRightJustified(640, 0, maplist.currentFilename());
 
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -2256,7 +2256,7 @@ int editor_eyecandy()
 		//menu_font_small.drawRightJustified(640, 0, maplist.currentFilename());
 
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -2333,8 +2333,8 @@ int editor_properties(short iBlockCol, short iBlockRow)
 						else if(event.key.keysym.sym == SDLK_d)
 							iValue = g_iDefaultPowerupPresets[0][iSettingIndex];
 						
-						Uint8 * keystate = SDL_GetKeyState(NULL);
-						if (keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT]) 
+						Uint8 * keystate = SDL_GetKeyboardState(NULL);
+						if (keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]) 
 						{
 							for(short iSetting = 0; iSetting < NUM_BLOCK_SETTINGS; iSetting++)
 							{
@@ -2493,7 +2493,7 @@ int editor_properties(short iBlockCol, short iBlockRow)
 		menu_font_small.drawRightJustified(640, 0, maplist.currentFilename());
 
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -2921,14 +2921,14 @@ int editor_platforms()
 						}
 						else if(PLATFORM_EDIT_STATE_PATH == iPlatformEditState)
 						{
-							Uint8 * keystate = SDL_GetKeyState(NULL);
-							if(g_Platforms[iEditPlatform].iPathType == 2 && (keystate[SDLK_z] || keystate[SDLK_x] || keystate[SDLK_c]))
+							Uint8 * keystate = SDL_GetKeyboardState(NULL);
+							if(g_Platforms[iEditPlatform].iPathType == 2 && (keystate[SDL_SCANCODE_Z] || keystate[SDL_SCANCODE_X] || keystate[SDL_SCANCODE_C]))
 							{
-								UpdatePlatformPathRadius(iEditPlatform, event.button.x, event.button.y, keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT], keystate[SDLK_z] != 0, keystate[SDLK_c] != 0);
+								UpdatePlatformPathRadius(iEditPlatform, event.button.x, event.button.y, keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT], keystate[SDL_SCANCODE_Z] != 0, keystate[SDL_SCANCODE_C] != 0);
 							}
 							else
 							{
-								UpdatePlatformPathStart(iEditPlatform, event.button.x, event.button.y, keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT]);
+								UpdatePlatformPathStart(iEditPlatform, event.button.x, event.button.y, keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]);
 							}
 						}
 
@@ -2950,14 +2950,14 @@ int editor_platforms()
 						}
 						else if(PLATFORM_EDIT_STATE_PATH == iPlatformEditState)
 						{
-							Uint8 * keystate = SDL_GetKeyState(NULL);
+							Uint8 * keystate = SDL_GetKeyboardState(NULL);
 							if(g_Platforms[iEditPlatform].iPathType == 0)
 							{
-								UpdatePlatformPathEnd(iEditPlatform, event.button.x, event.button.y, keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT]);
+								UpdatePlatformPathEnd(iEditPlatform, event.button.x, event.button.y, keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]);
 							}
 							else if(g_Platforms[iEditPlatform].iPathType == 1 || g_Platforms[iEditPlatform].iPathType == 2)
 							{
-								UpdatePlatformPathAngle(iEditPlatform, event.button.x, event.button.y, keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT]);
+								UpdatePlatformPathAngle(iEditPlatform, event.button.x, event.button.y, keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]);
 							}
 						}
 					}
@@ -3010,26 +3010,26 @@ int editor_platforms()
 					{
 						if(event.motion.state == SDL_BUTTON(SDL_BUTTON_LEFT))
 						{
-							Uint8 * keystate = SDL_GetKeyState(NULL);
-							if(g_Platforms[iEditPlatform].iPathType == 2 && (keystate[SDLK_z] || keystate[SDLK_x] || keystate[SDLK_c]))
+							Uint8 * keystate = SDL_GetKeyboardState(NULL);
+							if(g_Platforms[iEditPlatform].iPathType == 2 && (keystate[SDL_SCANCODE_Z] || keystate[SDL_SCANCODE_X] || keystate[SDL_SCANCODE_C]))
 							{
-								UpdatePlatformPathRadius(iEditPlatform, event.button.x, event.button.y, keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT], keystate[SDLK_z] != 0, keystate[SDLK_c] != 0);
+								UpdatePlatformPathRadius(iEditPlatform, event.button.x, event.button.y, keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT], keystate[SDL_SCANCODE_Z] != 0, keystate[SDL_SCANCODE_C] != 0);
 							}
 							else
 							{
-								UpdatePlatformPathStart(iEditPlatform, event.button.x, event.button.y, keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT]);
+								UpdatePlatformPathStart(iEditPlatform, event.button.x, event.button.y, keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]);
 							}
 						}
 						else if(event.motion.state == SDL_BUTTON(SDL_BUTTON_RIGHT))
 						{
-							Uint8 * keystate = SDL_GetKeyState(NULL);
+							Uint8 * keystate = SDL_GetKeyboardState(NULL);
 							if(g_Platforms[iEditPlatform].iPathType == 0)
 							{
-								UpdatePlatformPathEnd(iEditPlatform, event.button.x, event.button.y, keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT]);
+								UpdatePlatformPathEnd(iEditPlatform, event.button.x, event.button.y, keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]);
 							}
 							else if(g_Platforms[iEditPlatform].iPathType == 1 || g_Platforms[iEditPlatform].iPathType == 2)
 							{
-								UpdatePlatformPathAngle(iEditPlatform, event.button.x, event.button.y, keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT]);
+								UpdatePlatformPathAngle(iEditPlatform, event.button.x, event.button.y, keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]);
 							}
 						}
 					}
@@ -3200,7 +3200,7 @@ int editor_platforms()
 		}
 
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -3896,7 +3896,7 @@ int editor_maphazards()
 		menu_font_small.drawRightJustified(640, 0, maplist.currentFilename());
 
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -3986,8 +3986,8 @@ void AdjustMapHazardRadius(MapHazard * hazard, short iClickX, short iClickY)
 	if(angle < 0.0f)
 		angle += TWO_PI;
 
-	Uint8 * keystate = SDL_GetKeyState(NULL);
-	if(keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT])
+	Uint8 * keystate = SDL_GetKeyboardState(NULL);
+	if(keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT])
 	{
 		float dSector = TWO_PI / 16;
 		angle += TWO_PI / 32;
@@ -4024,7 +4024,7 @@ void AdjustMapHazardRadius(MapHazard * hazard, short iClickX, short iClickY)
 
 		if(radius > 32.0f)
 		{
-			if(keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT])
+			if(keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT])
 			{
 				//Snap radius to every 16 pixels
 				hazard->dparam[2] = (float)(((int)(radius - 16.0f) >> 4) << 4);
@@ -4341,7 +4341,7 @@ int editor_tiles()
 
 
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -4450,7 +4450,7 @@ int editor_blocks()
 		menu_font_small.drawRightJustified(640, 0, maplist.currentFilename());
 				
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -4521,7 +4521,7 @@ int editor_mapitems()
 		menu_font_small.drawRightJustified(0, 480 - menu_font_small.getHeight(), "Map Items");
 				
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -4650,8 +4650,8 @@ int editor_modeitems()
 				{
 					if(dragmodeitem >= 0 && event.motion.state == SDL_BUTTON(SDL_BUTTON_LEFT))
 					{
-						Uint8 * keystate = SDL_GetKeyState(NULL);
-						bool fShiftDown = keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT];
+						Uint8 * keystate = SDL_GetKeyboardState(NULL);
+						bool fShiftDown = keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT];
 							
 						if(modeitemmode == 0)
 						{
@@ -4730,7 +4730,7 @@ int editor_modeitems()
 		menu_font_small.drawRightJustified(640, 0, maplist.currentFilename());
 				
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -4804,7 +4804,7 @@ int editor_tiletype()
 		menu_font_small.drawRightJustified(640, 0, maplist.currentFilename());
 				
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -4944,7 +4944,7 @@ int editor_backgrounds()
 			menu_font_small.draw(0, 0, backgroundlist.GetIndex(iID));
 
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -5162,7 +5162,7 @@ int editor_animation()
 		menu_font_small.draw(0, 480 - menu_font_small.getHeight(), "Use Arrow Keys To Scroll");
 				
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -5190,7 +5190,7 @@ void LoadBackgroundPage(SDL_Surface ** sBackgrounds, short iPage)
 
 		SDL_Surface * temp = IMG_Load(szFileName);
 
-		SDL_Surface * sBackground = SDL_DisplayFormat(temp);
+		SDL_Surface * sBackground = SDL_ConvertSurfaceFormat(temp, SDL_GetWindowPixelFormat(g_window), 0);
 		if(!sBackground)
 		{
 			printf("ERROR: Couldn't convert thumbnail background to diplay pixel format: %s\n", SDL_GetError());
@@ -5199,9 +5199,9 @@ void LoadBackgroundPage(SDL_Surface ** sBackgrounds, short iPage)
 
 		SDL_FreeSurface(temp);
 
-		if(SDL_SoftStretch(sBackground, &srcRectBackground, sBackgrounds[iIndex], &dstRectBackground) < 0)
+		if(SDL_BlitScaled(sBackground, &srcRectBackground, sBackgrounds[iIndex], &dstRectBackground) < 0)
 		{
-			fprintf(stderr, "SDL_SoftStretch error: %s\n", SDL_GetError());
+			fprintf(stderr, "SDL_BlitScaled error: %s\n", SDL_GetError());
 			return;
 		}
 
@@ -5328,7 +5328,7 @@ int display_help()
 	menu_font_small.draw(offsetx, offsety, "[alt] + [enter] - Full Screen/Window");
 	
 
-	SDL_Flip(screen);
+	SDL_UpdateWindowSurface(g_window);
 
     while (true)
 	{
@@ -5390,7 +5390,7 @@ bool dialog(const char * title, const char * instructions, char * input, int inp
 	menu_font_large.drawCentered(320, 200, title);
 	menu_font_small.draw(240, 235, instructions);
 	menu_font_small.drawRightJustified(640, 0, maplist.currentFilename());
-	SDL_Flip(screen);
+	SDL_UpdateWindowSurface(g_window);
 
     while (true)
 	{
@@ -5428,7 +5428,7 @@ bool dialog(const char * title, const char * instructions, char * input, int inp
 							menu_font_small.draw(240, 235, instructions);
 							menu_font_small.draw(240, 255, input);
 							menu_font_small.drawRightJustified(640, 0, maplist.currentFilename());
-							SDL_Flip(screen);
+							SDL_UpdateWindowSurface(g_window);
 							
 							currentChar--;
 						}
@@ -5444,8 +5444,8 @@ bool dialog(const char * title, const char * instructions, char * input, int inp
 							//insert character into fileName and onScreenText and increment current char
 							Uint8 key = event.key.keysym.sym;
 
-							Uint8 * keystate = SDL_GetKeyState(NULL);
-							if (keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT]) 
+							Uint8 * keystate = SDL_GetKeyboardState(NULL);
+							if (keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]) 
 							{
 								if(event.key.keysym.sym == 45)
 									key = 95;
@@ -5484,7 +5484,7 @@ bool dialog(const char * title, const char * instructions, char * input, int inp
 							menu_font_small.draw(240, 235, instructions);
 							menu_font_small.draw(240, 255, input);
 							menu_font_small.drawRightJustified(640, 0, maplist.currentFilename());
-							SDL_Flip(screen);
+							SDL_UpdateWindowSurface(g_window);
 						}
 					}	
 				break;

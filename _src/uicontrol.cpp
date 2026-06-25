@@ -1589,7 +1589,7 @@ short number_key_map[10] = {41, 33, 64, 35, 36, 37, 94, 38, 42, 40};
 
 MenuCodeEnum MI_TextField::SendInput(CPlayerInput * playerInput)
 {
-	Uint8 * keystate = SDL_GetKeyState(NULL);
+	Uint8 * keystate = SDL_GetKeyboardState(NULL);
 
 	for(int iPlayer = 0; iPlayer < 4; iPlayer++)
 	{
@@ -1615,7 +1615,7 @@ MenuCodeEnum MI_TextField::SendInput(CPlayerInput * playerInput)
 		if(iNumChars < iMaxChars - 1)
 		{
 			//Take care of holding shift to shift the pressed key to another character
-			if(keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT])
+			if(keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT])
 			{
 				if(key >= SDLK_a && key <= SDLK_z)
 				{

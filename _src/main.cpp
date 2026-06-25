@@ -344,13 +344,7 @@ Procedure for adding a new powerup:
 
 //now it's really time for an "engine" (aka resource manager)
 #ifdef _WIN32
-	#pragma comment(lib, "SDL_image.lib")
-
 	#ifndef _XBOX
-		#pragma comment(lib, "SDL.lib")
-		#pragma comment(lib, "SDLmain.lib")
-		#pragma comment(lib, "SDL_mixer.lib")
-
 		#define WIN32_LEAN_AND_MEAN
 		#include <windows.h>
 	#endif
@@ -1105,7 +1099,7 @@ int main(int argc, char *argv[])
 	//setting the icon isn't implemented in sdl ->  i'll ask on the mailing list
 	char title[128];
 	sprintf(title, "%s %s", TITLESTRING, VERSIONNUMBER);
-	SDL_WM_SetCaption(title, "smw.ico");
+	SDL_SetWindowTitle(g_window, title);
 	SDL_ShowCursor(SDL_DISABLE);
 
 	printf("\n---------------- loading ----------------\n");
@@ -3476,7 +3470,7 @@ void RunGame()
 #endif
  
 		//double buffering -> flip buffers
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		flipfps = 1000.0f / (float)ticks;
 

@@ -8,23 +8,18 @@
 #include <string>
 using namespace std;
 
-#ifdef _WIN32
-	#pragma comment(lib, "SDL_image.lib")
-
-	#ifndef _XBOX
-		#pragma comment(lib, "SDL.lib")
-		#pragma comment(lib, "SDLmain.lib")
-	#endif
-#endif
-
 extern SDL_Surface *blitdest;
 extern SDL_Surface *screen;
+
+// The SDL2 window. Created by gfx_init(), destroyed by gfx_close().
+// `screen` is the window's surface (SDL_GetWindowSurface(g_window)).
+SDL_Window *g_window = NULL;
 
 #define GFX_BPP		16
 #ifdef _XBOX
 	#define GFX_FLAGS	SDL_SWSURFACE | SDL_HWACCEL
 #else
-	#define GFX_FLAGS	SDL_SWSURFACE /*| SDL_HWACCEL*/
+	#define GFX_FLAGS	0
 #endif
 
 //[colorcomponents][numcolors]
@@ -52,15 +47,24 @@ bool gfx_init(int w, int h, bool fullscreen)
     // Clean up on exit
     atexit(SDL_Quit);
 
+    Uint32 flags = 0;
     if(fullscreen)
-		screen = SDL_SetVideoMode(w, h, GFX_BPP, GFX_FLAGS | SDL_FULLSCREEN);
-	else
-		screen = SDL_SetVideoMode(w, h, GFX_BPP, GFX_FLAGS);
+        flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 
-    if ( screen == NULL ) 
-	{
-        printf("Couldn't set video mode %dx%d: %s\n", w, h, SDL_GetError());
-		return false;
+    g_window = SDL_CreateWindow("Super Mario War",
+        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+        w, h, flags);
+    if(!g_window)
+    {
+        printf("SDL_CreateWindow: %s\n", SDL_GetError());
+        return false;
+    }
+
+    screen = SDL_GetWindowSurface(g_window);
+    if(!screen)
+    {
+        printf("SDL_GetWindowSurface: %s\n", SDL_GetError());
+        return false;
     }
 
     printf(" running @ %dx%d %dbpp (done)\n", w, h, screen->format->BitsPerPixel);	
@@ -157,11 +161,10 @@ bool gfx_loadpalette()
 
 void gfx_setresolution(int w, int h, bool fullscreen)
 {
+#ifdef _XBOX
 	Uint32 flags = GFX_FLAGS;
 	if(fullscreen)
 		flags |= SDL_FULLSCREEN;
-
-#ifdef _XBOX
 
 	if(game_values.aspectratio10x11)
 		flags |= SDL_10X11PIXELASPECTRATIO;
@@ -169,7 +172,9 @@ void gfx_setresolution(int w, int h, bool fullscreen)
 	screen = SDL_SetVideoModeWithFlickerFilter(w, h, GFX_BPP, flags, game_values.flickerfilter, game_values.softfilter);
 
 #else
-    screen = SDL_SetVideoMode(w, h, GFX_BPP, flags);
+	SDL_SetWindowFullscreen(g_window, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
+	SDL_SetWindowSize(g_window, w, h);
+	screen = SDL_GetWindowSurface(g_window);
 #endif
 }
 
@@ -182,6 +187,13 @@ void gfx_close()
 		for(int j = 0; j < 4; j++)
 			for(int k = 0; k < NUM_SCHEMES; k++)
 				delete [] colorschemes[j][k][i];
+	}
+
+	if(g_window)
+	{
+		SDL_DestroyWindow(g_window);
+		g_window = NULL;
+		screen = NULL;
 	}
 }
 
@@ -271,13 +283,13 @@ SDL_Surface * gfx_createskinsurface(SDL_Surface * skin, short spriteindex, Uint8
 	SDL_UnlockSurface(skin);
 	SDL_UnlockSurface(temp);
 
-	if( SDL_SetColorKey(temp, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(temp->format, r, g, b)) < 0)
+	if( SDL_SetColorKey(temp, SDL_TRUE, SDL_MapRGB(temp->format, r, g, b)) < 0)
 	{
 		printf("\n ERROR: Couldn't set ColorKey + RLE for new skin surface: %s\n", SDL_GetError());
 		return NULL;
 	}
 
-	SDL_Surface * final = SDL_DisplayFormat(temp);
+	SDL_Surface * final = SDL_ConvertSurfaceFormat(temp, SDL_GetWindowPixelFormat(g_window), 0);
 	if(!final)
 	{
 		printf("\n ERROR: Couldn't create new surface using SDL_DisplayFormat(): %s\n", SDL_GetError());
@@ -499,7 +511,7 @@ SDL_Surface * gfx_createteamcoloredsurface(SDL_Surface * sImage, short iColor, U
 	SDL_UnlockSurface(sImage);
 	SDL_UnlockSurface(sTempImage);
 
-	if( SDL_SetColorKey(sTempImage, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(sTempImage->format, r, g, b)) < 0)
+	if( SDL_SetColorKey(sTempImage, SDL_TRUE, SDL_MapRGB(sTempImage->format, r, g, b)) < 0)
 	{
 		printf("\n ERROR: Couldn't set ColorKey + RLE for new team colored surface: %s\n", SDL_GetError());
 		return NULL;
@@ -507,14 +519,15 @@ SDL_Surface * gfx_createteamcoloredsurface(SDL_Surface * sImage, short iColor, U
 
 	if(a < 255)
 	{
-		if(SDL_SetAlpha(sTempImage, SDL_SRCALPHA | SDL_RLEACCEL, a) < 0)
+		if(SDL_SetSurfaceAlphaMod(sTempImage, a) < 0)
 		{
 			cout << endl << " ERROR: Couldn't set per-surface alpha: " << SDL_GetError() << endl;
 			return NULL;
 		}
+		SDL_SetSurfaceBlendMode(sTempImage, SDL_BLENDMODE_BLEND);
 	}
 
-	SDL_Surface * sFinalImage = SDL_DisplayFormat(sTempImage);
+	SDL_Surface * sFinalImage = SDL_ConvertSurfaceFormat(sTempImage, SDL_GetWindowPixelFormat(g_window), 0);
 	if(!sFinalImage)
 	{
 		printf("\n ERROR: Couldn't create new surface using SDL_DisplayFormat(): %s\n", SDL_GetError());
@@ -852,14 +865,14 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, boo
         return false;
     }
 
-	if( SDL_SetColorKey(m_picture, SDL_SRCCOLORKEY | (fUseAccel ? SDL_RLEACCEL : 0), SDL_MapRGB(m_picture->format, r, g, b)) < 0)
+	if( SDL_SetColorKey(m_picture, SDL_TRUE, SDL_MapRGB(m_picture->format, r, g, b)) < 0)
 	{
         cout << endl << " ERROR: Couldn't set ColorKey + RLE for "
              << filename << ": " << SDL_GetError() << endl;
 		return false;
 	}
 
-	SDL_Surface *temp = SDL_DisplayFormat(m_picture);
+	SDL_Surface *temp = SDL_ConvertSurfaceFormat(m_picture, SDL_GetWindowPixelFormat(g_window), 0);
 	if(!temp)
 	{
         cout << endl << " ERROR: Couldn't convert "
@@ -898,21 +911,22 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, Uin
         return false;
     }
 
-	if( SDL_SetColorKey(m_picture, SDL_SRCCOLORKEY | (fUseAccel ? SDL_RLEACCEL : 0), SDL_MapRGB(m_picture->format, r, g, b)) < 0)
+	if( SDL_SetColorKey(m_picture, SDL_TRUE, SDL_MapRGB(m_picture->format, r, g, b)) < 0)
 	{
         cout << endl << " ERROR: Couldn't set ColorKey + RLE for "
              << filename << ": " << SDL_GetError() << endl;
 		return false;
 	}
 
-	if( (SDL_SetAlpha(m_picture, SDL_SRCALPHA | (fUseAccel ? SDL_RLEACCEL : 0), a)) < 0)
+	if( (SDL_SetSurfaceAlphaMod(m_picture, a)) < 0)
 	{
         cout << endl << " ERROR: Couldn't set per-surface alpha on "
              << filename << ": " << SDL_GetError() << endl;
 		return false;
 	}
+	SDL_SetSurfaceBlendMode(m_picture, SDL_BLENDMODE_BLEND);
 	
-	SDL_Surface *temp = SDL_DisplayFormatAlpha(m_picture);
+	SDL_Surface *temp = SDL_ConvertSurfaceFormat(m_picture, SDL_PIXELFORMAT_ARGB8888, 0);
 	if(!temp)
 	{
         cout << endl << " ERROR: Couldn't convert "
@@ -950,7 +964,7 @@ bool gfxSprite::init(const std::string& filename)
         return false;
     }
 
-	SDL_Surface *temp = SDL_DisplayFormat(m_picture);
+	SDL_Surface *temp = SDL_ConvertSurfaceFormat(m_picture, SDL_GetWindowPixelFormat(g_window), 0);
 	if(!temp)
 	{
         cout << endl << " ERROR: Couldn't convert "
@@ -1096,9 +1110,9 @@ bool gfxSprite::drawStretch(short x, short y, short w, short h, short srcx, shor
 
 	// Looks like SoftStretch doesn't respect transparent colors
 	// I need to look into the actual SDL code to see if I can fix this
-	if(SDL_SoftStretch(m_picture, &m_srcrect, blitdest, &m_bltrect) < 0)
+	if(SDL_BlitScaled(m_picture, &m_srcrect, blitdest, &m_bltrect) < 0)
 	{
-		fprintf(stderr, "SDL_SoftStretch error: %s\n", SDL_GetError());
+		fprintf(stderr, "SDL_BlitScaled error: %s\n", SDL_GetError());
 		return false;
 	}
 
@@ -1107,10 +1121,11 @@ bool gfxSprite::drawStretch(short x, short y, short w, short h, short srcx, shor
 
 void gfxSprite::setalpha(Uint8 alpha)
 {
-	if( (SDL_SetAlpha(m_picture, SDL_SRCALPHA | SDL_RLEACCEL, alpha)) < 0)
+	if( (SDL_SetSurfaceAlphaMod(m_picture, alpha)) < 0)
 	{
 		printf("\n ERROR: couldn't set alpha on sprite: %s\n", SDL_GetError());
 	}
+	SDL_SetSurfaceBlendMode(m_picture, SDL_BLENDMODE_BLEND);
 }
 
 void gfxSprite::freeSurface()
@@ -1231,8 +1246,9 @@ void gfxFont::drawf(int x, int y, const char *s, ...)
 
 void gfxFont::setalpha(Uint8 alpha)
 {
-	if( (SDL_SetAlpha(m_font->Surface, SDL_SRCALPHA | SDL_RLEACCEL, alpha)) < 0)
+	if( (SDL_SetSurfaceAlphaMod(m_font->Surface, alpha)) < 0)
 	{
 		printf("\n ERROR: couldn't set alpha on sprite: %s\n", SDL_GetError());
 	}
+	SDL_SetSurfaceBlendMode(m_font->Surface, SDL_BLENDMODE_BLEND);
 }

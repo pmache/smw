@@ -3282,7 +3282,7 @@ void Menu::RunMenu()
 #endif
  
 		//double buffering -> flip buffers
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		flipfps = 1000.0f / (float)ticks;
 

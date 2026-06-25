@@ -688,7 +688,7 @@ bool LoadAndSplashScreen()
 			}
 		}
 
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		if(state == 7)
 		{

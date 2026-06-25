@@ -373,7 +373,7 @@ MI_InputControlContainer::MI_InputControlContainer(gfxSprite * spr_button, short
 #else
 	for(short iJoystick = 0; iJoystick < joystickcount; iJoystick++)
 	{
-		miDeviceSelectField->Add(SDL_JoystickName(iJoystick), iJoystick, "", false, false);
+		miDeviceSelectField->Add(SDL_JoystickNameForIndex(iJoystick), iJoystick, "", false, false);
 	}
 #endif
 

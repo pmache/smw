@@ -425,7 +425,7 @@ int main(int argc, char *argv[])
 	blitdest = screen;
 	g_tilesetmanager.Init(convertPath("gfx/Classic/tilesets").c_str());
 
-	SDL_WM_SetCaption(MAPTITLESTRING, "worldeditor.ico");
+	SDL_SetWindowTitle(g_window, MAPTITLESTRING);
 
 	game_values.toplayer = true;
 
@@ -878,8 +878,8 @@ int main(int argc, char *argv[])
 	mVehicleMenu.SetHeadControl(miVehicleSpriteField);
 	mVehicleMenu.SetCancelCode(MENU_CODE_EXIT_APPLICATION);
 
-
-	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+	// SDL2 enables keyboard repeat by default, so the SDL 1.2
+	// SDL_EnableKeyRepeat() call that used to live here is no longer needed.
 
 	printf("\n---------------- ready, steady, go! ----------------\n");
 
@@ -1033,7 +1033,7 @@ int editor_edit()
 				{
 					case SDL_KEYDOWN:
 					{
-						SDLKey key = event.key.keysym.sym;
+						SDL_Keycode key = event.key.keysym.sym;
 
 						if(key == SDLK_LEFT)
 						{
@@ -1065,7 +1065,7 @@ int editor_edit()
 			//handle messages
 			while(SDL_PollEvent(&event))
 			{
-				Uint8 * keystate = SDL_GetKeyState(NULL);
+				Uint8 * keystate = SDL_GetKeyboardState(NULL);
 
 				switch(event.type)
 				{
@@ -1206,7 +1206,7 @@ int editor_edit()
 						
 						if(event.key.keysym.sym == SDLK_s)
 						{
-							if(keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT])
+							if(keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT])
 								return SAVE_AS;
 
 							return SAVE;
@@ -1214,13 +1214,13 @@ int editor_edit()
 
 						if(event.key.keysym.sym == SDLK_f)
 						{
-							if(keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT] || findstring[0] == '\0')
+							if(keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT] || findstring[0] == '\0')
 								return FIND;
 
 							findcurrentstring();
 						}
 
-						if(event.key.keysym.sym == SDLK_DELETE && (keystate[SDLK_LCTRL] || keystate[SDLK_RCTRL]))
+						if(event.key.keysym.sym == SDLK_DELETE && (keystate[SDL_SCANCODE_LCTRL] || keystate[SDL_SCANCODE_RCTRL]))
 						{
 							return CLEAR_WORLD;
 						}
@@ -2048,7 +2048,7 @@ int editor_edit()
 			DrawMessage();
 		}
 
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -2903,7 +2903,7 @@ int editor_warp()
 		menu_font_small.drawRightJustified(640, 0, worldlist.current_name());
 
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -3052,7 +3052,7 @@ int editor_start_items()
 		menu_font_small.drawRightJustified(640, 0, worldlist.current_name());
 
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -3132,7 +3132,7 @@ int editor_boundary()
 		menu_font_small.drawRightJustified(640, 0, worldlist.current_name());
 
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -3220,7 +3220,7 @@ int editor_type()
 		menu_font_small.drawRightJustified(640, 0, worldlist.current_name());
 
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -3293,7 +3293,7 @@ int editor_water()
 			spr_worldbackground[0].draw(iWater << 5, 0, 512 + (iWater << 7), 0, 32, 32);
 		
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -3329,7 +3329,7 @@ int editor_background()
 
 				case SDL_KEYDOWN:
 				{	
-					SDLKey key = event.key.keysym.sym;
+					SDL_Keycode key = event.key.keysym.sym;
 					if(key >= SDLK_1 && key <= SDLK_2)
 					{
 						iPage = key - SDLK_1;
@@ -3399,7 +3399,7 @@ int editor_background()
 		spr_worldbackground[0].draw(0, 0, iPage * 640, 32, 640, 480);
 
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -3435,7 +3435,7 @@ int editor_stageforeground()
 
 				case SDL_KEYDOWN:
 				{	
-					SDLKey key = event.key.keysym.sym;
+					SDL_Keycode key = event.key.keysym.sym;
 
 					if(key >= SDLK_1 && key <= SDLK_4)
 					{
@@ -3491,7 +3491,7 @@ int editor_stageforeground()
 		spr_worldforegroundspecial[0].draw(0, 0, 0, 0, 320, 320);
 
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -3565,7 +3565,7 @@ int editor_bridges()
 		spr_worldforegroundspecial[0].draw(0, 0, 320, 224, 128, 32);
 		
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -3648,7 +3648,7 @@ int editor_structureforeground()
 		spr_worldforeground[0].draw(416, 0, 512, 0, 32, 480);
 
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -3721,7 +3721,7 @@ int editor_pathsprite()
 		}
 
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -3862,7 +3862,7 @@ int editor_vehicles()
 		menu_font_small.drawRightJustified(640, 0, worldlist.current_name());
 				
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -3936,7 +3936,7 @@ int editor_path()
 		spr_path.draw(0, 0, 0, 0, 480, 32);
 
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -4973,7 +4973,7 @@ int editor_stage()
 		menu_font_small.drawRightJustified(640, 0, worldlist.current_name());
 		
 		DrawMessage();
-		SDL_Flip(screen);
+		SDL_UpdateWindowSurface(g_window);
 
 		int delay = WAITTIME - (SDL_GetTicks() - framestart);
 		if(delay < 0)
@@ -5089,7 +5089,7 @@ int display_help()
 	offsety += menu_font_small.getHeight() + 2;
 	menu_font_small.draw(offsetx, offsety, "[space] - Toggle Stage Previews");
 	
-	SDL_Flip(screen);
+	SDL_UpdateWindowSurface(g_window);
 
     while (true)
 	{
@@ -5152,7 +5152,7 @@ bool dialog(const char * title, const char * instructions, char * input, int inp
 	menu_font_large.drawCentered(320, 200, title);
 	menu_font_small.draw(240, 235, instructions);
 	menu_font_small.drawRightJustified(640, 0, worldlist.current_name());
-	SDL_Flip(screen);
+	SDL_UpdateWindowSurface(g_window);
 
     while (true)
 	{
@@ -5190,7 +5190,7 @@ bool dialog(const char * title, const char * instructions, char * input, int inp
 							menu_font_small.draw(240, 235, instructions);
 							menu_font_small.draw(240, 255, input);
 							menu_font_small.drawRightJustified(640, 0, worldlist.current_name());
-							SDL_Flip(screen);
+							SDL_UpdateWindowSurface(g_window);
 							
 							currentChar--;
 						}
@@ -5206,8 +5206,8 @@ bool dialog(const char * title, const char * instructions, char * input, int inp
 							//insert character into fileName and onScreenText and increment current char
 							Uint8 key = event.key.keysym.sym;
 
-							Uint8 * keystate = SDL_GetKeyState(NULL);
-							if (keystate[SDLK_LSHIFT] || keystate[SDLK_RSHIFT]) 
+							Uint8 * keystate = SDL_GetKeyboardState(NULL);
+							if (keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]) 
 							{
 								if(event.key.keysym.sym == 45)
 									key = 95;
@@ -5246,7 +5246,7 @@ bool dialog(const char * title, const char * instructions, char * input, int inp
 							menu_font_small.draw(240, 235, instructions);
 							menu_font_small.draw(240, 255, input);
 							menu_font_small.drawRightJustified(640, 0, worldlist.current_name());
-							SDL_Flip(screen);
+							SDL_UpdateWindowSurface(g_window);
 						}
 					}	
 				break;

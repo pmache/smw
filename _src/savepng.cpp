@@ -70,7 +70,7 @@ int IMG_SavePNG_RW(SDL_Surface *face, SDL_RWops *src)
 	int amask = 0x00000000;
 #endif
 	
-	SDL_Surface *surface = SDL_CreateRGBSurface(SDL_SWSURFACE, face->w, face->h, 24,
+	SDL_Surface *surface = SDL_CreateRGBSurface(0, face->w, face->h, 24,
 								rmask, gmask, bmask, amask);
 	
 	SDL_BlitSurface(face, NULL, surface, NULL);

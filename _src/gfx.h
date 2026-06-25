@@ -26,6 +26,12 @@
 #include "SFont.h"
 #include <string>
 
+// The SDL2 window. Created by gfx_init(), destroyed by gfx_close().
+// The drawing surface `screen` is obtained from this window via
+// SDL_GetWindowSurface(g_window) and is refreshed with
+// SDL_UpdateWindowSurface(g_window).
+extern SDL_Window *g_window;
+
 bool gfx_init(int w, int h, bool fullscreen);
 void gfx_setresolution(int w, int h, bool fullscreen);
 

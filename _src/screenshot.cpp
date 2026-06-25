@@ -211,9 +211,9 @@ void drawmap(bool fScreenshot, short iBlockSize)
 		dstrect.w = iBlockSize * 20;
 		dstrect.h = iBlockSize * 15;
 
-		if(SDL_SoftStretch(spr_background.getSurface(), &srcrect, blitdest, &dstrect) < 0)
+		if(SDL_BlitScaled(spr_background.getSurface(), &srcrect, blitdest, &dstrect) < 0)
 		{
-			fprintf(stderr, "SDL_SoftStretch error: %s\n", SDL_GetError());
+			fprintf(stderr, "SDL_BlitScaled error: %s\n", SDL_GetError());
 			return;
 		}
 	}

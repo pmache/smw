@@ -3,10 +3,6 @@
 
 extern char szIPString[32];
 
-#ifdef _WIN32
-	#pragma comment(lib, "SDL_net.lib")
-#endif
-
 union
 {
 	float f;
