@@ -7,7 +7,7 @@
 | start:		1.1.2008									|
 | last changes:	1.10.2009									|
 |															|
-|	© 2003-2009 Florian Hufsky <florian.hufsky@gmail.com>	|
+|	ï¿½ 2003-2009 Florian Hufsky <florian.hufsky@gmail.com>	|
 +----------------------------------------------------------*/
 
 //TODO:
@@ -291,7 +291,7 @@ void SetDisplayMessage(short iTime, const char * szTitle, const char * szLine1, 
 void DrawMessage();
 
 //Menu keys to use for menus
-extern short controlkeys[2][2][4][NUM_KEYS];
+extern SDL_Keycode controlkeys[2][2][4][NUM_KEYS];
 
 //Vehicle stuff
 std::vector<WorldVehicle*> vehiclelist;
@@ -1065,7 +1065,7 @@ int editor_edit()
 			//handle messages
 			while(SDL_PollEvent(&event))
 			{
-				Uint8 * keystate = SDL_GetKeyboardState(NULL);
+				const Uint8 * keystate = SDL_GetKeyboardState(NULL);
 
 				switch(event.type)
 				{
@@ -5206,7 +5206,7 @@ bool dialog(const char * title, const char * instructions, char * input, int inp
 							//insert character into fileName and onScreenText and increment current char
 							Uint8 key = event.key.keysym.sym;
 
-							Uint8 * keystate = SDL_GetKeyboardState(NULL);
+							const Uint8 * keystate = SDL_GetKeyboardState(NULL);
 							if (keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]) 
 							{
 								if(event.key.keysym.sym == 45)

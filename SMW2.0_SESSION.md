@@ -1,50 +1,29 @@
-﻿# SMW 2.0 — Session state (2026-06-25)
+# SMW 2.0 — Session state (2026-06-30)
 
-## What was done
+## Faza 1.1-1.2 — CMake + SDL2 migration: DONE 
 
-### Faza 1.1 — CMake build system
-- Created CMakeLists.txt (SDL2-based, 3 targets: smw, leveledit, worldedit)
-- SFont.c set as C source, linfunc.cpp conditionally on Unix, SDLMain.m for macOS
-- Replaces old Makefile + configure + .vcproj
+### Build system
+- CMakeLists.txt, 3 targets: smw, leveledit, worldedit
+- MinGW64 (MSYS2) toolchain, GCC 16.1.0
+- Linker fix: imported targets (SDL2::SDL2, SDL2_image::SDL2_image, ...) + SDL2::SDL2main on Windows
 
-### Faza 1.2 — SDL 1.2 → SDL 2 migration
-17 files modified with these API replacements:
-- SDL_SetVideoMode → SDL_CreateWindow + SDL_GetWindowSurface
-- SDL_Flip → SDL_UpdateWindowSurface (38 sites)
-- SDL_WM_SetCaption → SDL_SetWindowTitle
-- SDL_FULLSCREEN → SDL_WINDOW_FULLSCREEN_DESKTOP
-- SDL_SoftStretch → SDL_BlitScaled
-- SDL_DisplayFormat → SDL_ConvertSurfaceFormat
-- SDL_DisplayFormatAlpha → same with ARGB8888
-- SDL_SetColorKey: removed SDL_SRCCOLORKEY|SDL_RLEACCEL flags
-- SDL_SetAlpha → SDL_SetSurfaceAlphaMod + SDL_SetSurfaceBlendMode
-- SDLKey → SDL_Keycode
-- SDL_GetKeyState → SDL_GetKeyboardState (with scancode indices)
-- SDL_JoystickName → SDL_JoystickNameForIndex
-- SDL_EnableKeyRepeat removed (SDL2 default)
-- All #pragma comment(lib, SDL_*) removed
+### SDL 1.2 → 2.0 API migration (completed)
+17 files modified: window, surface, rendering pipeline.
+Keycode types (short → SDL_Keycode), Keynames array removed,
+SDL2 API fixes (const Uint8* keystate, IMG_SavePNG_RW, etc.)
 
-Added globals:
-- SDL_Window *g_window (gfx.h/gfx.cpp)
-- gfx_close() function
-
-Windows Xbox #ifdef _XBOX blocks left untouched.
-
-CMakeLists.txt also updated: SDL → SDL2 find_package, variables, removed MinGW -Dmain=SDL_main.
-
-### NOT compiled — no SDL2 dev libs in this environment
-Next step: install SDL2, SDL2_image, SDL2_mixer, SDL2_net dev packages and run:
-  cmake -S . -B build
-  cmake --build build
+### Compilation: VERIFIED 
+build/smw.exe, build/leveledit.exe, build/worldedit.exe — all build and run.
 
 ## Remaining tasks
 
-### Faza 1.3 — Case-insensitive file extensions
-Files: global.cpp (convertPath), gfx.cpp (IMG_Load helpers)
+### Faza 1.3 — Case-insensitive file extensions: DONE  (2026-06-30)
+Fix: _src/dirlist.cpp endsWith() — replaced case-sensitive substr == q
+with tolower() char-by-char loop. Added #include <cctype>, const string& params.
 
-### Faza 1.4 — Empty music/ crash
-Files: FileList.cpp, main.cpp (musicfinished, PlayNextMusicTrack)
-Guard with isready() checks, auto-disable music if no files.
+### Faza 1.4 — Empty music/ crash: DONE ✅ (2026-06-30)
+4 files: sfx.cpp (+NULL guard w play() + Mix_HookMusicFinished unhook), FileList.cpp (+empty guards + exit(0)→warning), FileList.h (+GetCount + guards), main.cpp (+isready checks + auto-disable).
+7 steps, build OK.
 
 ### Faza 1.5 — Skin memory crash (0xbaadfood)
 File: gfx.cpp (gfxSprite::draw — add if(!m_picture) return false;)
@@ -56,12 +35,24 @@ Track invincible music playing state, resume on unpause.
 ### Faza 1.7 — Goomba sprite flipping
 File: objectgame.cpp (MO_Goomba::draw, add fFacingRight with SDL_RendererFlip)
 
+### Low-priority cleanup
+- _src/global.cpp:68 — stale comment about SDL_GetKeyName() (we now use it)
+- _src/savepng.cpp:147 — pre-existing info_ptr leak in png_destroy_write_struct
+- _src/leveleditor.cpp, worldeditor.cpp — remaining short→SDL_Keycode narrowing
+- Xbox #ifdef _XBOX blocks in gfx.cpp — broken for SDL2, deferred
+
 ## Full plan document
 See the comprehensive plan produced by the plan agent (5 phases, ~17-25 weeks total).
 
-## Architecture notes (from AGENTS.md)
-- DON'T reorder PGFX_* constants in global.h (alternating R/L, checked with sprite_idx & 0x1)
-- SFont.c is the only C file — must compile with C compiler
-- Heavy global state in gv game_values struct
-- Map format is binary (.map), don't hand-edit
-- No tests — verify by compiling and running
+## Build instructions
+```powershell
+$env:Path = "C:\msys64\mingw64\bin;C:\msys64\usr\bin;$env:Path"
+$env:CMAKE_PREFIX_PATH = "C:\msys64\mingw64"
+cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_MAKE_PROGRAM="C:/msys64/mingw64/bin/mingw32-make.exe"
+cmake --build build
+```
+
+## Run
+```powershell
+.\run_smw.bat
+```

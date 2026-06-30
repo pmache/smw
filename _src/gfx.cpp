@@ -292,7 +292,7 @@ SDL_Surface * gfx_createskinsurface(SDL_Surface * skin, short spriteindex, Uint8
 	SDL_Surface * final = SDL_ConvertSurfaceFormat(temp, SDL_GetWindowPixelFormat(g_window), 0);
 	if(!final)
 	{
-		printf("\n ERROR: Couldn't create new surface using SDL_DisplayFormat(): %s\n", SDL_GetError());
+		printf("\n ERROR: Couldn't create new surface using SDL_ConvertSurfaceFormat(): %s\n", SDL_GetError());
 		return NULL;
 	}
 	SDL_FreeSurface(temp);
@@ -530,7 +530,7 @@ SDL_Surface * gfx_createteamcoloredsurface(SDL_Surface * sImage, short iColor, U
 	SDL_Surface * sFinalImage = SDL_ConvertSurfaceFormat(sTempImage, SDL_GetWindowPixelFormat(g_window), 0);
 	if(!sFinalImage)
 	{
-		printf("\n ERROR: Couldn't create new surface using SDL_DisplayFormat(): %s\n", SDL_GetError());
+		printf("\n ERROR: Couldn't create new surface using SDL_ConvertSurfaceFormat(): %s\n", SDL_GetError());
 		return NULL;
 	}
 	SDL_FreeSurface(sTempImage);

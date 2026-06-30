@@ -195,6 +195,7 @@ class MusicList
         std::string GetCurrentMusic();
 
         int GetCurrentIndex(){return currentIndex;};
+        int GetCount() {return entries.size();}
         void SetCurrent(unsigned int index)
 		{
 			if(index < entries.size())
@@ -203,10 +204,10 @@ class MusicList
 				currentIndex = 0;
 		};
 
-        const char * current_name(){return entries[currentIndex]->name.c_str();};
+        const char * current_name(){if(entries.empty()) return ""; return entries[currentIndex]->name.c_str();};
         void next();
         void prev();
-        void random(){currentIndex = rand()%entries.size();};
+        void random(){if(entries.empty()) return; currentIndex = rand()%entries.size();};
 
 		void UpdateEntriesWithOverrides();
 
@@ -254,10 +255,10 @@ class WorldMusicList
 				currentIndex = 0;
 		};
 
-		const char * current_name(){return entries[currentIndex]->name.c_str();}
+		const char * current_name(){if(entries.empty()) return ""; return entries[currentIndex]->name.c_str();}
 		void next();
 		void prev();
-		void random() {currentIndex = rand()%entries.size();}
+		void random() {if(entries.empty()) return; currentIndex = rand()%entries.size();}
 
 		int GetCount() {return entries.size();}
 

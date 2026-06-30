@@ -1589,7 +1589,7 @@ short number_key_map[10] = {41, 33, 64, 35, 36, 37, 94, 38, 42, 40};
 
 MenuCodeEnum MI_TextField::SendInput(CPlayerInput * playerInput)
 {
-	Uint8 * keystate = SDL_GetKeyboardState(NULL);
+	const Uint8 * keystate = SDL_GetKeyboardState(NULL);
 
 	for(int iPlayer = 0; iPlayer < 4; iPlayer++)
 	{
@@ -1607,7 +1607,7 @@ MenuCodeEnum MI_TextField::SendInput(CPlayerInput * playerInput)
 		return MENU_CODE_NONE;
 
 	//Watch for characters typed in including delete and backspace
-	short key = playerInput->iPressedKey;
+	SDL_Keycode key = playerInput->iPressedKey;
 	if((key >= SDLK_a && key <= SDLK_z) || key == SDLK_SPACE || (key >= SDLK_0 && key <= SDLK_9) || key == SDLK_EQUALS ||
 		key == SDLK_MINUS || key == SDLK_BACKQUOTE || (key >= SDLK_LEFTBRACKET && key <= SDLK_RIGHTBRACKET) ||
 		key == SDLK_SEMICOLON || key == SDLK_QUOTE || key == SDLK_COMMA || key == SDLK_PERIOD || key == SDLK_SLASH)
@@ -1931,7 +1931,7 @@ MenuCodeEnum MI_MapField::Modify(bool modify)
 
 MenuCodeEnum MI_MapField::SendInput(CPlayerInput * playerInput)
 {
-	short iPressedKey = playerInput->iPressedKey;
+	SDL_Keycode iPressedKey = playerInput->iPressedKey;
 
 	/*
 	if(playerInput->iPressedKey > 0)

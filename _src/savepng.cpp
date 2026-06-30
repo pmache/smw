@@ -49,8 +49,9 @@ static void png_user_error(png_structp ctx, png_const_charp str)
 
 
 
-int IMG_SavePNG_RW(SDL_Surface *face, SDL_RWops *src)
+int IMG_SavePNG_RW(SDL_Surface *face, SDL_RWops *src, int freedst)
 {
+	(void)freedst; /* unused: custom implementation does not free the RWops */
 	png_structp png_ptr = 0;
 	png_infop info_ptr = 0;
 	png_bytep *row_pointers = 0;
@@ -94,7 +95,7 @@ int IMG_SavePNG_RW(SDL_Surface *face, SDL_RWops *src)
 	}
 	
 	/* Set error handling. */
-	if (setjmp(png_ptr->jmpbuf))
+	if (setjmp(png_jmpbuf(png_ptr)))
 	{
 		/* If we get here, we had a problem reading the file */
 		IMG_SetError("Error writing the PNG file");
@@ -143,9 +144,6 @@ done:
         if (row_pointers)
 			delete [] row_pointers;
 	
-	if (info_ptr->palette)
-		delete info_ptr->palette;
-	
 	png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
 	
 	
@@ -161,7 +159,7 @@ int IMG_SavePNG(SDL_Surface *surface, const char *file)
     int ret;
     if(!out)
 		return -1;
-    ret = IMG_SavePNG_RW(surface, out);
+    ret = IMG_SavePNG_RW(surface, out, 0);
     SDL_RWclose(out);
     return ret;
 }

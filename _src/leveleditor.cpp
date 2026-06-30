@@ -12,7 +12,7 @@
 | start:		18.12.2003									|
 | last changes:	 3.12.2007									|
 |															|
-|	© 2003-2009 Florian Hufsky <florian.hufsky@gmail.com>	|
+|	ï¿½ 2003-2009 Florian Hufsky <florian.hufsky@gmail.com>	|
 +----------------------------------------------------------*/
 
 #define _SMW_EDITOR
@@ -843,7 +843,7 @@ int editor_edit()
 			//handle messages
 			while(SDL_PollEvent(&event))
 			{
-				Uint8 * keystate = SDL_GetKeyboardState(NULL);
+				const Uint8 * keystate = SDL_GetKeyboardState(NULL);
 
 				switch(event.type)
 				{
@@ -2333,7 +2333,7 @@ int editor_properties(short iBlockCol, short iBlockRow)
 						else if(event.key.keysym.sym == SDLK_d)
 							iValue = g_iDefaultPowerupPresets[0][iSettingIndex];
 						
-						Uint8 * keystate = SDL_GetKeyboardState(NULL);
+						const Uint8 * keystate = SDL_GetKeyboardState(NULL);
 						if (keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]) 
 						{
 							for(short iSetting = 0; iSetting < NUM_BLOCK_SETTINGS; iSetting++)
@@ -2921,7 +2921,7 @@ int editor_platforms()
 						}
 						else if(PLATFORM_EDIT_STATE_PATH == iPlatformEditState)
 						{
-							Uint8 * keystate = SDL_GetKeyboardState(NULL);
+							const Uint8 * keystate = SDL_GetKeyboardState(NULL);
 							if(g_Platforms[iEditPlatform].iPathType == 2 && (keystate[SDL_SCANCODE_Z] || keystate[SDL_SCANCODE_X] || keystate[SDL_SCANCODE_C]))
 							{
 								UpdatePlatformPathRadius(iEditPlatform, event.button.x, event.button.y, keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT], keystate[SDL_SCANCODE_Z] != 0, keystate[SDL_SCANCODE_C] != 0);
@@ -2950,7 +2950,7 @@ int editor_platforms()
 						}
 						else if(PLATFORM_EDIT_STATE_PATH == iPlatformEditState)
 						{
-							Uint8 * keystate = SDL_GetKeyboardState(NULL);
+							const Uint8 * keystate = SDL_GetKeyboardState(NULL);
 							if(g_Platforms[iEditPlatform].iPathType == 0)
 							{
 								UpdatePlatformPathEnd(iEditPlatform, event.button.x, event.button.y, keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]);
@@ -3010,7 +3010,7 @@ int editor_platforms()
 					{
 						if(event.motion.state == SDL_BUTTON(SDL_BUTTON_LEFT))
 						{
-							Uint8 * keystate = SDL_GetKeyboardState(NULL);
+							const Uint8 * keystate = SDL_GetKeyboardState(NULL);
 							if(g_Platforms[iEditPlatform].iPathType == 2 && (keystate[SDL_SCANCODE_Z] || keystate[SDL_SCANCODE_X] || keystate[SDL_SCANCODE_C]))
 							{
 								UpdatePlatformPathRadius(iEditPlatform, event.button.x, event.button.y, keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT], keystate[SDL_SCANCODE_Z] != 0, keystate[SDL_SCANCODE_C] != 0);
@@ -3022,7 +3022,7 @@ int editor_platforms()
 						}
 						else if(event.motion.state == SDL_BUTTON(SDL_BUTTON_RIGHT))
 						{
-							Uint8 * keystate = SDL_GetKeyboardState(NULL);
+							const Uint8 * keystate = SDL_GetKeyboardState(NULL);
 							if(g_Platforms[iEditPlatform].iPathType == 0)
 							{
 								UpdatePlatformPathEnd(iEditPlatform, event.button.x, event.button.y, keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]);
@@ -3986,7 +3986,7 @@ void AdjustMapHazardRadius(MapHazard * hazard, short iClickX, short iClickY)
 	if(angle < 0.0f)
 		angle += TWO_PI;
 
-	Uint8 * keystate = SDL_GetKeyboardState(NULL);
+	const Uint8 * keystate = SDL_GetKeyboardState(NULL);
 	if(keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT])
 	{
 		float dSector = TWO_PI / 16;
@@ -4650,7 +4650,7 @@ int editor_modeitems()
 				{
 					if(dragmodeitem >= 0 && event.motion.state == SDL_BUTTON(SDL_BUTTON_LEFT))
 					{
-						Uint8 * keystate = SDL_GetKeyboardState(NULL);
+						const Uint8 * keystate = SDL_GetKeyboardState(NULL);
 						bool fShiftDown = keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT];
 							
 						if(modeitemmode == 0)
@@ -5444,7 +5444,7 @@ bool dialog(const char * title, const char * instructions, char * input, int inp
 							//insert character into fileName and onScreenText and increment current char
 							Uint8 key = event.key.keysym.sym;
 
-							Uint8 * keystate = SDL_GetKeyboardState(NULL);
+							const Uint8 * keystate = SDL_GetKeyboardState(NULL);
 							if (keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]) 
 							{
 								if(event.key.keysym.sym == 45)

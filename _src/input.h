@@ -22,13 +22,13 @@ struct CInputControl
 	{
 		struct
 		{
-			short menu_up, menu_down, menu_left, menu_right, menu_select, menu_cancel, menu_random, menu_scrollfast;
+			SDL_Keycode menu_up, menu_down, menu_left, menu_right, menu_select, menu_cancel, menu_random, menu_scrollfast;
 		};
 		struct
 		{
-			short game_left, game_right, game_jump, game_down, game_turbo, game_powerup, game_start, game_cancel;
+			SDL_Keycode game_left, game_right, game_jump, game_down, game_turbo, game_powerup, game_start, game_cancel;
 		};
-		short keys[NUM_KEYS];
+		SDL_Keycode keys[NUM_KEYS];
 	};
 };
 
@@ -76,7 +76,7 @@ class CPlayerInput
 		//Use these structures to see what input has been pressed
 		COutputControl outputControls[4];
 
-		short iPressedKey;
+		SDL_Keycode iPressedKey;
 
 	private:
 		bool fUsingMouse;

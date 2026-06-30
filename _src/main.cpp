@@ -22,7 +22,7 @@
 | start:		24.01.2003									|
 | last changes:	12.02.2008									|
 |															|
-|								© 2003-2009 Florian Hufsky  |
+|								ï¿½ 2003-2009 Florian Hufsky  |
 |								  florian.hufsky@gmail.com	|
 |                                     mtschaffer@gmail.com  |
 |								  http://smw.72dpiarmy.com	|
@@ -621,7 +621,7 @@ short			respawnanimationframe[4] = {0, 0, 0, 0};
 
 short			projectiles[4];
 
-extern short controlkeys[2][2][4][NUM_KEYS];
+extern SDL_Keycode controlkeys[2][2][4][NUM_KEYS];
 extern int g_iVersion[];
 
 //Locations for swirl spawn effects
@@ -937,13 +937,15 @@ void DECLSPEC musicfinished()
 			backgroundmusic[0].load(musiclist.GetCurrentMusic()); //In Game Music
 		}
 
-		backgroundmusic[0].play(game_values.playnextmusic, false);
+		if(backgroundmusic[0].isready())
+			backgroundmusic[0].play(game_values.playnextmusic, false);
 	}
 	else
 	{
 		if(fResumeMusic)
 		{
-			backgroundmusic[3].play(false, false);
+			if(backgroundmusic[3].isready())
+				backgroundmusic[3].play(false, false);
 		}
 	}
 }
@@ -1116,6 +1118,11 @@ int main(int argc, char *argv[])
 	game_values.framelimiter		= WAITTIME;
 	game_values.sound				= true;
 	game_values.music				= true;
+	if(musiclist.GetCount() == 0 && worldmusiclist.GetCount() == 0)
+	{
+		printf("WARNING: No music available, disabling music.\n");
+		game_values.music = false;
+	}
 	game_values.gamestate			= GS_MENU;
 #ifdef _DEBUG	
 	game_values.fullscreen			= false;
@@ -3733,7 +3740,8 @@ void PlayNextMusicTrack()
 	backgroundmusic[0].stop();
 	musiclist.SetNextMusic(g_map.musicCategoryID, maplist.currentShortmapname(), g_map.szBackgroundFile);
 	backgroundmusic[0].load(musiclist.GetCurrentMusic());
-	backgroundmusic[0].play(game_values.playnextmusic, false);
+	if(backgroundmusic[0].isready())
+		backgroundmusic[0].play(game_values.playnextmusic, false);
 }
 
 bool coldec_player2player(CPlayer * o1, CPlayer * o2)

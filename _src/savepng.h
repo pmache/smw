@@ -17,7 +17,7 @@
 extern "C" {
 #endif
 
-int IMG_SavePNG_RW(SDL_Surface *face, SDL_RWops *src);	
+int IMG_SavePNG_RW(SDL_Surface *face, SDL_RWops *src, int freedst);
 int IMG_SavePNG(SDL_Surface *surface, const char *file);
 	
 /* Ends C function definitions when using C++ */

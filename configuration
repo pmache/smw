@@ -1,0 +1,3 @@
+CFLAGS:=$(CFLAGS) -DLINUXFUNC -DPREFIXPATH=\"/usr/share/games/smw\"  -Wall -I. -DPNG_SAVE_FORMAT
+LDFLAGS:=$(LDFLAGS)  -lSDL_image -lSDL_mixer -lpng
+COMMON_OBJS:=$(COMMON_OBJS) build/linfunc.o

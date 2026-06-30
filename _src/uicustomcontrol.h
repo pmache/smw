@@ -18,12 +18,12 @@ class MI_InputControlField : public UI_Control
 		
 		void Draw();
 		MenuCodeEnum SendInput(CPlayerInput * playerInput);
-		void SetKey(short * iSetKey, short key, short device);
+		void SetKey(SDL_Keycode * iSetKey, SDL_Keycode key, short device);
 
 		MenuCodeEnum Modify(bool modify);
 
 		void SetDevice(short device) {iDevice = device;}
-		void SetKey(short * key) {iKey = key;}
+		void SetKey(SDL_Keycode * key) {iKey = key;}
 		void SetType(short type) {iType = type;}
 		void SetKeyIndex(short keyindex) {iKeyIndex = keyindex;}
 		void SetPlayerIndex(short playerindex) {iPlayerIndex = playerindex;}
@@ -36,7 +36,7 @@ class MI_InputControlField : public UI_Control
 		short iWidth, iIndent;
 
 		short iDevice;
-		short * iKey;
+		SDL_Keycode * iKey;
 		short iType;
 		short iKeyIndex;
 		short iPlayerIndex;

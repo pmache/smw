@@ -1,7 +1,6 @@
 #include "global.h"
 #include <math.h>
 
-extern const char * Keynames[340];
 extern const char * Joynames[30];
 
 extern const char * GameInputNames[NUM_KEYS];
@@ -126,7 +125,7 @@ MenuCodeEnum MI_InputControlField::SendInput(CPlayerInput *)
 		{
 			if (event.type == SDL_KEYDOWN)
 			{
-				short key = (short)event.key.keysym.sym;
+				SDL_Keycode key = event.key.keysym.sym;
 
 				SetKey(iKey, key, iDevice);
 				done = true;
@@ -139,7 +138,7 @@ MenuCodeEnum MI_InputControlField::SendInput(CPlayerInput *)
 				if(xmag < MOUSE_X_DEAD_ZONE && ymag < MOUSE_Y_DEAD_ZONE)
 					continue;
 
-				short key = KEY_NONE;
+				SDL_Keycode key = KEY_NONE;
 				if(xmag > ymag)
 				{
 					if(event.motion.xrel < 0)
@@ -163,7 +162,7 @@ MenuCodeEnum MI_InputControlField::SendInput(CPlayerInput *)
 			}
 			else if (event.type == SDL_MOUSEBUTTONDOWN)
 			{
-				short key = event.button.button + MOUSE_BUTTON_START;
+				SDL_Keycode key = event.button.button + MOUSE_BUTTON_START;
 				SetKey(iKey, key, iDevice);
 				done = true;
 			}
@@ -179,7 +178,7 @@ MenuCodeEnum MI_InputControlField::SendInput(CPlayerInput *)
 			}
 			else if(event.type == SDL_JOYHATMOTION)
 			{
-				short key = KEY_NONE;
+				SDL_Keycode key = KEY_NONE;
 
 				if (event.jhat.value & SDL_HAT_UP)
 				{
@@ -206,7 +205,7 @@ MenuCodeEnum MI_InputControlField::SendInput(CPlayerInput *)
 			}
 			else if (event.type == SDL_JOYAXISMOTION)
 			{
-				short key = KEY_NONE;
+				SDL_Keycode key = KEY_NONE;
 
 				if(event.jaxis.axis == 0)
 				{
@@ -263,7 +262,7 @@ MenuCodeEnum MI_InputControlField::SendInput(CPlayerInput *)
 			{
 				if(event.jbutton.state == SDL_PRESSED)
 				{
-					short key = event.jbutton.button + JOY_BUTTON_START;
+					SDL_Keycode key = event.jbutton.button + JOY_BUTTON_START;
 
 					SetKey(iKey, key, iDevice);
 					done = true;
@@ -281,7 +280,7 @@ MenuCodeEnum MI_InputControlField::SendInput(CPlayerInput *)
 	return MENU_CODE_UNSELECT_ITEM;
 }
 
-void MI_InputControlField::SetKey(short * iSetKey, short key, short device)
+void MI_InputControlField::SetKey(SDL_Keycode * iSetKey, SDL_Keycode key, short device)
 {
 	bool fNeedSwap = false;
 	short iSwapPlayer, iSwapKey;
@@ -333,7 +332,7 @@ void MI_InputControlField::Draw()
 	else if(fModifying)
 		menu_font_large.drawChopRight(ix + iIndent + 8, iy + 5, iWidth - iIndent - 16, "(Press Button)");
 	else if(iDevice == DEVICE_KEYBOARD)
-		menu_font_large.drawChopRight(ix + iIndent + 8, iy + 5, iWidth - iIndent - 16, Keynames[*iKey]);
+		menu_font_large.drawChopRight(ix + iIndent + 8, iy + 5, iWidth - iIndent - 16, SDL_GetKeyName(*iKey));
 	else
 		menu_font_large.drawChopRight(ix + iIndent + 8, iy + 5, iWidth - iIndent - 16, Joynames[*iKey]);
 }

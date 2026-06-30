@@ -127,12 +127,21 @@ add_library(smw_common OBJECT ${SMW_COMMON_SOURCES})
 # Shared link line for every executable
 #------------------------------------------------------------------------------
 set(SMW_LINK_LIBS
-    ${SDL2_LIBRARY}
-    ${SDL2_IMAGE_LIBRARY}
-    ${SDL2_MIXER_LIBRARY}
-    ${SDL2_NET_LIBRARY}
+    SDL2::SDL2
+    SDL2_image::SDL2_image
+    SDL2_mixer::SDL2_mixer
+    SDL2_net::SDL2_net
     ${PNG_LIBRARIES}
 )
+
+# On Windows, SDL2main provides the WinMain entry point that calls our main().
+# It must link BEFORE SDL2::SDL2: SDL2main is a static archive that calls SDL
+# functions (SDL_strlen, SDL_SetMainReady, ...), and MinGW ld is single-pass
+# left-to-right, so a library can only satisfy references from libraries listed
+# after it.
+if(WIN32)
+    list(INSERT SMW_LINK_LIBS 0 SDL2::SDL2main)
+endif()
 
 #------------------------------------------------------------------------------
 # smw -- the game

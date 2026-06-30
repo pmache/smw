@@ -29,7 +29,7 @@ void CPlayerInput::CheckIfMouseUsed()
 
 			for(short iKey = 0; iKey < NUM_KEYS; iKey++)
 			{
-				short iInputKey = inputControl->keys[iKey];
+				SDL_Keycode iInputKey = inputControl->keys[iKey];
 
 				//Need to reset analog mouse and joystick because there isn't a no longer moving event
 				if((iInputKey >= MOUSE_UP && iInputKey <= MOUSE_RIGHT) || 
@@ -63,7 +63,7 @@ void CPlayerInput::ClearPressedKeys(short iGameState)
 #ifndef _XBOX
 			if(fUsingMouse)
 			{
-				short iInputKey = inputControl->keys[iKey];
+				SDL_Keycode iInputKey = inputControl->keys[iKey];
 
 				//Need to reset analog mouse and joystick because there isn't a no longer moving event
 				if((iInputKey >= MOUSE_UP && iInputKey <= MOUSE_RIGHT) /*||
@@ -161,7 +161,7 @@ void CPlayerInput::Update(SDL_Event event, short iGameState)
 					}
 				}
 
-				iPressedKey = (short)event.key.keysym.sym;
+				iPressedKey = event.key.keysym.sym;
 			}
 			else if(SDL_KEYUP == event.type)
 			{

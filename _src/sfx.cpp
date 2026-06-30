@@ -184,6 +184,7 @@ bool sfxMusic::load(const string& filename)
 	if(!music)
 	{
 	    printf("Error Loading Music: %s\n", Mix_GetError());
+		Mix_HookMusicFinished(NULL);
 		return false;
 	}
 
@@ -196,6 +197,7 @@ bool sfxMusic::load(const string& filename)
 
 void sfxMusic::play(bool fPlayonce, bool fResume)
 {
+	if(!music || !ready) return;
 	Mix_PlayMusic(music, fPlayonce ? 0 : -1);
 	fResumeMusic = fResume;
 }
@@ -217,6 +219,7 @@ void sfxMusic::sfx_pause()
 
 void sfxMusic::reset()
 {
+	Mix_HookMusicFinished(NULL);
 	Mix_FreeMusic(music);
 	music = NULL;
 	ready = false;

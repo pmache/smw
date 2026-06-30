@@ -224,8 +224,7 @@ MusicList::MusicList()
 	
 	if(entries.empty())
 	{
-		printf("ERROR: Empty Music directory!\n");
-		exit(0);
+		printf("WARNING: Empty Music directory! Music disabled for this list.\n");
 	}
 
 	currentIndex = 0;
@@ -243,16 +242,19 @@ MusicList::~MusicList()
 
 string MusicList::GetMusic(int musicID)
 {
+	if(entries.empty()) return "";
 	return entries[currentIndex]->GetMusic(musicID);
 }
 
 void MusicList::SetRandomMusic(int iMusicCategory, const char * szMapName, const char * szBackground)
 {
+	if(entries.empty()) return;
 	CurrentMusic = entries[currentIndex]->GetRandomMusic(iMusicCategory, szMapName, szBackground);
 }
 
 void MusicList::SetNextMusic(int iMusicCategory, const char * szMapName, const char * szBackground)
 {
+	if(entries.empty()) return;
 	CurrentMusic = entries[currentIndex]->GetNextMusic(iMusicCategory, szMapName, szBackground);
 }
 
@@ -264,6 +266,7 @@ string MusicList::GetCurrentMusic()
 
 void MusicList::next()
 {
+	if(entries.empty()) return;
 	if(currentIndex+1 == int(entries.size()))
 		currentIndex = 0;
 	else
@@ -272,6 +275,7 @@ void MusicList::next()
 
 void MusicList::prev()
 {
+	if(entries.empty()) return;
 	if(currentIndex == 0)
 		currentIndex = entries.size()-1;
 	else
@@ -669,8 +673,7 @@ WorldMusicList::WorldMusicList()
 	
 	if(entries.empty())
 	{
-		printf("ERROR: Empty Music directory!\n");
-		exit(0);
+		printf("WARNING: Empty World Music directory! Music disabled for this list.\n");
 	}
 
 	currentIndex = 0;
@@ -688,6 +691,7 @@ WorldMusicList::~WorldMusicList()
 
 string WorldMusicList::GetMusic(int musicID, const char * szWorldName)
 {
+	if(entries.empty()) return "";
 	return entries[currentIndex]->GetMusic(musicID, szWorldName);
 }
 
@@ -699,6 +703,7 @@ string WorldMusicList::GetCurrentMusic()
 
 void WorldMusicList::next()
 {
+	if(entries.empty()) return;
 	if(currentIndex+1 == int(entries.size()))
 		currentIndex = 0;
 	else
@@ -707,6 +712,7 @@ void WorldMusicList::next()
 
 void WorldMusicList::prev()
 {
+	if(entries.empty()) return;
 	if(currentIndex == 0)
 		currentIndex = entries.size()-1;
 	else

@@ -20,23 +20,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "dirlist.h"
 #include "path.h"
 #include <string>
+#include <cctype>
 using namespace std;
 #include <sys/types.h>
 #include <sys/stat.h>
 
 
 /* Use references to avoid copying */
-inline bool endsWith(string& s, string& q)
+inline bool endsWith(const string& s, const string& q)
 {
-    /* Cache these results because we used references*/
+    /* Cache these results because we used references */
     int size_s = s.size();
     int size_q = q.size();
 
     /* s cannot contain q */
     if (size_s < size_q) return false;
 
-    /* Look for it */
-    return s.substr(size_s-size_q, size_q) == q;
+    /* Look for it (case-insensitive, so SKIN.BMP matches .bmp) */
+    for (int i = 0; i < size_q; i++)
+        if (tolower(static_cast<unsigned char>(s[size_s - size_q + i])) !=
+            tolower(static_cast<unsigned char>(q[i])))
+            return false;
+    return true;
 }
 
 
