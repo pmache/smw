@@ -1,4 +1,4 @@
-/*----------------------------------------------------------+
+﻿/*----------------------------------------------------------+
 | Super Mario War World Editor								|
 |															|
 |															|
@@ -7,7 +7,7 @@
 | start:		1.1.2008									|
 | last changes:	1.10.2009									|
 |															|
-|	� 2003-2009 Florian Hufsky <florian.hufsky@gmail.com>	|
+|	ďż˝ 2003-2009 Florian Hufsky <florian.hufsky@gmail.com>	|
 +----------------------------------------------------------*/
 
 //TODO:
@@ -28,7 +28,9 @@
 
 #ifdef _WIN32
 	#include <windows.h>
+#endif
 
+#if defined(_WIN32) && defined(_MSC_VER)
 	#ifndef _XBOX
 		#pragma comment(linker, "/NODEFAULTLIB:libc.lib")
 
@@ -154,7 +156,7 @@ bool CO_ThrowBox::HasKillVelocity() {return false;}
 short PlayerKilledPlayer(short id, CPlayer * killed, short deathstyle, killstyle style, bool fForce, bool fKillCarriedItem) {return 0;}
 void AddAwardKill(CPlayer * killer, CPlayer * killed, killstyle style) {}
 
-CPlayer * GetPlayerFromGlobalID(short id) {return NULL;}
+CPlayer * GetPlayerFromGlobalID(short id) {return nullptr;}
 
 float CapFallingVelocity(float f) {return 0.0f;}
 void removeifprojectile(IO_MovingObject * object, bool playsound, bool forcedead) {}
@@ -212,7 +214,7 @@ gfxSprite		spr_poof;
 int g_iNextNetworkID = 0;
 short projectiles[4];
 
-IO_MovingObject * createpowerup(short iType, short ix, short iy, bool side, bool spawn) {return NULL;}
+IO_MovingObject * createpowerup(short iType, short ix, short iy, bool side, bool spawn) {return nullptr;}
 void CScore::AdjustScore(short iValue) {}
 ///////
 
@@ -346,7 +348,7 @@ ModeOptionsMenu modeOptionsMenu;
 
 gfxSprite menu_dialog;
 
-SDL_Surface * sMapThumbnail = NULL;
+SDL_Surface * sMapThumbnail = nullptr;
 short iOldStageId = -1;
 
 //Sets up default mode options
@@ -590,7 +592,7 @@ int main(int argc, char *argv[])
 	miNameField->SetDisallowedChars(",");
 
 	miModeField = new MI_ImageSelectField(&spr_selectfield, &menu_mode_small, 70, 60, "Mode", 500, 120, 16, 16);
-	//miModeField->SetData(game_values.tourstops[0]->iMode, NULL, NULL);
+	//miModeField->SetData(game_values.tourstops[0]->iMode, nullptr, nullptr);
 	//miModeField->SetKey(0);
 	miModeField->SetItemChangedCode(MENU_CODE_MODE_CHANGED);
 
@@ -607,7 +609,7 @@ int main(int argc, char *argv[])
 			miGoalField[iGameMode]->Add(option->szName, option->iValue, "", false, false);
 		}
 
-		//miGoalField[iGameMode]->SetData(&gamemodes[iGameMode]->goal, NULL, NULL);
+		//miGoalField[iGameMode]->SetData(&gamemodes[iGameMode]->goal, nullptr, nullptr);
 		//miGoalField[iGameMode]->SetKey(gamemodes[iGameMode]->goal);
 	}
 
@@ -716,13 +718,13 @@ int main(int argc, char *argv[])
 	miDeleteStageDialogNoButton->Show(false);
 
 	//Add Name Field
-	mStageSettingsMenu.AddControl(miNameField, miDeleteStageButton, miModeField, NULL, NULL);
+	mStageSettingsMenu.AddControl(miNameField, miDeleteStageButton, miModeField, nullptr, nullptr);
 
 	//Add Mode Field
-	mStageSettingsMenu.AddControl(miModeField, miNameField, miGoalField[0], NULL, NULL);
+	mStageSettingsMenu.AddControl(miModeField, miNameField, miGoalField[0], nullptr, nullptr);
 
 	//Add Mode Goal Fields
-	mStageSettingsMenu.AddControl(miGoalField[0], miModeField, miGoalField[1], NULL, miModeSettingsButton);
+	mStageSettingsMenu.AddControl(miGoalField[0], miModeField, miGoalField[1], nullptr, miModeSettingsButton);
 	
 	for(short iGoalField = 1; iGoalField < GAMEMODE_LAST - 1; iGoalField++)
 		mStageSettingsMenu.AddControl(miGoalField[iGoalField], miGoalField[iGoalField - 1], miGoalField[iGoalField + 1], miGoalField[iGoalField - 1], miModeSettingsButton);
@@ -734,38 +736,38 @@ int main(int argc, char *argv[])
 	mStageSettingsMenu.AddControl(miSpecialGoalField[2], miSpecialGoalField[1], miPointsField, miSpecialGoalField[1], miModeSettingsButton);
 
 	//Add Mode Settings Button
-	mStageSettingsMenu.AddControl(miModeSettingsButton, miModeField, miFinalStageField, miSpecialGoalField[2], NULL);
+	mStageSettingsMenu.AddControl(miModeSettingsButton, miModeField, miFinalStageField, miSpecialGoalField[2], nullptr);
 
 	//Add Points Field
-	mStageSettingsMenu.AddControl(miPointsField, miSpecialGoalField[2], miMapField, NULL, miFinalStageField);
+	mStageSettingsMenu.AddControl(miPointsField, miSpecialGoalField[2], miMapField, nullptr, miFinalStageField);
 
 	//Add Final Stage Field
-	mStageSettingsMenu.AddControl(miFinalStageField, miSpecialGoalField[2], miMapField, miPointsField, NULL);
+	mStageSettingsMenu.AddControl(miFinalStageField, miSpecialGoalField[2], miMapField, miPointsField, nullptr);
 
 	//Add Map Field
-	mStageSettingsMenu.AddControl(miMapField, miFinalStageField, miBonusType, NULL, miBonusItemsButton);
+	mStageSettingsMenu.AddControl(miMapField, miFinalStageField, miBonusType, nullptr, miBonusItemsButton);
 
 	//Add Bonus House Fields
-	mStageSettingsMenu.AddControl(miBonusType, miMapField, miBonusTextField[0], NULL, NULL);
-	mStageSettingsMenu.AddControl(miBonusTextField[0], miBonusType, miBonusTextField[1], NULL, NULL);
-	mStageSettingsMenu.AddControl(miBonusTextField[1], miBonusTextField[0], miBonusTextField[2], NULL, NULL);
-	mStageSettingsMenu.AddControl(miBonusTextField[2], miBonusTextField[1], miBonusTextField[3], NULL, NULL);
-	mStageSettingsMenu.AddControl(miBonusTextField[3], miBonusTextField[2], miBonusTextField[4], NULL, NULL);
-	mStageSettingsMenu.AddControl(miBonusTextField[4], miBonusTextField[3], miBonusItemsButton, NULL, NULL);
+	mStageSettingsMenu.AddControl(miBonusType, miMapField, miBonusTextField[0], nullptr, nullptr);
+	mStageSettingsMenu.AddControl(miBonusTextField[0], miBonusType, miBonusTextField[1], nullptr, nullptr);
+	mStageSettingsMenu.AddControl(miBonusTextField[1], miBonusTextField[0], miBonusTextField[2], nullptr, nullptr);
+	mStageSettingsMenu.AddControl(miBonusTextField[2], miBonusTextField[1], miBonusTextField[3], nullptr, nullptr);
+	mStageSettingsMenu.AddControl(miBonusTextField[3], miBonusTextField[2], miBonusTextField[4], nullptr, nullptr);
+	mStageSettingsMenu.AddControl(miBonusTextField[4], miBonusTextField[3], miBonusItemsButton, nullptr, nullptr);
 
 	//Add Bonus Button
-	mStageSettingsMenu.AddControl(miBonusItemsButton, miBonusTextField[4], miDeleteStageButton, miMapField, NULL);
+	mStageSettingsMenu.AddControl(miBonusItemsButton, miBonusTextField[4], miDeleteStageButton, miMapField, nullptr);
 
 	//Add Delete Stage Button
-	mStageSettingsMenu.AddControl(miDeleteStageButton, miBonusItemsButton, miNameField, miMapField, NULL);
+	mStageSettingsMenu.AddControl(miDeleteStageButton, miBonusItemsButton, miNameField, miMapField, nullptr);
 
 	//Add Are You Sure Dialog
 	mStageSettingsMenu.AddNonControl(miDeleteStageDialogImage);
 	mStageSettingsMenu.AddNonControl(miDeleteStageDialogAreYouText);
 	mStageSettingsMenu.AddNonControl(miDeleteStageDialogSureText);
 
-	mStageSettingsMenu.AddControl(miDeleteStageDialogYesButton, NULL, NULL, NULL, miDeleteStageDialogNoButton);
-	mStageSettingsMenu.AddControl(miDeleteStageDialogNoButton, NULL, NULL, miDeleteStageDialogYesButton, NULL);
+	mStageSettingsMenu.AddControl(miDeleteStageDialogYesButton, nullptr, nullptr, nullptr, miDeleteStageDialogNoButton);
+	mStageSettingsMenu.AddControl(miDeleteStageDialogNoButton, nullptr, nullptr, miDeleteStageDialogYesButton, nullptr);
 
 	mStageSettingsMenu.SetHeadControl(miNameField);
 	mStageSettingsMenu.SetCancelCode(MENU_CODE_EXIT_APPLICATION);
@@ -795,11 +797,11 @@ int main(int argc, char *argv[])
 	miVehicleSpriteField->Add("Airship 1", 6, "", false, false);
 	miVehicleSpriteField->Add("Airship 2", 7, "", false, false);
 	miVehicleSpriteField->Add("Tank 2", 8, "", false, false);
-	miVehicleSpriteField->SetData(&g_wvVehicleStamp.iDrawSprite, NULL, NULL);
+	miVehicleSpriteField->SetData(&g_wvVehicleStamp.iDrawSprite, nullptr, nullptr);
 	miVehicleSpriteField->SetKey(g_wvVehicleStamp.iDrawSprite);
 
 	miVehicleStageField = new MI_ImageSelectField(&spr_selectfield, &menu_mode_small, 70, 120, "Stage", 500, 150, 16, 16);
-	miVehicleStageField->SetData(&g_wvVehicleStamp.iActionId, NULL, NULL);
+	miVehicleStageField->SetData(&g_wvVehicleStamp.iActionId, nullptr, nullptr);
 
 	miVehicleMinMovesField = new MI_SelectField(&spr_selectfield, 70, 160, "Min Moves", 500, 150);
 	
@@ -810,7 +812,7 @@ int main(int argc, char *argv[])
 		miVehicleMinMovesField->Add(szMinMoves, iMinMoves, "", false, false);
 	}
 
-	miVehicleMinMovesField->SetData(&g_wvVehicleStamp.iMinMoves, NULL, NULL);
+	miVehicleMinMovesField->SetData(&g_wvVehicleStamp.iMinMoves, nullptr, nullptr);
 	miVehicleMinMovesField->SetKey(g_wvVehicleStamp.iMinMoves);
 	miVehicleMinMovesField->SetItemChangedCode(MENU_CODE_VEHICLE_MIN_MOVES_CHANGED);
 	miVehicleMinMovesField->SetNoWrap(true);
@@ -825,7 +827,7 @@ int main(int argc, char *argv[])
 		miVehicleMaxMovesField->Add(szMaxMoves, iMaxMoves, "", false, false);
 	}
 
-	miVehicleMaxMovesField->SetData(&g_wvVehicleStamp.iMaxMoves, NULL, NULL);
+	miVehicleMaxMovesField->SetData(&g_wvVehicleStamp.iMaxMoves, nullptr, nullptr);
 	miVehicleMaxMovesField->SetKey(g_wvVehicleStamp.iMaxMoves);
 	miVehicleMaxMovesField->SetItemChangedCode(MENU_CODE_VEHICLE_MAX_MOVES_CHANGED);
 	miVehicleMaxMovesField->SetNoWrap(true);
@@ -834,14 +836,14 @@ int main(int argc, char *argv[])
 	miVehiclePacesField = new MI_SelectField(&spr_selectfield, 70, 240, "Paces", 500, 150);
 	miVehiclePacesField->Add("No", 0, "", false, false);
 	miVehiclePacesField->Add("Yes", 1, "", true, false);
-	miVehiclePacesField->SetData(NULL, NULL, &g_wvVehicleStamp.fSpritePaces);
+	miVehiclePacesField->SetData(nullptr, nullptr, &g_wvVehicleStamp.fSpritePaces);
 	miVehiclePacesField->SetKey(g_wvVehicleStamp.fSpritePaces ? 1 : 0);
 	miVehiclePacesField->SetAutoAdvance(true);
 
 	miVehicleDirectionField = new MI_SelectField(&spr_selectfield, 70, 280, "Direction", 500, 150);
 	miVehicleDirectionField->Add("Left", 0, "", false, false);
 	miVehicleDirectionField->Add("Right", 1, "", true, false);
-	miVehiclePacesField->SetData(&g_wvVehicleStamp.iDrawDirection, NULL, NULL);
+	miVehiclePacesField->SetData(&g_wvVehicleStamp.iDrawDirection, nullptr, nullptr);
 	miVehiclePacesField->SetKey(g_wvVehicleStamp.iDrawDirection);
 	miVehicleDirectionField->SetAutoAdvance(true);
 
@@ -855,7 +857,7 @@ int main(int argc, char *argv[])
 		miVehicleBoundaryField->Add(szBoundary, iBoundary, "", false, false);
 	}
 
-	miVehicleBoundaryField->SetData(&g_wvVehicleStamp.iBoundary, NULL, NULL);
+	miVehicleBoundaryField->SetData(&g_wvVehicleStamp.iBoundary, nullptr, nullptr);
 	miVehicleBoundaryField->SetKey(g_wvVehicleStamp.iBoundary);
 	miVehicleBoundaryField->AllowFastScroll(true);
 
@@ -866,14 +868,14 @@ int main(int argc, char *argv[])
 
 	mVehicleMenu.AddNonControl(miTitleText);
 
-	mVehicleMenu.AddControl(miVehicleSpriteField, miVehicleCreateButton, miVehicleStageField, NULL, NULL);
-	mVehicleMenu.AddControl(miVehicleStageField, miVehicleSpriteField, miVehicleMinMovesField, NULL, NULL);
-	mVehicleMenu.AddControl(miVehicleMinMovesField, miVehicleStageField, miVehicleMaxMovesField, NULL, NULL);
-	mVehicleMenu.AddControl(miVehicleMaxMovesField, miVehicleMinMovesField, miVehiclePacesField, NULL, NULL);
-	mVehicleMenu.AddControl(miVehiclePacesField, miVehicleMaxMovesField, miVehicleDirectionField, NULL, NULL);
-	mVehicleMenu.AddControl(miVehicleDirectionField, miVehiclePacesField, miVehicleBoundaryField, NULL, NULL);
-	mVehicleMenu.AddControl(miVehicleBoundaryField, miVehicleDirectionField, miVehicleCreateButton, NULL, NULL);
-	mVehicleMenu.AddControl(miVehicleCreateButton, miVehicleBoundaryField, miVehicleSpriteField, NULL, NULL);
+	mVehicleMenu.AddControl(miVehicleSpriteField, miVehicleCreateButton, miVehicleStageField, nullptr, nullptr);
+	mVehicleMenu.AddControl(miVehicleStageField, miVehicleSpriteField, miVehicleMinMovesField, nullptr, nullptr);
+	mVehicleMenu.AddControl(miVehicleMinMovesField, miVehicleStageField, miVehicleMaxMovesField, nullptr, nullptr);
+	mVehicleMenu.AddControl(miVehicleMaxMovesField, miVehicleMinMovesField, miVehiclePacesField, nullptr, nullptr);
+	mVehicleMenu.AddControl(miVehiclePacesField, miVehicleMaxMovesField, miVehicleDirectionField, nullptr, nullptr);
+	mVehicleMenu.AddControl(miVehicleDirectionField, miVehiclePacesField, miVehicleBoundaryField, nullptr, nullptr);
+	mVehicleMenu.AddControl(miVehicleBoundaryField, miVehicleDirectionField, miVehicleCreateButton, nullptr, nullptr);
+	mVehicleMenu.AddControl(miVehicleCreateButton, miVehicleBoundaryField, miVehicleSpriteField, nullptr, nullptr);
 
 	mVehicleMenu.SetHeadControl(miVehicleSpriteField);
 	mVehicleMenu.SetCancelCode(MENU_CODE_EXIT_APPLICATION);
@@ -1065,7 +1067,7 @@ int editor_edit()
 			//handle messages
 			while(SDL_PollEvent(&event))
 			{
-				const Uint8 * keystate = SDL_GetKeyboardState(NULL);
+				const Uint8 * keystate = SDL_GetKeyboardState(nullptr);
 
 				switch(event.type)
 				{
@@ -2171,7 +2173,7 @@ void WriteVehiclesIntoWorld()
 void AddVehicleToTile(short iCol, short iRow, short iType)
 {
 	std::vector<WorldVehicle*>::iterator itr = vehiclelist.begin(), lim = vehiclelist.end();
-	WorldVehicle * newvehicle = NULL;
+	WorldVehicle * newvehicle = nullptr;
 	while(itr != lim)
 	{
 		WorldVehicle * vehicle = *itr;
@@ -2272,7 +2274,7 @@ void WriteWarpsIntoWorld()
 void AddWarpToTile(short iCol, short iRow, short iType)
 {
 	std::vector<WorldWarp*>::iterator itr = warplist.begin(), lim = warplist.end();
-	WorldWarp * newwarp = NULL;
+	WorldWarp * newwarp = nullptr;
 	while(itr != lim)
 	{
 		WorldWarp * warp = *itr;
@@ -2836,7 +2838,7 @@ void updateworldsurface()
 void drawmap(bool fScreenshot, short iBlockSize)
 {
 	if(fNeedBlackBackground)
-		SDL_FillRect(screen, NULL, 0x0);
+		SDL_FillRect(screen, nullptr, 0x0);
 
 	SDL_BlitSurface(sMapSurface, &rectSrcSurface, blitdest, &rectDstSurface);
 }
@@ -3150,11 +3152,11 @@ int editor_type()
 {
 	bool done = false;
 	
-	SDL_Rect r;
-	r.x = 0;
-	r.y = 0;
-	r.w = 640;
-	r.h = 480;
+	// SDL_Rect r;  // set but never used — commented out
+	// r.x = 0;
+	// r.y = 0;
+	// r.w = 640;
+	// r.h = 480;
 
 	while (!done)
 	{
@@ -3287,7 +3289,7 @@ int editor_water()
 			}
 		}
 
-		SDL_FillRect(screen, NULL, 0x0);
+		SDL_FillRect(screen, nullptr, 0x0);
 		
 		for(short iWater = 0; iWater < 3; iWater++)
 			spr_worldbackground[0].draw(iWater << 5, 0, 512 + (iWater << 7), 0, 32, 32);
@@ -3394,7 +3396,7 @@ int editor_background()
 			}
 		}
 
-		SDL_FillRect(screen, NULL, 0x0);
+		SDL_FillRect(screen, nullptr, 0x0);
 
 		spr_worldbackground[0].draw(0, 0, iPage * 640, 32, 640, 480);
 
@@ -3478,7 +3480,7 @@ int editor_stageforeground()
 			}
 		}
 
-		SDL_FillRect(screen, NULL, 0x0);
+		SDL_FillRect(screen, nullptr, 0x0);
 
 		for(short iRow = 0; iRow < 10; iRow++)
 		{
@@ -3560,7 +3562,7 @@ int editor_bridges()
 			}
 		}
 
-		SDL_FillRect(screen, NULL, 0x0);
+		SDL_FillRect(screen, nullptr, 0x0);
 
 		spr_worldforegroundspecial[0].draw(0, 0, 320, 224, 128, 32);
 		
@@ -3642,7 +3644,7 @@ int editor_structureforeground()
 			}
 		}
 
-		SDL_FillRect(screen, NULL, 0x0);
+		SDL_FillRect(screen, nullptr, 0x0);
 
 		spr_worldforeground[0].draw(0, 0, 0, 0, 416, 480);
 		spr_worldforeground[0].draw(416, 0, 512, 0, 32, 480);
@@ -3713,7 +3715,7 @@ int editor_pathsprite()
 			}
 		}
 
-		SDL_FillRect(screen, NULL, 0x0);
+		SDL_FillRect(screen, nullptr, 0x0);
 
 		for(short iPath = 0; iPath < 8; iPath++)
 		{
@@ -3880,11 +3882,11 @@ int editor_path()
 {
 	bool done = false;
 	
-	SDL_Rect r;
-	r.x = 0;
-	r.y = 0;
-	r.w = 640;
-	r.h = 480;
+	// SDL_Rect r;  // set but never used — commented out
+	// r.x = 0;
+	// r.y = 0;
+	// r.w = 640;
+	// r.h = 480;
 
 	while (!done)
 	{
@@ -3932,7 +3934,7 @@ int editor_path()
 			}
 		}
 
-		SDL_FillRect(screen, NULL, 0x0);
+		SDL_FillRect(screen, nullptr, 0x0);
 		spr_path.draw(0, 0, 0, 0, 480, 32);
 
 		DrawMessage();
@@ -3962,7 +3964,7 @@ void DisplayStageDetails(bool fForce, short iStageId, short iMouseX, short iMous
 			if(sMapThumbnail)
 			{
 				SDL_FreeSurface(sMapThumbnail);
-				sMapThumbnail = NULL;
+				sMapThumbnail = nullptr;
 			}
 		}
 		else
@@ -3974,7 +3976,7 @@ void DisplayStageDetails(bool fForce, short iStageId, short iMouseX, short iMous
 				if(sMapThumbnail)
 				{
 					SDL_FreeSurface(sMapThumbnail);
-					sMapThumbnail = NULL;
+					sMapThumbnail = nullptr;
 				}
 
 				if(maplist.findexact(pszMapName, false))
@@ -4066,7 +4068,7 @@ void DisplayStageDetails(bool fForce, short iStageId, short iMouseX, short iMous
 		for(short iBonus = 0; iBonus < ts->iNumBonuses; iBonus++)
 		{
 			short iBonusIcon = ts->wsbBonuses[iBonus].iBonus;
-			gfxSprite * spr_icon = NULL;
+			gfxSprite * spr_icon = nullptr;
 			short iSrcX = 0, iSrcY = 0;
 
 			if(iBonusIcon < NUM_POWERUPS)
@@ -4237,18 +4239,18 @@ void EditStage(short iEditStage)
 	//Set fields to write data to the selected stage
 	TourStop * ts = game_values.tourstops[iEditStage];
 
-	miModeField->SetData(&ts->iMode, NULL, NULL);
+	miModeField->SetData(&ts->iMode, nullptr, nullptr);
 	miNameField->SetData(ts->szName, 128);
 
-	miPointsField->SetData(&ts->iPoints, NULL, NULL);
-	miFinalStageField->SetData(NULL, NULL, &ts->fEndStage);
+	miPointsField->SetData(&ts->iPoints, nullptr, nullptr);
+	miFinalStageField->SetData(nullptr, nullptr, &ts->fEndStage);
 
 	if(!ts->pszMapFile)
 		ts->pszMapFile = maplist.currentShortmapname();
 
 	miMapField->SetMap(ts->pszMapFile, false);
 
-	miBonusType->SetData(&ts->iBonusType, NULL, NULL);
+	miBonusType->SetData(&ts->iBonusType, nullptr, nullptr);
 	miBonusTextField[0]->SetData(ts->szBonusText[0], 128);
 	miBonusTextField[1]->SetData(ts->szBonusText[1], 128);
 	miBonusTextField[2]->SetData(ts->szBonusText[2], 128);
@@ -4292,7 +4294,7 @@ void EditStage(short iEditStage)
 			miGoalField[iGameMode]->Show(iMode == iGameMode);
 		}
 
-		miGoalField[iMode]->SetData(&game_values.tourstops[iEditStage]->iGoal, NULL, NULL);
+		miGoalField[iMode]->SetData(&game_values.tourstops[iEditStage]->iGoal, nullptr, nullptr);
 		miGoalField[iMode]->SetKey(game_values.tourstops[iEditStage]->iGoal);
 		miPointsField->SetKey(game_values.tourstops[iEditStage]->iPoints);
 		miFinalStageField->SetKey(game_values.tourstops[iEditStage]->fEndStage ? 1 : 0);
@@ -4492,7 +4494,7 @@ int editor_stage()
 						TourStop * ts = game_values.tourstops[iEditStage];
 						if(ts->iStageType == 0)
 						{
-							short iPlace = event.key.keysym.sym - SDLK_1 + 1;
+    int iPlace = event.key.keysym.sym - SDLK_1 + 1;
 
 							int iMouseX, iMouseY;
 							SDL_GetMouseState(&iMouseX, &iMouseY);
@@ -4680,7 +4682,7 @@ int editor_stage()
 						miGoalField[iGameMode]->Show(iMode == iGameMode);
 					}
 
-					miGoalField[iMode]->SetData(&game_values.tourstops[iEditStage]->iGoal, NULL, NULL);
+					miGoalField[iMode]->SetData(&game_values.tourstops[iEditStage]->iGoal, nullptr, nullptr);
 					miGoalField[iMode]->SetValues();
 					
 					game_values.tourstops[iEditStage]->iStageType = 0;
@@ -5206,7 +5208,7 @@ bool dialog(const char * title, const char * instructions, char * input, int inp
 							//insert character into fileName and onScreenText and increment current char
 							Uint8 key = event.key.keysym.sym;
 
-							const Uint8 * keystate = SDL_GetKeyboardState(NULL);
+							const Uint8 * keystate = SDL_GetKeyboardState(nullptr);
 							if (keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]) 
 							{
 								if(event.key.keysym.sym == 45)

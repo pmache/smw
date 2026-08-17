@@ -1,4 +1,6 @@
 #include "global.h"
+#include "objecthazard.h"
+#include "movingplatform.h"
 #include "ai.h"
 
 /* 

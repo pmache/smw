@@ -1,4 +1,4 @@
-#include "HashTable.h"
+﻿#include "HashTable.h"
 
 HashTable::HashTable()
 {
@@ -6,7 +6,7 @@ HashTable::HashTable()
 	capacity = MAXOBJECTS * 8;
 
 	for(int k = 0; k < capacity; k++)
-		table[k] = NULL;
+		table[k] = nullptr;
 }
 
 HashTable::~HashTable()
@@ -16,11 +16,11 @@ CObject * HashTable::Add(CObject * pObject)
 {
 	int iID = pObject->iNetworkID % capacity;
 
-	if(table[iID] == NULL)
+	if(table[iID] == nullptr)
 	{
 		HashNode * pNode = new HashNode;
 		pNode->data = pObject;
-		pNode->next = NULL;
+		pNode->next = nullptr;
 		table[iID] = pNode;
 	}
 	else
@@ -51,14 +51,14 @@ CObject * HashTable::Add(CObject * pObject)
 
 		HashNode * pNode = new HashNode;
 		pNode->data = pObject;
-		pNode->next = NULL;
+		pNode->next = nullptr;
 
 		pSearchNode->next = pNode;
 	}
 
 	size++;
 
-	return NULL;
+	return nullptr;
 }
 
 CObject * HashTable::Get(int iNetworkID)
@@ -73,7 +73,7 @@ CObject * HashTable::Get(int iNetworkID)
 		pNode = pNode->next;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 CObject * HashTable::Remove(int iNetworkID)
@@ -81,7 +81,7 @@ CObject * HashTable::Remove(int iNetworkID)
 	int iID = iNetworkID % capacity;
 
 	HashNode * pNode = table[iID];
-	HashNode * pPrevNode = NULL;
+	HashNode * pPrevNode = nullptr;
 
 	while(pNode)
 	{
@@ -93,7 +93,7 @@ CObject * HashTable::Remove(int iNetworkID)
 	}
 
 	if(!pNode)
-		return NULL;
+		return nullptr;
 
 	CObject * pData = pNode->data;
 

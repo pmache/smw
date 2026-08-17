@@ -1,4 +1,4 @@
-
+﻿
 #include <string.h>
 #include <math.h>
 
@@ -490,7 +490,7 @@ void EC_GravText::draw()
 EC_GravText::~EC_GravText()
 {
 	delete [] text;
-	text = NULL;
+	text = nullptr;
 }
 
 
@@ -542,7 +542,7 @@ EC_Announcement::EC_Announcement(gfxFont *nfont, gfxSprite *nsprite, const char 
 EC_Announcement::~EC_Announcement()
 {
 	delete [] text;
-	text = NULL;
+	text = nullptr;
 }
 
 void EC_Announcement::update()
@@ -1147,7 +1147,7 @@ void EC_SuperStompExplosion::draw()
 CEyecandyContainer::CEyecandyContainer()
 {
 	for(short i = 0; i < MAXEYECANDY; i++)
-		list[i] = NULL;
+		list[i] = nullptr;
 
 	list_end = 0;
 }
@@ -1164,7 +1164,7 @@ void CEyecandyContainer::clean()
 	for(short i = 0; i < list_end; i++)
 	{
 		delete list[i];
-		list[i] = NULL;
+		list[i] = nullptr;
 	}
 	list_end = 0;
 }
@@ -1364,7 +1364,7 @@ void Spotlight::Draw()
 Spotlight * SpotlightManager::AddSpotlight(short ix, short iy, short iSize)
 {
 	if(!game_values.spotlights)
-		return NULL;
+		return nullptr;
 
 	Spotlight * s = new Spotlight(ix, iy, iSize);
 	spotlightList.push_back(s);
@@ -1374,7 +1374,7 @@ Spotlight * SpotlightManager::AddSpotlight(short ix, short iy, short iSize)
 void SpotlightManager::DrawSpotlights()
 {
 	//Clear the overlay surface again with black
-	SDL_FillRect(spr_overlay.getSurface(), NULL, 0x0);
+	SDL_FillRect(spr_overlay.getSurface(), nullptr, 0x0);
 
 	std::vector<Spotlight*>::iterator iter = spotlightList.begin(), lim = spotlightList.end();
 	

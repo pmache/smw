@@ -1,7 +1,8 @@
-#include <string.h>
+﻿#include <string.h>
 #include <math.h>
 
 #include "global.h"
+#include "movingplatform.h"
 
 extern CPlayer * GetPlayerFromGlobalID(short iGlobalID);
 
@@ -73,8 +74,8 @@ void CObject::GetCollisionBlocks(IO_Block * blocks[4])
 	else
 		xr = (ix + iw) / TILESIZE;
 
-	blocks[0] = NULL;
-	blocks[1] = NULL;
+	blocks[0] = nullptr;
+	blocks[1] = nullptr;
 
 	if(iy >= 0 && iy < 480)
 	{
@@ -84,8 +85,8 @@ void CObject::GetCollisionBlocks(IO_Block * blocks[4])
 		blocks[1] = g_map.block(xr, yt);
 	}
 
-	blocks[2] = NULL;
-	blocks[3] = NULL;
+	blocks[2] = nullptr;
+	blocks[3] = nullptr;
 
 	if(iy + ih >= 0 && iy + ih < 480)
 	{
@@ -156,7 +157,7 @@ IO_MovingObject::IO_MovingObject(gfxSprite *nspr, short x, short y, short iNumSp
 	inair = false;
 	onice = false;
 
-	platform = NULL;
+	platform = nullptr;
 	iHorizontalPlatformCollision = -1;
 	iVerticalPlatformCollision = -1;
 
@@ -562,7 +563,7 @@ void IO_MovingObject::collision_detection_map()
 					onice = false;
 				}
 
-				platform = NULL;
+				platform = nullptr;
 
 				if(iVerticalPlatformCollision == 0)
 					KillObjectMapHazard();
@@ -592,7 +593,7 @@ void IO_MovingObject::collision_detection_map()
 					onice = false;
 			}
 			
-			platform = NULL;
+			platform = nullptr;
 
 			if(iVerticalPlatformCollision == 0)
 				KillObjectMapHazard();
@@ -989,7 +990,7 @@ void IO_MovingObject::KillObjectMapHazard(short playerID)
 			{
 				CPlayer * player = GetPlayerFromGlobalID(playerID);
 				
-				if(NULL != player)
+				if(nullptr != player)
 				{
 					player->score->AdjustScore(1);
 				}
@@ -1095,7 +1096,7 @@ void IO_OverMapObject::animate()
 CObjectContainer::CObjectContainer()
 {
 	for(short i = 0; i < MAXOBJECTS; i++)
-		list[i] = NULL;
+		list[i] = nullptr;
 
 	list_end = 0;
 }
@@ -1112,7 +1113,7 @@ void CObjectContainer::clean()
 	for(short i = 0; i < list_end; i++)
 	{
 		delete list[i];
-		list[i] = NULL;
+		list[i] = nullptr;
 	}
 	list_end = 0;
 }
@@ -1318,7 +1319,7 @@ void CObjectContainer::cleandeadobjects()
 CObject * CObjectContainer::getRandomObject()
 {
 	if(list_end == 0)
-		return NULL;
+		return nullptr;
 
 	return list[rand() % list_end];
 }

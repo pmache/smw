@@ -1,4 +1,6 @@
-#include "global.h"
+﻿#include "global.h"
+#include "objecthazard.h"
+#include "movingplatform.h"
 #include <math.h>
 
 extern bool SwapPlayers(short iUsingPlayerID);
@@ -47,7 +49,7 @@ CPlayer::CPlayer(short iGlobalID, short iLocalID, short iTeamID, short iSubTeamI
 
 	sprswitch = 0;
 	
-	carriedItem = NULL;
+	carriedItem = nullptr;
 	ownerPlayerID = -1;
 	ownerColorOffsetX = 0;
 	
@@ -1365,7 +1367,7 @@ void CPlayer::move()
 			//Projectiles
 			if(playerKeys->game_turbo.fDown)
 			{
-				fAcceptingItem = carriedItem == NULL;
+				fAcceptingItem = carriedItem == nullptr;
 
 				if(!lockfire)
 				{
@@ -1450,7 +1452,7 @@ void CPlayer::move()
 						carriedItem->Kick();
 					}
 
-					carriedItem = NULL;
+					carriedItem = nullptr;
 				}
 			}
 		}
@@ -2041,7 +2043,7 @@ void CPlayer::Jump(short iMove, float jumpModifier, bool fKuriboBounce)
 		//if(platform->fVelY < 0.0f)
 		//	yf(fy + platform->fVelY);
 
-		platform = NULL;
+		platform = nullptr;
 	}
 
 	//printf("Player Jumped!\n");
@@ -2233,7 +2235,7 @@ void CPlayer::die(short deathStyle, bool fTeamRemoved, bool fKillCarriedItem)
 		else
 			carriedItem->Drop();
 
-		carriedItem = NULL;
+		carriedItem = nullptr;
 	}
 
 	//Drop a shoe item if the player died in one
@@ -2265,7 +2267,7 @@ void CPlayer::SetKuriboShoe(short iType)
 	if(carriedItem && !carriedItem->IsCarriedByKuriboShoe())
 	{
 		carriedItem->Drop();
-		carriedItem = NULL;
+		carriedItem = nullptr;
 	}
 
 	//Clear out powerup states that the player might be in the middle of
@@ -2310,7 +2312,7 @@ void CPlayer::SetupNewPlayer()
 	StripPowerups();
 	ClearPowerupStates();
 	
-	sSpotlight = NULL;
+	sSpotlight = nullptr;
 
 	iCapeTimer = 0;
 	iCapeFrameX = 0;
@@ -2339,7 +2341,7 @@ void CPlayer::SetupNewPlayer()
 
 	warpcounter = 0;
 
-	platform = NULL;
+	platform = nullptr;
 	iHorizontalPlatformCollision = -1;
 	iVerticalPlatformCollision = -1;
 	iPlatformCollisionPlayerId = -1;
@@ -2465,7 +2467,7 @@ bool CPlayer::isstomping(CPlayer * o)
 		{
 			yi(o->iy - PH);		//set new position to top of other player
 			collision_detection_checktop();
-			platform = NULL;
+			platform = nullptr;
 		}
 		
 		bool fKillPotential = false;
@@ -2642,11 +2644,11 @@ short PlayerKilledPlayer(CPlayer * killer, CPlayer * killed, short deathstyle, k
 	if(killed->state != player_ready)
 		return player_kill_none;
 	
-	bool fSoundPlayed = false;
+	// bool fSoundPlayed = false;  // set but never used — commented out
 	if(game_values.gamemode->chicken == killer && style != kill_style_pow)
 	{
 		ifsoundonplay(sfx_chicken);
-		fSoundPlayed = true;
+		// fSoundPlayed = true;
 	}
 
 	if(killed->frozen)
@@ -3104,7 +3106,7 @@ void BounceAssistPlayer(CPlayer * o1, CPlayer * o2)
 	{
 		o1->yi(o2->iy - PH);		//set new position to top of other player
 		o1->collision_detection_checktop();
-		o1->platform = NULL;
+		o1->platform = nullptr;
 		o1->vely = -VELSUPERJUMP;
 		
 		o1->fSuperStomp = false;
@@ -3642,7 +3644,7 @@ void CPlayer::collision_detection_map()
 		if(platform)
 		{
 			vely = platform->fVelY;
-			platform = NULL;
+			platform = nullptr;
 		}
 
 		return;
@@ -3962,7 +3964,7 @@ void CPlayer::collision_detection_map()
 
 		if(leftblock && !leftblock->isTransparent()) //then left
 		{	
-			bool useBehavior = alignedBlockX == txl || rightblock == NULL || rightblock->isTransparent() || rightblock->isHidden();
+			bool useBehavior = alignedBlockX == txl || rightblock == nullptr || rightblock->isTransparent() || rightblock->isHidden();
 				
 			if(!leftblock->collide(this, 0, useBehavior))
 			{
@@ -3975,7 +3977,7 @@ void CPlayer::collision_detection_map()
 
 		if(rightblock && !rightblock->isTransparent()) //then right
 		{	
-			bool useBehavior = alignedBlockX == txr || leftblock == NULL || leftblock->isTransparent() || leftblock->isHidden();
+			bool useBehavior = alignedBlockX == txr || leftblock == nullptr || leftblock->isTransparent() || leftblock->isHidden();
 				
 			if(!rightblock->collide(this, 0, useBehavior))
 			{
@@ -4030,7 +4032,7 @@ void CPlayer::collision_detection_map()
 			warpplane = iy + PH + 1;
 
 			fallthrough = false;
-			platform = NULL;
+			platform = nullptr;
 
 			if(ix - PWOFFSET < (txl << 5) + 1)
 				xi((txl << 5) + PHOFFSET + 1);
@@ -4051,7 +4053,7 @@ void CPlayer::collision_detection_map()
 			bool collisionresult = true;
 			if(fLeftBlockSolid) //collide with left block
 			{	
-				collisionresult &= leftblock->collide(this, 2, alignedBlockX == txl || rightblock == NULL || rightblock->isTransparent() || rightblock->isHidden());
+				collisionresult &= leftblock->collide(this, 2, alignedBlockX == txl || rightblock == nullptr || rightblock->isTransparent() || rightblock->isHidden());
 				
 				//If player was bumped and killed then return
 				if(state != player_ready)
@@ -4060,7 +4062,7 @@ void CPlayer::collision_detection_map()
 			
 			if(fRightBlockSolid) //then right
 			{	
-				collisionresult &= rightblock->collide(this, 2, alignedBlockX == txr || leftblock == NULL || leftblock->isTransparent() || leftblock->isHidden());
+				collisionresult &= rightblock->collide(this, 2, alignedBlockX == txr || leftblock == nullptr || leftblock->isTransparent() || leftblock->isHidden());
 
 				//If player was bumped and killed then return
 				if(state != player_ready)
@@ -4069,7 +4071,7 @@ void CPlayer::collision_detection_map()
 
 			if(!collisionresult)
 			{
-				platform = NULL;
+				platform = nullptr;
 				onice = false;
 
 				if(iVerticalPlatformCollision == 0)
@@ -4128,7 +4130,7 @@ void CPlayer::collision_detection_map()
 			if(!platform)
 				fallthrough = false;
 
-			platform = NULL;
+			platform = nullptr;
 
 			if(iVerticalPlatformCollision == 0)
 				KillPlayerMapHazard(true, kill_style_environment, true, iPlatformCollisionPlayerId);
@@ -4165,7 +4167,7 @@ void CPlayer::collision_detection_map()
 				killsinrowinair = 0;
 			}
 
-			platform = NULL;
+			platform = nullptr;
 
 			if(iVerticalPlatformCollision == 0)
 			{
@@ -4725,7 +4727,7 @@ void CPlayer::turnslowdownon()
 }
 
 //Returns true if player facing right, false if left
-bool CPlayer::IsPlayerFacingRight()
+bool CPlayer::IsPlayerFacingRight() const
 {
 	bool fLeft = game_values.reversewalk;
 	bool fRight = !fLeft;

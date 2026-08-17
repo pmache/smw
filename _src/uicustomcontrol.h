@@ -16,11 +16,11 @@ class MI_InputControlField : public UI_Control
 		MI_InputControlField(gfxSprite * nspr, short x, short y, const char * name, short width, short indent);
         virtual ~MI_InputControlField() {};
 		
-		void Draw();
-		MenuCodeEnum SendInput(CPlayerInput * playerInput);
+		void Draw() override;
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
 		void SetKey(SDL_Keycode * iSetKey, SDL_Keycode key, short device);
 
-		MenuCodeEnum Modify(bool modify);
+		MenuCodeEnum Modify(bool modify) override;
 
 		void SetDevice(short device) {iDevice = device;}
 		void SetKey(SDL_Keycode * key) {iKey = key;}
@@ -49,7 +49,7 @@ class MI_StoredPowerupResetButton : public MI_Button
 		MI_StoredPowerupResetButton(gfxSprite * nspr, short x, short y, const char * name, short width, short justified);
 		~MI_StoredPowerupResetButton() {}
 
-		void Draw();
+		void Draw() override;
 };
 
 class MI_InputControlContainer : public UI_Control
@@ -59,11 +59,11 @@ class MI_InputControlContainer : public UI_Control
 		MI_InputControlContainer(gfxSprite * spr_button, short x, short y, short playerID);
 		virtual ~MI_InputControlContainer();
 
-		void Update();
-		void Draw();
+		void Update() override;
+		void Draw() override;
 
-		MenuCodeEnum SendInput(CPlayerInput * playerInput);
-		MenuCodeEnum Modify(bool modify);
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
+		MenuCodeEnum Modify(bool modify) override;
 
 		void SetPlayer(short iPlayerID);
 
@@ -96,11 +96,11 @@ class MI_TeamSelect : public UI_Control
 		MI_TeamSelect(gfxSprite * spr_background, short x, short y);
 		virtual ~MI_TeamSelect();
 
-		void Update();
-		void Draw();
+		void Update() override;
+		void Draw() override;
 
-		MenuCodeEnum SendInput(CPlayerInput * playerInput);
-		MenuCodeEnum Modify(bool modify);
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
+		MenuCodeEnum Modify(bool modify) override;
 
 		void Reset();
 		short OrganizeTeams();
@@ -136,11 +136,11 @@ class MI_PlayerSelect : public UI_Control
 
 		void SetImagePosition();
 
-		void Update();
-		void Draw();
+		void Update() override;
+		void Draw() override;
 
-		MenuCodeEnum SendInput(CPlayerInput * playerInput);
-		MenuCodeEnum Modify(bool modify);
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
+		MenuCodeEnum Modify(bool modify) override;
 
 	private:
 
@@ -162,11 +162,11 @@ class MI_PowerupSelection : public UI_Control
 		MI_PowerupSelection(short x, short y, short width, short numlines);
 		virtual ~MI_PowerupSelection();
 
-		MenuCodeEnum Modify(bool modify);
-		MenuCodeEnum SendInput(CPlayerInput * playerInput);
+		MenuCodeEnum Modify(bool modify) override;
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
 
-		void Update();
-		void Draw();
+		void Update() override;
+		void Draw() override;
 
 		void MoveNext();
 		void MovePrev();
@@ -212,10 +212,10 @@ class MI_WorldPreviewDisplay : public UI_Control
 		virtual ~MI_WorldPreviewDisplay();
 
 		//Updates animations or other events every frame
-		void Update();
+		void Update() override;
 
 		//Draws every frame
-		void Draw();
+		void Draw() override;
 
 		void SetWorld();
 
@@ -253,16 +253,16 @@ class MI_AnnouncerField : public UI_Control
 		virtual ~MI_AnnouncerField();
 
 		//Called when user selects this control to change it's value
-		MenuCodeEnum Modify(bool modify);
+		MenuCodeEnum Modify(bool modify) override;
 
 		//Updates animations or other events every frame
-		void Update();
+		void Update() override;
 
 		//Draws every frame
-		void Draw();
+		void Draw() override;
 
 		//Sends player input to control on every frame
-		virtual MenuCodeEnum SendInput(CPlayerInput * playerInput);
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
 
 	protected:
 
@@ -288,7 +288,7 @@ class MI_PacksField : public MI_AnnouncerField
 		MI_PacksField(gfxSprite * nspr, short x, short y, const char * name, short width, short indent, SimpleFileList * pList, MenuCodeEnum code);
 		virtual ~MI_PacksField();
 
-		MenuCodeEnum SendInput(CPlayerInput * playerInput);
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
 
 	private:
 		MenuCodeEnum itemChangedCode;
@@ -302,16 +302,16 @@ class MI_PlaylistField : public UI_Control
 		virtual ~MI_PlaylistField();
 
 		//Called when user selects this control to change it's value
-		MenuCodeEnum Modify(bool modify);
+		MenuCodeEnum Modify(bool modify) override;
 
 		//Updates animations or other events every frame
-		void Update();
+		void Update() override;
 
 		//Draws every frame
-		virtual void Draw();
+		void Draw() override;
 
 		//Sends player input to control on every frame
-		MenuCodeEnum SendInput(CPlayerInput * playerInput);
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
 
 	protected:
 
@@ -331,10 +331,10 @@ class MI_TourStop : public UI_Control
 		MI_TourStop(short x, short y, bool fWorld);
 		virtual ~MI_TourStop();
 
-		MenuCodeEnum Modify(bool fModify);
+		MenuCodeEnum Modify(bool fModify) override;
 
-		void Update();
-		void Draw();
+		void Update() override;
+		void Draw() override;
 		void Refresh(short iTourStop);
 
 	private:
@@ -365,8 +365,8 @@ class MI_TournamentScoreboard : public UI_Control
 		MI_TournamentScoreboard(gfxSprite * spr_background, short x, short y);
 		virtual ~MI_TournamentScoreboard();
 
-		void Update();
-		void Draw();
+		void Update() override;
+		void Draw() override;
 
 		void CreateScoreboard(short numTeams, short numGames, gfxSprite * spr_icons);
 		void RefreshWorldScores(short gameWinner);
@@ -425,10 +425,10 @@ class MI_BonusWheel : public UI_Control
 		MI_BonusWheel(short x, short y);
 		virtual ~MI_BonusWheel();
 
-		MenuCodeEnum Modify(bool modify);
+		MenuCodeEnum Modify(bool modify) override;
 
-		void Update();
-		void Draw();
+		void Update() override;
+		void Draw() override;
 
 		bool GetPowerupSelectionDone() {return fPowerupSelectionDone;}
 		void Reset(bool fTournament);
@@ -478,10 +478,10 @@ class MI_ScreenResize : public UI_Control
 		MI_ScreenResize();
 		virtual ~MI_ScreenResize();
 
-		void Draw();
+		void Draw() override;
 
-		MenuCodeEnum SendInput(CPlayerInput * playerInput);
-		MenuCodeEnum Modify(bool modify);
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
+		MenuCodeEnum Modify(bool modify) override;
 
 	private:
 
@@ -519,11 +519,11 @@ class MI_MapFilterScroll : public UI_Control
 		MI_MapFilterScroll(gfxSprite * nspr, short x, short y, short width, short numlines);
 		virtual ~MI_MapFilterScroll();
 
-		void Update();
-		void Draw();
+		void Update() override;
+		void Draw() override;
 
-		MenuCodeEnum SendInput(CPlayerInput * playerInput);
-		MenuCodeEnum Modify(bool modify);
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
+		MenuCodeEnum Modify(bool modify) override;
 
 		void Add(std::string name, short icon);
 
@@ -554,11 +554,11 @@ class MI_MapBrowser : public UI_Control
 		MI_MapBrowser();
 		virtual ~MI_MapBrowser();
 
-		void Update();
-		void Draw();
+		void Update() override;
+		void Draw() override;
 
-		MenuCodeEnum SendInput(CPlayerInput * playerInput);
-		MenuCodeEnum Modify(bool modify);
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
+		MenuCodeEnum Modify(bool modify) override;
 
 		void Reset(short type);
 
@@ -593,11 +593,11 @@ class MI_World : public UI_Control
 		MI_World();
 		virtual ~MI_World();
 
-		void Update();
-		void Draw();
+		void Update() override;
+		void Draw() override;
 
-		MenuCodeEnum SendInput(CPlayerInput * playerInput);
-		MenuCodeEnum Modify(bool modify);
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
+		MenuCodeEnum Modify(bool modify) override;
 
 		void Init();
 		void SetControllingTeam(short iPlayerID);

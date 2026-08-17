@@ -15,7 +15,7 @@
 |  + a class for fonts											|
 |																|
 | have a lot of fun!											|
-|		  © 2003-2008 Florian Hufsky <florian.hufsky@gmail.com>	|
+|		  ï¿½ 2003-2008 Florian Hufsky <florian.hufsky@gmail.com>	|
 +--------------------------------------------------------------*/
 
 #ifndef __GFX_H__
@@ -64,8 +64,8 @@ class gfxSprite
 
 		void setalpha(Uint8 alpha);
 
-		int getWidth(){return m_picture->w;}
-		int getHeight(){return m_picture->h;}
+		int getWidth() const {return m_picture->w;}
+		int getHeight() const {return m_picture->h;}
 
 		SDL_Surface *getSurface(){return m_picture;}
 		
@@ -79,7 +79,7 @@ class gfxSprite
 
 		void freeSurface();
 
-		bool GetWrap() {return fWrap;}
+		bool GetWrap() const {return fWrap;}
 		void SetWrap(bool wrap) {fWrap = wrap;}
 		void SetWrap(bool wrap, short wrapsize) {fWrap = wrap; iWrapSize = wrapsize;}
 
@@ -115,8 +115,8 @@ class gfxFont
 
 		void setalpha(Uint8 alpha);
 
-		int getHeight(){return SFont_TextHeight(m_font);};
-		int getWidth(const char *text){return SFont_TextWidth(m_font, text);};
+		int getHeight() const {return SFont_TextHeight(m_font);};
+		int getWidth(const char *text) const {return SFont_TextWidth(m_font, text);};
 
 	private:
 		SFont_Font *m_font;

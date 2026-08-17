@@ -1,4 +1,4 @@
-#if defined(__MACOSX__)
+﻿#if defined(__MACOSX__)
 #include <sys/stat.h>
 #endif
 
@@ -50,7 +50,7 @@ bool CTileset::ReadTileTypeFile(char * szFile)
 	if(File_Exists(szFile))
 	{
 		FILE * tsf = fopen(szFile, "rb");
-		if(tsf == NULL)
+		if(tsf == nullptr)
 		{
 			printf("ERROR: couldn't open tileset file: %s\n", szFile);
 			return false;
@@ -93,7 +93,7 @@ CTileset::~CTileset()
 	if(tiletypes)
 		delete [] tiletypes;
 
-	tiletypes = NULL;
+	tiletypes = nullptr;
 }
 
 TileType CTileset::GetTileType(short iTileCol, short iTileRow)
@@ -122,7 +122,7 @@ void CTileset::Draw(SDL_Surface * dstSurface, short iTileSize, SDL_Rect * srcRec
 void CTileset::SaveTileset()
 {
 	FILE * tsf = fopen(szTilesetPath, "wb");
-	if(tsf == NULL)
+	if(tsf == nullptr)
 	{
 		printf("ERROR: couldn't open tileset file to save tile types: %s\n", szTilesetPath);
 		return;
@@ -169,7 +169,7 @@ CTilesetManager::CTilesetManager() :
 		y3 += THUMBTILESIZE;
 	}
 
-	tClassicTileset = NULL;
+	tClassicTileset = nullptr;
 }
 
 CTilesetManager::~CTilesetManager()
@@ -266,7 +266,7 @@ void CTilesetManager::Draw(SDL_Surface * dstSurface, short iTilesetID, short iTi
 CTileset * CTilesetManager::GetTileset(short iTilesetID)
 {
 	if(iTilesetID < 0 || iTilesetID >= (short)tilesetlist.size())
-		return NULL;
+		return nullptr;
 
 	return tilesetlist[iTilesetID];
 }

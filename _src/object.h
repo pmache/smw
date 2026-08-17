@@ -20,7 +20,7 @@ class CObject
 		virtual bool collide(CPlayer *){return false;}
 		virtual void collide(IO_MovingObject *){}
 		
-		virtual ObjectType getObjectType(){return objectType;}
+		virtual ObjectType getObjectType() const {return objectType;}
 		
 		void xf(float xf){fx = xf; ix = (short)fx;};
  		void xi(short xi){ix = xi; fx = (float)ix;};
@@ -35,10 +35,10 @@ class CObject
 		short collisionOffsetX;
 		short collisionOffsetY;
 
-		short GetState() {return state;}
-		bool GetDead() {return dead;}
+		short GetState() const {return state;}
+		bool GetDead() const {return dead;}
 
-		bool GetWrap() { if (spr) return spr->GetWrap(); return true; }
+		bool GetWrap() const { if (spr) return spr->GetWrap(); return true; }
 
 		void GetCollisionBlocks(IO_Block * blocks[4]);
 
@@ -72,14 +72,14 @@ class IO_MovingObject : public CObject
 		IO_MovingObject(gfxSprite *nspr, short x, short y, short iNumSpr, short aniSpeed, short iCollisionWidth = -1, short iCollisionHeight = -1, short iCollisionOffsetX = -1, short iCollisionOffsetY = -1, short iAnimationOffsetX = -1, short iAnimationOffsetY = -1, short iAnimationHeight = -1, short iAnimationWidth = -1);
 		virtual ~IO_MovingObject(){};
 
-		virtual void draw();
-		virtual void update();
+		void draw() override;
+		void update() override;
 		virtual void animate();
 
-		virtual bool collide(CPlayer * player);
+		bool collide(CPlayer * player) override;
 		
-		void collide(IO_MovingObject *){}
-		MovingObjectType getMovingObjectType() {return movingObjectType;}
+		void collide(IO_MovingObject *) override {}
+		MovingObjectType getMovingObjectType() const {return movingObjectType;}
 		void applyfriction();
 		void collision_detection_map();
 		bool collision_detection_checksides();
@@ -92,7 +92,7 @@ class IO_MovingObject : public CObject
 		virtual void CheckAndDie() {dead = true;}
 		virtual void Die() {dead = true;}
 
-		bool CollidesWithMap() {return fObjectCollidesWithMap;}
+		bool CollidesWithMap() const {return fObjectCollidesWithMap;}
 
 		short iPlayerID;
 		short iTeamID;
@@ -155,13 +155,13 @@ class IO_OverMapObject : public CObject
 		IO_OverMapObject(gfxSprite *nspr, short x, short y, short iNumSpr, short aniSpeed, short iCollisionWidth = -1, short iCollisionHeight = -1, short iCollisionOffsetX = -1, short iCollisionOffsetY = -1, short iAnimationOffsetX = -1, short iAnimationOffsetY = -1, short iAnimationHeight = -1, short iAnimationWidth = -1);
 		virtual ~IO_OverMapObject(){};
 
-		virtual void draw();
+		void draw() override;
 		virtual void draw(short iOffsetX, short iOffsetY);
-		virtual void update();
+		void update() override;
 		virtual void animate();
 
-		virtual bool collide(CPlayer *){return false;}
-		virtual void collide(IO_MovingObject *){}
+		bool collide(CPlayer *) override {return false;}
+		void collide(IO_MovingObject *) override {}
 		
 	protected:
 

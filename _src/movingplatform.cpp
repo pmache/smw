@@ -1,4 +1,5 @@
-#include "global.h"
+﻿#include "global.h"
+#include "movingplatform.h"
 #include <math.h>
 
 extern short x_shake;
@@ -34,7 +35,7 @@ MovingPlatformPath::MovingPlatformPath(float vel, float startX, float startY, fl
 		dVelocity /= 2.0f;
 	}
 
-	pPlatform = NULL;
+	pPlatform = nullptr;
 }
 
 void MovingPlatformPath::Reset()
@@ -301,7 +302,7 @@ bool FallingPath::Move(short type)
 		{
 			if(list_players[iPlayer]->platform == pPlatform)
 			{
-				list_players[iPlayer]->platform = NULL;
+				list_players[iPlayer]->platform = nullptr;
 				list_players[iPlayer]->vely = dVelY[type];
 			}
 		}
@@ -371,7 +372,7 @@ MovingPlatform::MovingPlatform(TilesetTile ** tiledata, MapTile ** tiletypes, sh
 		if( SDL_SetColorKey(sSurface[iSurface], SDL_TRUE, SDL_MapRGB(sSurface[iSurface]->format, 255, 0, 255)) < 0)
 			printf("\n ERROR: Couldn't set ColorKey for moving platform: %s\n", SDL_GetError());
 
-		SDL_FillRect(sSurface[iSurface], NULL, SDL_MapRGB(sSurface[iSurface]->format, 255, 0, 255));
+		SDL_FillRect(sSurface[iSurface], nullptr, SDL_MapRGB(sSurface[iSurface]->format, 255, 0, 255));
 	}
 
 	//Run through all tiles in the platform, detect unknown and blank tiles,
@@ -591,7 +592,7 @@ void MovingPlatform::collide(CPlayer * player)
 	if(coldec == collision_none)
 	{
 		if(player->platform == this)
-			player->platform = NULL;
+			player->platform = nullptr;
 
 		/*
 		printf("player->fx: %.5f  player->fy: %.5f  player->fPrecalcualtedY: %.5f\n", player->fx, player->fy, player->fPrecalculatedY);
@@ -804,7 +805,7 @@ void MovingPlatform::collide(CPlayer * player)
 	if(coldec == collision_none)
 	{
 		if(player->platform == this)
-			player->platform = NULL;
+			player->platform = nullptr;
 
 		return;
 	}
@@ -921,7 +922,7 @@ void MovingPlatform::collide(CPlayer * player)
 				{
 					player->fPrecalculatedY = (ty << 5) - PH + (fVelY > 0.0f ? fVelY : 0.0f) + 0.2f + fy - iHalfHeight;
 					player->inair = true;
-					player->platform = NULL;
+					player->platform = nullptr;
 					//printf("Fell Through Solid On Top Platform\n");
 				}
 				else
@@ -1007,7 +1008,7 @@ void MovingPlatform::collide(CPlayer * player)
 			else
 			{
 				if(player->platform == this)
-					player->platform = NULL;
+					player->platform = nullptr;
 			}
 		}
 	}
@@ -1460,7 +1461,7 @@ void MovingPlatform::collide(IO_MovingObject * object)
 	if(coldec == collision_none)
 	{
 		if(object->platform == this)
-			object->platform = NULL;
+			object->platform = nullptr;
 
 		return;
 	}
@@ -1653,7 +1654,7 @@ void MovingPlatform::collide(IO_MovingObject * object)
 	if(coldec == collision_none)
 	{
 		if(object->platform == this)
-			object->platform = NULL;
+			object->platform = nullptr;
 
 		return;
 	}
@@ -1801,7 +1802,7 @@ void MovingPlatform::collide(IO_MovingObject * object)
 			else
 			{
 				if(object->platform == this)
-					object->platform = NULL;
+					object->platform = nullptr;
 			}
 		}
 	}
@@ -1861,8 +1862,8 @@ bool MovingPlatform::IsInNoSpawnZone(short x, short y, short w, short h)
 	//If we have reached this point, the item is colliding with the bounding rect of the platform
 	//but not necessarily colliding with the platform (example a U shaped platform has an open area in the center)
 	
-	short iRelativeX[2] = {x - iLeft, x + w - iLeft};
-	short iRelativeY[2] = {y - iTop, y + h - iTop};
+	int iRelativeX[2] = {x - iLeft, x + w - iLeft};
+	int iRelativeY[2] = {y - iTop, y + h - iTop};
 	
 	for(short x = 0; x < 2; x++)
 	{

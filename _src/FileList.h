@@ -1,4 +1,4 @@
-#ifndef __FILELIST_H_
+﻿#ifndef __FILELIST_H_
 #define __FILELIST_H_
 
 #include <string>
@@ -30,7 +30,7 @@ class SimpleFileList
 			if(currentIndex > -1)
 				return filelist[currentIndex].c_str();
 
-			return NULL;
+			return nullptr;
 		};
 
         void next();

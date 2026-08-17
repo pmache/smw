@@ -1,7 +1,8 @@
-#include <string.h>
+﻿#include <string.h>
 #include <math.h>
 
 #include "global.h"
+#include "objecthazard.h"
 
 extern short LookupTeamID(short id);
 extern void removeifprojectile(IO_MovingObject * object, bool playsound, bool forcedead);
@@ -247,7 +248,7 @@ bool MO_BulletBill::collide(CPlayer * player)
 	
 	if(player->invincible || player->shyguy)
 	{
-		AddAwardKill(player, NULL, kill_style_bulletbill);
+		AddAwardKill(player, nullptr, kill_style_bulletbill);
 		ifsoundonplay(sfx_kicksound);
 		
 		Die();
@@ -269,9 +270,9 @@ bool MO_BulletBill::hittop(CPlayer * player)
 	player->yi(iy - PH - 1);
 	player->bouncejump();
 	player->collision_detection_checktop();
-	player->platform = NULL;
+	player->platform = nullptr;
 	
-	AddAwardKill(player, NULL, kill_style_bulletbill);
+	AddAwardKill(player, nullptr, kill_style_bulletbill);
 
 	ifsoundonplay(sfx_mip);
 	
@@ -360,7 +361,7 @@ void MO_BulletBill::SetDirectionOffset()
 //------------------------------------------------------------------------------
 
 IO_BulletBillCannon::IO_BulletBillCannon(short x, short y, short freq, float vel, bool preview) :
-	CObject(NULL, x, y)
+	CObject(nullptr, x, y)
 {
 	iFreq = freq;
 	dVel = vel;
@@ -473,7 +474,7 @@ void MO_Explosion::update()
 //------------------------------------------------------------------------------
 extern SDL_Rect g_rFlameRects[4][4];
 IO_FlameCannon::IO_FlameCannon(short x, short y, short freq, short direction) :
-	CObject(NULL, x, y)
+	CObject(nullptr, x, y)
 {
 	iFreq = freq;
 	state = 0;
@@ -605,7 +606,7 @@ void IO_FlameCannon::SetNewTimer()
 extern SDL_Rect g_rPirhanaRects[4][4][4];
 
 MO_PirhanaPlant::MO_PirhanaPlant(short x, short y, short type, short freq, short direction, bool preview) :
-	IO_MovingObject(NULL, x, y, 1, 0)
+	IO_MovingObject(nullptr, x, y, 1, 0)
 {
 	iType = type;
 	iDirection = direction;

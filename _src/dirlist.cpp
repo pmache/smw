@@ -1,4 +1,4 @@
-/*
+﻿/*
 DirectoryList is a C++ class for enumerating the contents of directories.
 Copyright (C) 2005 Donny Viszneki <smirk@thebuicksix.com>
 
@@ -63,7 +63,7 @@ DirectoryListing::DirectoryListing(string path, string file_ext)
     /* POSIX Directory Enumeration */
     #else
         dhandle = opendir(path.c_str());
-        Success = dhandle != NULL;
+        Success = dhandle != nullptr;
     #endif
 }
 

@@ -1,7 +1,9 @@
-#include <string.h>
+﻿#include <string.h>
 #include <math.h>
 
 #include "global.h"
+#include "objecthazard.h"
+#include "movingplatform.h"
 
 extern short iKingOfTheHillZoneLimits[4][4];
 extern void PlayerKilledPlayer(short iKiller, CPlayer * killed, short deathstyle, short killstyle, bool fForce, bool fKillCarriedItem);
@@ -46,10 +48,10 @@ void removeifprojectile(IO_MovingObject * object, bool playsound, bool forcedead
 
 IO_MovingObject * createpowerup(short iType, short ix, short iy, bool side, bool spawn)
 {
-	MO_Powerup * powerup = NULL;
-	CO_Shell * shell = NULL;
-	PU_FeatherPowerup * feather = NULL;
-	MO_Coin * coin = NULL;
+	MO_Powerup * powerup = nullptr;
+	CO_Shell * shell = nullptr;
+	PU_FeatherPowerup * feather = nullptr;
+	MO_Coin * coin = nullptr;
 
 	short iSpawnX = ix + 1;
 	short iSpawnY = iy - 1;
@@ -292,7 +294,7 @@ IO_MovingObject * createpowerup(short iType, short ix, short iy, bool side, bool
 		return podobo;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 //------------------------------------------------------------------------------
@@ -488,7 +490,7 @@ void IO_Block::BounceMovingObject(IO_MovingObject * object)
 			
 			if(player)
 			{
-				AddAwardKill(player, NULL, style);
+				AddAwardKill(player, nullptr, style);
 				player->score->AdjustScore(1);
 			}
 		}
@@ -1028,7 +1030,7 @@ void B_BreakableBlock::update()
 		{
 			iBumpPlayerID = -1;
 			dead = true;
-			g_map.blockdata[col][row] = NULL;
+			g_map.blockdata[col][row] = nullptr;
 			g_map.UpdateTileGap(col, row);
 		}
 	}
@@ -1477,7 +1479,7 @@ void B_DonutBlock::triggerBehavior(short iPlayerId)
 	g_map.AddTemporaryPlatform(platform);
 
 	dead = true;
-	g_map.blockdata[col][row] = NULL;
+	g_map.blockdata[col][row] = nullptr;
 	g_map.UpdateTileGap(col, row);
 }
 
@@ -1553,7 +1555,7 @@ void B_FlipBlock::update()
 	else if(state == 3)
 	{
 		dead = true;
-		g_map.blockdata[col][row] = NULL;
+		g_map.blockdata[col][row] = nullptr;
 		g_map.UpdateTileGap(col, row);
 	}
 }
@@ -2431,7 +2433,7 @@ void B_ThrowBlock::GiveBlockToPlayer(CPlayer * player)
 	if(player->AcceptItem(block))
 	{
 		dead = true;
-		g_map.blockdata[col][row] = NULL;
+		g_map.blockdata[col][row] = nullptr;
 		g_map.UpdateTileGap(col, row);
 
 		block->owner = player;
@@ -2447,7 +2449,7 @@ void B_ThrowBlock::GiveBlockToPlayer(CPlayer * player)
 void B_ThrowBlock::triggerBehavior()
 {
 	dead = true;
-	g_map.blockdata[col][row] = NULL;
+	g_map.blockdata[col][row] = nullptr;
 	g_map.UpdateTileGap(col, row);
 
 	eyecandy[2].add(new EC_FallingObject(&spr_brokenblueblock, ix, iy, -1.5f, -7.0f, 6, 2, 0, iType << 4, 16, 16));
@@ -2490,7 +2492,7 @@ void B_WeaponBreakableBlock::update()
 		{
 			iBumpPlayerID = -1;
 			dead = true;
-			g_map.blockdata[col][row] = NULL;
+			g_map.blockdata[col][row] = nullptr;
 			g_map.UpdateTileGap(col, row);
 		}
 	}
@@ -3763,7 +3765,7 @@ MO_Fireball::MO_Fireball(gfxSprite *nspr, short x, short y, short iNumSpr, bool 
 
 	ttl = game_values.fireballttl;
 
-	sSpotlight = NULL;
+	sSpotlight = nullptr;
 }
 
 void MO_Fireball::update()
@@ -3905,7 +3907,7 @@ MO_Hammer::MO_Hammer(gfxSprite *nspr, short x, short y, short iNumSpr, float fVe
 
 	fObjectCollidesWithMap = false;
 
-	sSpotlight = NULL;
+	sSpotlight = nullptr;
 }
 
 void MO_Hammer::update()
@@ -4134,7 +4136,7 @@ MO_IceBlast::MO_IceBlast(gfxSprite *nspr, short x, short y, float fVelyX, short 
 
 	fObjectCollidesWithMap = false;
 
-	sSpotlight = NULL;
+	sSpotlight = nullptr;
 }
 
 void MO_IceBlast::update()
@@ -4238,7 +4240,7 @@ MO_Boomerang::MO_Boomerang(gfxSprite *nspr, short x, short y, short iNumSpr, boo
 
 	fObjectCollidesWithMap = false;
 
-	sSpotlight = NULL;
+	sSpotlight = nullptr;
 }
 
 void MO_Boomerang::update()
@@ -4576,12 +4578,12 @@ CO_Bomb::CO_Bomb(gfxSprite *nspr, short x, short y, float fVelX, float fVelY, sh
 	iOwnerLeftOffset = -16;
 	iOwnerUpOffset = 40;
 
-	sSpotlight = NULL;
+	sSpotlight = nullptr;
 }
 
 bool CO_Bomb::collide(CPlayer * player)
 {
-	if(state == 1 && owner == NULL)
+	if(state == 1 && owner == nullptr)
 	{
 		if(player->AcceptItem(this))
 		{
@@ -4653,8 +4655,8 @@ void CO_Bomb::Die()
 {
 	if(owner)
 	{
-		owner->carriedItem = NULL;
-		owner = NULL;
+		owner->carriedItem = nullptr;
+		owner = nullptr;
 	}
 
 	if(iPlayerID > -1 && projectiles[iPlayerID] > 0)
@@ -4970,7 +4972,7 @@ MO_CarriedObject::~MO_CarriedObject()
 
 void MO_CarriedObject::init()
 {
-	owner = NULL;
+	owner = nullptr;
 	fSmoking = false;
 	
 	dKickX = 2.0f;
@@ -5003,9 +5005,9 @@ void MO_CarriedObject::MoveToOwner()
 void MO_CarriedObject::Drop()
 {
 	if(owner)
-		owner->carriedItem = NULL;
+		owner->carriedItem = nullptr;
 
-	owner = NULL;
+	owner = nullptr;
 
 	collision_detection_checksides();
 }
@@ -5031,7 +5033,7 @@ CO_Egg::CO_Egg(gfxSprite *nspr, short iColor) :
 	state = 1;
 	movingObjectType = movingobject_egg;
 
-	owner_throw = NULL;
+	owner_throw = nullptr;
 	owner_throw_timer = 0;
 
 	sparkleanimationtimer = 0;
@@ -5057,7 +5059,7 @@ CO_Egg::CO_Egg(gfxSprite *nspr, short iColor) :
 
 bool CO_Egg::collide(CPlayer * player)
 {
-	if(owner == NULL && player->isready())
+	if(owner == nullptr && player->isready())
 	{
 		if(player->AcceptItem(this))
 		{
@@ -5080,14 +5082,14 @@ void CO_Egg::update()
 	else if(++relocatetimer > 1500)
 	{
 		placeEgg();
-		owner_throw = NULL;
+		owner_throw = nullptr;
 	}
 	else
 	{
 		if(owner_throw && --owner_throw_timer <= 0)
 		{
 			owner_throw_timer = 0;
-			owner_throw = NULL;
+			owner_throw = nullptr;
 		}
 
 		applyfriction();
@@ -5177,7 +5179,7 @@ void CO_Egg::placeEgg()
 	vely = GRAVITATION;
 	velx = 0.0f;
 
-	owner_throw = NULL;
+	owner_throw = nullptr;
 	owner_throw_timer = 0;
 
 	Drop();
@@ -5229,7 +5231,7 @@ bool CO_Star::collide(CPlayer * player)
 	CGM_Star * starmode = (CGM_Star *)game_values.gamemode;
 
 	timer = 0;
-	if(owner == NULL && player->isready())
+	if(owner == nullptr && player->isready())
 	{
 		if(player->throw_star == 0 && player->AcceptItem(this))
 		{
@@ -5350,7 +5352,7 @@ MO_FlagBase::MO_FlagBase(gfxSprite *nspr, short iTeamID, short iColorID) :
 	velx = sin(angle);
 	vely = cos(angle);
 
-	homeflag = NULL;
+	homeflag = nullptr;
 
 	placeFlagBase(true);
 
@@ -5482,7 +5484,7 @@ void MO_FlagBase::scoreFlag(CO_Flag * flag, CPlayer * player)
 		flag->placeFlag();
 		ifsoundonplay(sfx_areatag);
 	}
-	else if(!game_values.gamemodesettings.flag.homescore || homeflag != NULL || game_values.gamemodesettings.flag.centerflag)
+	else if(!game_values.gamemodesettings.flag.homescore || homeflag != nullptr || game_values.gamemodesettings.flag.centerflag)
 	{
 		flag->placeFlag();
 		if(!game_values.gamemode->gameover)
@@ -5514,7 +5516,7 @@ CO_Flag::CO_Flag(gfxSprite *nspr, MO_FlagBase * base, short iTeamID, short iColo
 	flagbase = base;
 	teamID = iTeamID;
 	fLastFlagDirection = false;
-	owner_throw = NULL;
+	owner_throw = nullptr;
 	owner_throw_timer = 0;
 
 	centerflag = teamID == -1;
@@ -5530,7 +5532,7 @@ CO_Flag::CO_Flag(gfxSprite *nspr, MO_FlagBase * base, short iTeamID, short iColo
 
 bool CO_Flag::collide(CPlayer * player)
 {
-	if(owner == NULL && player->isready() && (!fInBase || teamID != player->teamID))
+	if(owner == nullptr && player->isready() && (!fInBase || teamID != player->teamID))
 	{
 		if(game_values.gamemodesettings.flag.touchreturn && teamID == player->teamID)
 		{
@@ -5543,7 +5545,7 @@ bool CO_Flag::collide(CPlayer * player)
 			owner_throw = player;
 			
 			if(flagbase)
-				flagbase->setFlag(NULL);
+				flagbase->setFlag(nullptr);
 		}
 	}
 	
@@ -5567,20 +5569,20 @@ void CO_Flag::update()
 			yf(flagbase->fy);
 		}
 
-		owner_throw = NULL;
+		owner_throw = nullptr;
 	}
 	else if(game_values.gamemodesettings.flag.autoreturn > 0 && ++timer > game_values.gamemodesettings.flag.autoreturn)
 	{
 		timer = 0;
 		placeFlag();
-		owner_throw = NULL;
+		owner_throw = nullptr;
 	}
 	else
 	{
 		if(owner_throw && --owner_throw_timer < 0)
 		{
 			owner_throw_timer = 0;
-			owner_throw = NULL;
+			owner_throw = nullptr;
 		}
 
 		applyfriction();
@@ -5657,7 +5659,7 @@ void CO_Flag::placeFlag()
 		flagbase->setFlag(this);
 	}
 	
-	owner_throw = NULL;
+	owner_throw = nullptr;
 	owner_throw_timer = 0;
 
 	timer = 0;
@@ -5829,7 +5831,7 @@ OMO_Area::OMO_Area(gfxSprite *nspr, short iNumAreas) :
 	relocatetimer = 0;
 	numareas = iNumAreas;
 	totalTouchingPlayers = 0;
-	touchingPlayer = NULL;
+	touchingPlayer = nullptr;
 	
 	placeArea();
 }
@@ -5846,7 +5848,7 @@ bool OMO_Area::collide(CPlayer * player)
 		}
 		else
 		{
-			touchingPlayer = NULL;
+			touchingPlayer = nullptr;
 			reset();
 		}
 	}
@@ -5884,7 +5886,7 @@ void OMO_Area::update()
 	}
 
 	totalTouchingPlayers = 0;
-	touchingPlayer = NULL;
+	touchingPlayer = nullptr;
 }
 
 void OMO_Area::placeArea()
@@ -5950,7 +5952,7 @@ OMO_KingOfTheHillZone::OMO_KingOfTheHillZone(gfxSprite *nspr) :
 	
 	for(short iPlayer = 0; iPlayer < 4; iPlayer++)
 	{
-		playersTouching[iPlayer] = NULL;
+		playersTouching[iPlayer] = nullptr;
 		playersTouchingCount[iPlayer] = 0;
 	}
 
@@ -6065,7 +6067,7 @@ void OMO_KingOfTheHillZone::update()
 
 	for(short iPlayer = 0; iPlayer < 4; iPlayer++)
 	{
-		playersTouching[iPlayer] = NULL;
+		playersTouching[iPlayer] = nullptr;
 		playersTouchingCount[iPlayer] = 0;
 	}
 
@@ -6502,7 +6504,7 @@ bool MO_CollectionCard::collide(CPlayer * player)
 		state = 2;
 		animationspeed = 4;
 		animationtimer = 0;
-		animationOffsetY = animationOffsetY = (value + 1) << 5;
+		animationOffsetY = (value + 1) << 5;
 		drawframe = 96;
 	}
 
@@ -6777,7 +6779,7 @@ bool MO_WalkingEnemy::collide(CPlayer * player)
 
 	if(player->invincible || frozen)
 	{
-		AddAwardKill(player, NULL, killStyle);
+		AddAwardKill(player, nullptr, killStyle);
 
 		if(game_values.gamemode->gamemode == game_mode_stomp && !game_values.gamemode->gameover)
 			player->score->AdjustScore(1);
@@ -6839,7 +6841,7 @@ void MO_WalkingEnemy::collide(IO_MovingObject * object)
 
 				if(killer)
 				{
-					AddAwardKill(killer, NULL, killStyle);
+					AddAwardKill(killer, nullptr, killStyle);
 					killer->score->AdjustScore(1);
 
 					if(type == movingobject_shell)
@@ -6939,7 +6941,7 @@ void MO_Goomba::draw()
 	//if frozen, just draw shell, not entire koopa
 	if(frozen)
 	{
-		spr_goomba.draw(ix - collisionOffsetX + iw - 32, iy - collisionOffsetY + ih - 32, 0, 0, 32, 32);	
+		short iFrozenSrcX = (velx < 0.0f) ? 32 : 0; spr_goomba.draw(ix - collisionOffsetX + iw - 32, iy - collisionOffsetY + ih - 32, iFrozenSrcX, 0, 32, 32);
 		spr_iceblock.draw(ix - collisionOffsetX + iw - 32, iy - collisionOffsetY + ih - 32, 0, 0, 32, 32);	
 	}
 	else
@@ -6963,7 +6965,7 @@ bool MO_Goomba::hittop(CPlayer * player)
 	player->yi(iy - PH - 1);
 	player->bouncejump();
 	player->collision_detection_checktop();
-	player->platform = NULL;
+	player->platform = nullptr;
 
 	if(game_values.gamemode->gamemode == game_mode_stomp && !game_values.gamemode->gameover)
 		player->score->AdjustScore(1);
@@ -6992,7 +6994,7 @@ bool MO_Goomba::hittop(CPlayer * player)
 	{
 		dead = true;
 
-		AddAwardKill(player, NULL, killStyle);
+		AddAwardKill(player, nullptr, killStyle);
 
 		eyecandy[0].add(new EC_Corpse(&spr_goombadead, (float)(ix - collisionOffsetX), (float)(iy + collisionHeight - 32), 0));
 	}
@@ -7056,7 +7058,7 @@ bool MO_Koopa::hittop(CPlayer * player)
 	player->yi(iy - PH - 1);
 	player->bouncejump();
 	player->collision_detection_checktop();
-	player->platform = NULL;
+	player->platform = nullptr;
 	
 	if(game_values.gamemode->gamemode == game_mode_stomp && !game_values.gamemode->gameover)
 		player->score->AdjustScore(1);
@@ -7075,7 +7077,7 @@ bool MO_Koopa::hittop(CPlayer * player)
 	{
 		dead = true;
 
-		AddAwardKill(player, NULL, kill_style_koopa);
+		AddAwardKill(player, nullptr, kill_style_koopa);
 
 		DropShell(false, false);
 	}
@@ -7141,10 +7143,10 @@ bool MO_BuzzyBeetle::hittop(CPlayer * player)
 	player->yi(iy - PH - 1);
 	player->bouncejump();
 	player->collision_detection_checktop();
-	player->platform = NULL;
+	player->platform = nullptr;
 	dead = true;
 
-	AddAwardKill(player, NULL, kill_style_buzzybeetle);
+	AddAwardKill(player, nullptr, kill_style_buzzybeetle);
 
 	if(game_values.gamemode->gamemode == game_mode_stomp && !game_values.gamemode->gameover)
 		player->score->AdjustScore(1);
@@ -7212,11 +7214,11 @@ bool MO_Spiny::hittop(CPlayer * player)
 		player->yi(iy - PH - 1);
 		player->bouncejump();
 		player->collision_detection_checktop();
-		player->platform = NULL;
+		player->platform = nullptr;
 		
 		dead = true;
 
-		AddAwardKill(player, NULL, kill_style_spiny);
+		AddAwardKill(player, nullptr, kill_style_spiny);
 
 		if(game_values.gamemode->gamemode == game_mode_stomp && !game_values.gamemode->gameover)
 			player->score->AdjustScore(1);
@@ -7313,7 +7315,7 @@ bool MO_CheepCheep::collide(CPlayer * player)
 {
 	if(player->invincible || frozen)
 	{
-		AddAwardKill(player, NULL, kill_style_cheepcheep);
+		AddAwardKill(player, nullptr, kill_style_cheepcheep);
 
 		if(game_values.gamemode->gamemode == game_mode_stomp && !game_values.gamemode->gameover)
 			player->score->AdjustScore(1);
@@ -7345,9 +7347,9 @@ bool MO_CheepCheep::hittop(CPlayer * player)
 	player->yi(iy - PH - 1);
 	player->bouncejump();
 	player->collision_detection_checktop();
-	player->platform = NULL;
+	player->platform = nullptr;
 	
-	AddAwardKill(player, NULL, kill_style_cheepcheep);
+	AddAwardKill(player, nullptr, kill_style_cheepcheep);
 
 	if(game_values.gamemode->gamemode == game_mode_stomp && !game_values.gamemode->gameover)
 		player->score->AdjustScore(1);
@@ -7391,7 +7393,7 @@ void MO_CheepCheep::collide(IO_MovingObject * object)
 
 				if(killer)
 				{
-					AddAwardKill(killer, NULL, kill_style_cheepcheep);
+					AddAwardKill(killer, nullptr, kill_style_cheepcheep);
 					killer->score->AdjustScore(1);
 
 					if(type == movingobject_shell)
@@ -8039,7 +8041,7 @@ CO_Shell::CO_Shell(short type, short x, short y, bool dieOnMovingPlayerCollision
 	frozenvelocity = 0.0f;
 	frozenanimationspeed = 4;
 
-	sSpotlight = NULL;
+	sSpotlight = nullptr;
 }
 
 bool CO_Shell::collide(CPlayer * player)
@@ -8127,14 +8129,14 @@ bool CO_Shell::HitTop(CPlayer * player)
 		player->yi(iy - PH - 1);
 		player->bouncejump();
 		player->collision_detection_checktop();
-		player->platform = NULL;
+		player->platform = nullptr;
 	}
 	else if(state == 3) //Holding
 	{
 		if(player != owner && (game_values.teamcollision == 2|| player->teamID != owner->teamID))
 		{
 			if(owner)
-				owner->carriedItem = NULL;
+				owner->carriedItem = nullptr;
 
 			Kick();
 			fSmoking = false;
@@ -8142,7 +8144,7 @@ bool CO_Shell::HitTop(CPlayer * player)
 			player->yi(iy - PH - 1);
 			player->bouncejump();
 			player->collision_detection_checktop();
-			player->platform = NULL;
+			player->platform = nullptr;
 		}
 	}
 
@@ -8153,7 +8155,7 @@ bool CO_Shell::HitOther(CPlayer * player)
 {
 	if(state == 2) //Sitting
 	{
-		if(owner == NULL && player->isready())
+		if(owner == nullptr && player->isready())
 		{
 			if(player->AcceptItem(this))
 			{
@@ -8352,8 +8354,8 @@ void CO_Shell::update()
 
 				if(owner)
 				{
-					owner->carriedItem = NULL;
-					owner = NULL;
+					owner->carriedItem = nullptr;
+					owner = nullptr;
 				}
 
 				return;
@@ -8412,7 +8414,7 @@ void CO_Shell::update()
 		}
 		else
 		{
-			sSpotlight = NULL;
+			sSpotlight = nullptr;
 		}
 	}
 }
@@ -8452,7 +8454,7 @@ void CO_Shell::Drop()
 {
 	if(owner)
 	{
-		owner->carriedItem = NULL;
+		owner->carriedItem = nullptr;
 		xi(owner->ix + (owner->IsPlayerFacingRight() ? PW + 1: -31));
 	}
 
@@ -8465,7 +8467,7 @@ void CO_Shell::Drop()
 	}
 	else
 	{
-		owner = NULL;
+		owner = nullptr;
 		state = 2;
 	}
 }
@@ -8507,7 +8509,7 @@ void CO_Shell::Kick()
 	iPlayerID = owner->globalID;
 	iTeamID = owner->teamID;
 
-	owner = NULL;
+	owner = nullptr;
 	iNoOwnerKillTime = 30;
 
 	state = 1;
@@ -8541,8 +8543,8 @@ void CO_Shell::Die()
 
 	if(owner)
 	{
-		owner->carriedItem = NULL;
-		owner = NULL;
+		owner->carriedItem = nullptr;
+		owner = nullptr;
 	}
 }
 
@@ -8554,8 +8556,8 @@ void CO_Shell::ShatterDie()
 
 	if(owner)
 	{
-		owner->carriedItem = NULL;
-		owner = NULL;
+		owner->carriedItem = nullptr;
+		owner = nullptr;
 	}
 
 	short iBrokenIceX = ix - collisionOffsetX, iBrokenIceY = iy - collisionOffsetY;
@@ -8605,7 +8607,7 @@ void CO_Shell::Flip()
 
 void CO_Shell::Stop()
 {
-	owner = NULL;
+	owner = nullptr;
 	velx = 0.0f;
 	state = 2;
 	fSmoking = false;
@@ -8654,7 +8656,7 @@ CO_ThrowBlock::CO_ThrowBlock(gfxSprite * nspr, short x, short y, short type) :
 	frozenvelocity = 0.0f;
 	frozenanimationspeed = 2;
 
-	sSpotlight = NULL;
+	sSpotlight = nullptr;
 }
 
 bool CO_ThrowBlock::collide(CPlayer * player)
@@ -8688,14 +8690,14 @@ bool CO_ThrowBlock::HitTop(CPlayer * player)
 			if(player != owner)
 			{
 				if(owner)
-					owner->carriedItem = NULL;
+					owner->carriedItem = nullptr;
 
 				Kick();
 
 				player->yi(iy - PH - 1);
 				player->bouncejump();
 				player->collision_detection_checktop();
-				player->platform = NULL;
+				player->platform = nullptr;
 			}
 		}
 	}
@@ -8815,8 +8817,8 @@ void CO_ThrowBlock::update()
 
 		if(owner)
 		{
-			owner->carriedItem = NULL;
-			owner = NULL;
+			owner->carriedItem = nullptr;
+			owner = nullptr;
 		}
 
 		return;
@@ -8915,7 +8917,7 @@ void CO_ThrowBlock::Kick()
 	iPlayerID = owner->globalID;
 	iTeamID = owner->teamID;
 
-	owner = NULL;
+	owner = nullptr;
 	iNoOwnerKillTime = 30;
 
 	state = 1;
@@ -8973,8 +8975,8 @@ void CO_ThrowBlock::DieHelper()
 
 	if(owner)
 	{
-		owner->carriedItem = NULL;
-		owner = NULL;
+		owner->carriedItem = nullptr;
+		owner = nullptr;
 	}
 }
 
@@ -9021,7 +9023,7 @@ CO_ThrowBox::CO_ThrowBox(gfxSprite * nspr, short x, short y, short item) :
 	frozentimer = 0;
 	frozenanimationspeed = 8;
 
-	sSpotlight = NULL;
+	sSpotlight = nullptr;
 }
 
 bool CO_ThrowBox::collide(CPlayer * player)
@@ -9036,12 +9038,11 @@ bool CO_ThrowBox::collide(CPlayer * player)
 
 	if(HasKillVelocity())
 	{
-		short flipx = 0;
-
-		if(player->ix + PW < 320 && ix > 320)
-			flipx = 640;
-		else if(ix + iw < 320 && player->ix > 320)
-			flipx = -640;
+		// short flipx = 0;  // set but never used — commented out
+		// if(player->ix + PW < 320 && ix > 320)
+		//     flipx = 640;
+		// else if(ix + iw < 320 && player->ix > 320)
+		//     flipx = -640;
 
 		if(player->globalID != iPlayerID)
 		{
@@ -9061,7 +9062,7 @@ bool CO_ThrowBox::collide(CPlayer * player)
 	}*/
 
 	//Otherwise allow them to pick this box up
-	if(owner == NULL && player->isready())
+	if(owner == nullptr && player->isready())
 	{
 		if(player->AcceptItem(this))
 		{
@@ -9252,8 +9253,8 @@ void CO_ThrowBox::DieHelper()
 
 	if(owner)
 	{
-		owner->carriedItem = NULL;
-		owner = NULL;
+		owner->carriedItem = nullptr;
+		owner = nullptr;
 	}
 
 	//Check to see if we should spawn an item here
@@ -9317,7 +9318,7 @@ CO_Spring::CO_Spring(gfxSprite *nspr, short ix, short iy, bool fsuper) :
 
 bool CO_Spring::collide(CPlayer * player)
 {
-	if(owner == NULL)
+	if(owner == nullptr)
 	{
 		if(player->fOldY + PH <= fOldY && player->iy + PH >= iy)
 			hittop(player);
@@ -9335,7 +9336,7 @@ void CO_Spring::hittop(CPlayer * player)
 
 	player->yi(iy - PH - 1);
 	player->collision_detection_checktop();
-	player->platform = NULL;
+	player->platform = nullptr;
 	player->inair = false;
 	player->fallthrough = false;
 	player->killsinrowinair = 0;
@@ -9350,7 +9351,7 @@ void CO_Spring::hittop(CPlayer * player)
 
 void CO_Spring::hitother(CPlayer * player)
 {
-	if(owner == NULL && player->isready())
+	if(owner == nullptr && player->isready())
 	{
 		if(player->AcceptItem(this))
 		{
@@ -9472,7 +9473,7 @@ void CO_KuriboShoe::hittop(CPlayer * player)
 // attack zone(invisible area that kills objects and players)
 //------------------------------------------------------------------------------
 MO_AttackZone::MO_AttackZone(short playerId, short teamId, short x, short y, short w, short h, short time, killstyle style, bool dieoncollision) :
-	IO_MovingObject(NULL, x, y, 1, 0, w, h, 0, 0)
+	IO_MovingObject(nullptr, x, y, 1, 0, w, h, 0, 0)
 {
 	iPlayerID = playerId;
 	iTeamID = teamId;
@@ -9645,10 +9646,10 @@ void MO_SpinAttack::update()
 		if(iRight >= 20)
 			iRight -= 20;
 
-		IO_Block * topleftblock = NULL;
-		IO_Block * toprightblock = NULL;
-		IO_Block * bottomleftblock = NULL;
-		IO_Block * bottomrightblock = NULL;
+		IO_Block * topleftblock = nullptr;
+		IO_Block * toprightblock = nullptr;
+		IO_Block * bottomleftblock = nullptr;
+		IO_Block * bottomrightblock = nullptr;
 
 		if(iTop >= 0 && iTop < 15)
 		{
@@ -10108,7 +10109,7 @@ CO_PhantoKey::CO_PhantoKey(gfxSprite *nspr) :
 
 bool CO_PhantoKey::collide(CPlayer * player)
 {
-	if(owner == NULL && player->isready())
+	if(owner == nullptr && player->isready())
 	{
 		if(player->AcceptItem(this))
 		{

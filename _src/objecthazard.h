@@ -7,9 +7,9 @@ class OMO_OrbitHazard : public IO_OverMapObject
 		OMO_OrbitHazard(gfxSprite *nspr, short x, short y, float radius, float vel, float angle, short iNumSpr, short aniSpeed, short iCollisionWidth, short iCollisionHeight, short iCollisionOffsetX, short iCollisionOffsetY, short iAnimationOffsetX, short iAnimationOffsetY, short iAnimationHeight, short iAnimationWidth);
 		~OMO_OrbitHazard() {}
 
-		void update();
+		void update() override;
 
-		bool collide(CPlayer *);
+		bool collide(CPlayer *) override;
 
 	private:
 		void CalculatePosition();
@@ -24,9 +24,9 @@ class OMO_StraightPathHazard : public IO_OverMapObject
 		OMO_StraightPathHazard(gfxSprite *nspr, short x, short y, float angle, float vel, short iNumSpr, short aniSpeed, short iCollisionWidth, short iCollisionHeight, short iCollisionOffsetX, short iCollisionOffsetY, short iAnimationOffsetX, short iAnimationOffsetY, short iAnimationHeight, short iAnimationWidth);
 		~OMO_StraightPathHazard() {}
 
-		void update();
+		void update() override;
 
-		bool collide(CPlayer *);
+		bool collide(CPlayer *) override;
 
 	private:
 
@@ -39,16 +39,16 @@ class MO_BulletBill : public IO_MovingObject
 		MO_BulletBill(gfxSprite *nspr, gfxSprite *nsprdead, short x, short y, float nspeed, short playerID, bool isspawned);
 		~MO_BulletBill(){};
 
-		void update();
-		void draw();
+		void update() override;
+		void draw() override;
 		void draw(short iOffsetX, short iOffsetY);
-		bool collide(CPlayer * player);
-		void collide(IO_MovingObject * object);
+		bool collide(CPlayer * player) override;
+		void collide(IO_MovingObject * object) override;
 
 		bool hittop(CPlayer * player);
 		bool hitother(CPlayer * player);
 		
-		void Die();
+		void Die() override;
 		void SetDirectionOffset();
 
 	private:
@@ -72,11 +72,11 @@ class IO_BulletBillCannon : public CObject
 		IO_BulletBillCannon(short x, short y, short freq, float vel, bool preview);
 		~IO_BulletBillCannon() {}
 
-		void draw() {}
-		void update();
+		void draw() override {}
+		void update() override;
 
-		bool collide(CPlayer *) {return false;}
-		void collide(IO_MovingObject *) {}
+		bool collide(CPlayer *) override {return false;}
+		void collide(IO_MovingObject *) override {}
 		
 	private:
 		void SetNewTimer();
@@ -93,8 +93,8 @@ class MO_Explosion : public IO_MovingObject
 		MO_Explosion(gfxSprite *nspr, short x, short y, short iNumSpr, short aniSpeed, short id, short iTeamID, killstyle style);
 		~MO_Explosion(){};
 
-		void update();
-		bool collide(CPlayer * player);
+		void update() override;
+		bool collide(CPlayer * player) override;
 		
 	private:
 		
@@ -109,12 +109,12 @@ class IO_FlameCannon : public CObject
 		IO_FlameCannon(short x, short y, short freq, short direction);
 		~IO_FlameCannon() {}
 
-		void draw();
+		void draw() override;
 		void draw(short iOffsetX, short iOffsetY);
-		void update();
+		void update() override;
 
-		bool collide(CPlayer * player);
-		void collide(IO_MovingObject *) {}
+		bool collide(CPlayer * player) override;
+		void collide(IO_MovingObject *) override {}
 				
 	private:
 		void SetNewTimer();
@@ -134,12 +134,12 @@ class MO_PirhanaPlant : public IO_MovingObject
 		MO_PirhanaPlant(short x, short y, short type, short freq, short direction, bool preview);
 		~MO_PirhanaPlant() {}
 
-		void draw();
+		void draw() override;
 		void draw(short iOffsetX, short iOffsetY);
-		void update();
+		void update() override;
 
-		bool collide(CPlayer * player);
-		void collide(IO_MovingObject *);
+		bool collide(CPlayer * player) override;
+		void collide(IO_MovingObject *) override;
 		
 		void KillPlant();
 

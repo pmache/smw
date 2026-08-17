@@ -1,4 +1,4 @@
-
+﻿
 #ifndef _GLOBAL_H
 #define _GLOBAL_H
 
@@ -176,8 +176,8 @@ struct STextAward
 #define ifsoundonplay(x) (game_values.sound ? x.play() : -1)
 #define ifsoundonandreadyplay(x) (x.isready() && game_values.sound ? x.play() : -1)
 #define ifsoundonplayloop(x,y) (game_values.sound ? x.playloop(y) : -1)
-#define ifsoundonstop(x) (game_values.sound ? x.stop() : void(NULL))
-#define ifsoundonpause(x) (game_values.sound ? x.sfx_pause() : void(NULL))
+#define ifsoundonstop(x) (game_values.sound ? x.stop() : void(nullptr))
+#define ifsoundonpause(x) (game_values.sound ? x.sfx_pause() : void(nullptr))
 #define ifmusiconplay(x) (game_values.music ? x.play() : -1)
 
 #define ABS(x) (x>0?x:-x)
@@ -269,13 +269,11 @@ std::string stripCreatorAndDotMap(const std::string &filename);
 #include "menu.h"
 #include "MapList.h"
 #include "FileList.h"
-#include "movingplatform.h"
 #include "FileIO.h"
 #include "map.h"
 #include "player.h"
 #include "object.h"
 #include "objectgame.h"
-#include "objecthazard.h"
 //#include "HashTable.h"
 #include "eyecandy.h"
 #include "gamemodes.h"

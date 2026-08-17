@@ -1,4 +1,4 @@
-#include "global.h"
+﻿#include "global.h"
 
 extern short LookupTeamID(short id);
 
@@ -6,8 +6,8 @@ UI_Menu::UI_Menu()
 {
 	cancelCode = MENU_CODE_NONE;
 	fModifyingItem = false;
-	headControl = NULL;
-	current = NULL;
+	headControl = nullptr;
+	current = nullptr;
 	
 	iControllingTeam = -1;
 }
@@ -226,7 +226,7 @@ MenuCodeEnum UI_Menu::MouseClick(short iMouseX, short iMouseY)
 {
 	//Loop through all controls to see if one was clicked on
 	std::list<UI_Control*>::iterator itr = controls.begin(), lim = controls.end();
-	UI_Control * pFound = NULL;
+	UI_Control * pFound = nullptr;
 	MenuCodeEnum code = MENU_CODE_NONE;
 	while(itr != lim)
 	{

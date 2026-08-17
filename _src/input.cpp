@@ -113,6 +113,7 @@ void CPlayerInput::Update(SDL_Event event, short iGameState)
 		CInputControl * inputControl;
 		COutputControl * outputControl;
 		short iPlayerID = iPlayer;
+		(void)iPlayerID;  // suppress -Wunused-but-set-variable — kept for clarity
 		short iDeviceID = DEVICE_KEYBOARD;
 
 		//Allow keyboard input from player 1 at all times (even when he is configured to use joystick)

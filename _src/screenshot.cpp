@@ -1,4 +1,4 @@
-/*----------------------------------------------------------+
+﻿/*----------------------------------------------------------+
 | Super Mario War Screenshot Maker							|
 |                                                           |
 | Quick and dirty way to make map screenshots via           |
@@ -6,7 +6,7 @@
 |                                                           |
 | this sourcecode is released under the GPL.				|
 |															|
-|				� 2007 Florian Hufsky <fhufsky@phorus.at>	|
+|				© 2007 Florian Hufsky <fhufsky@phorus.at>	|
 +----------------------------------------------------------*/
 
 #define _SMW_EDITOR
@@ -90,7 +90,7 @@ MapPlatform g_Platforms[MAX_PLATFORMS];
 
 BackgroundList backgroundlist;
 
-char * szMapName = NULL;
+char * szMapName = nullptr;
 
 //main main main
 int main(int argc, char *argv[])

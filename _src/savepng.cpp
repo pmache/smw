@@ -1,4 +1,4 @@
-#ifdef PNG_SAVE_FORMAT
+﻿#ifdef PNG_SAVE_FORMAT
 
 
 #include "SDL.h"
@@ -19,10 +19,9 @@ static void png_write_data(png_structp ctx, png_bytep area, png_size_t size)
 
 static void png_io_flush(png_structp ctx)
 {
-	SDL_RWops *src;
-	
-	src = (SDL_RWops *)png_get_io_ptr(ctx);
+	// src = (SDL_RWops *)png_get_io_ptr(ctx);
 	/* how do I flush src? */
+	(void)ctx;
 }
 
 static int png_colortype_from_surface(SDL_Surface *surface)
@@ -74,13 +73,13 @@ int IMG_SavePNG_RW(SDL_Surface *face, SDL_RWops *src, int freedst)
 	SDL_Surface *surface = SDL_CreateRGBSurface(0, face->w, face->h, 24,
 								rmask, gmask, bmask, amask);
 	
-	SDL_BlitSurface(face, NULL, surface, NULL);
+	SDL_BlitSurface(face, nullptr, surface, nullptr);
 	
 	SDL_LockSurface(surface);
 	
-	png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, png_user_error, png_user_warn);
+	png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, nullptr, png_user_error, png_user_warn);
 	
-	if (png_ptr == NULL)
+	if (png_ptr == nullptr)
 	{
 		IMG_SetError("Couldn't allocate memory for PNG file");
 		return -1;
@@ -88,7 +87,7 @@ int IMG_SavePNG_RW(SDL_Surface *face, SDL_RWops *src, int freedst)
 	
 	/* Allocate/initialize the image information data.  REQUIRED */
 	info_ptr = png_create_info_struct(png_ptr);
-	if (info_ptr == NULL)
+	if (info_ptr == nullptr)
 	{
 		IMG_SetError("Couldn't create image information for PNG file");
 		goto done;
@@ -126,7 +125,7 @@ int IMG_SavePNG_RW(SDL_Surface *face, SDL_RWops *src, int freedst)
 	//row_pointers = (png_bytep*) malloc(sizeof(png_bytep)*surface->h);
 	row_pointers = new png_bytep[surface->h];
 	
-	if ( (row_pointers == NULL) ) 
+	if ( (row_pointers == nullptr) ) 
 	{
 		IMG_SetError("Couldn't allocate PNG row pointers");
 		goto done;
@@ -144,7 +143,7 @@ done:
         if (row_pointers)
 			delete [] row_pointers;
 	
-	png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+	png_destroy_write_struct(&png_ptr, &info_ptr);
 	
 	
 	SDL_UnlockSurface(surface);

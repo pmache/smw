@@ -1,4 +1,4 @@
-/*----------------------------------------------------------+
+﻿/*----------------------------------------------------------+
 | super mario war											|
 |															|
 | a mario war clone written using the tile based collision	|
@@ -22,7 +22,7 @@
 | start:		24.01.2003									|
 | last changes:	12.02.2008									|
 |															|
-|								� 2003-2009 Florian Hufsky  |
+|								ďż˝ 2003-2009 Florian Hufsky  |
 |								  florian.hufsky@gmail.com	|
 |                                     mtschaffer@gmail.com  |
 |								  http://smw.72dpiarmy.com	|
@@ -339,6 +339,7 @@ Procedure for adding a new powerup:
 #endif
 
 #include "global.h"				//all the global stuff
+#include "objecthazard.h"
 #include <time.h>
 #include <math.h>
 
@@ -653,6 +654,7 @@ STextAward awards[PAWARD_LAST] = {
 sfxSound sfx_announcer[PANNOUNCER_SOUND_LAST];
 
 bool  fResumeMusic = true;
+bool  fInvincibleMusicWasPlaying = false;
 
 sfxSound sfx_mip;
 sfxSound sfx_deathsound;
@@ -709,10 +711,10 @@ sfxSound sfx_pickup;
 sfxMusic backgroundmusic[6];
 
 CGameMode			*gamemodes[GAMEMODE_LAST];
-CGM_Bonus			*bonushousemode = NULL;
-CGM_Pipe_MiniGame	*pipegamemode = NULL;
-CGM_Boss_MiniGame	*bossgamemode = NULL;
-CGM_Boxes_MiniGame	*boxesgamemode = NULL;
+CGM_Bonus			*bonushousemode = nullptr;
+CGM_Pipe_MiniGame	*pipegamemode = nullptr;
+CGM_Boss_MiniGame	*bossgamemode = nullptr;
+CGM_Boxes_MiniGame	*boxesgamemode = nullptr;
 
 short		currentgamemode = 0;
 
@@ -807,7 +809,7 @@ short CountAliveTeams(short * lastteam)
 		}
 	}
 
-	if(lastteam != NULL)
+	if(lastteam != nullptr)
 	{
 		if(numteams == 1)
 			*lastteam = findlastteam;
@@ -835,10 +837,10 @@ void CleanDeadPlayers()
 			respawn[list_players[i]->globalID] = 0;
 
 			if(game_values.gamemode->tagged == list_players[i])
-				game_values.gamemode->tagged = NULL;
+				game_values.gamemode->tagged = nullptr;
 
 			if(game_values.gamemode->chicken == list_players[i])
-				game_values.gamemode->chicken = NULL;
+				game_values.gamemode->chicken = nullptr;
 
 			delete list_players[i];
 			
@@ -849,7 +851,7 @@ void CleanDeadPlayers()
 			}
 
 			list_players_cnt--;
-			list_players[list_players_cnt] = NULL;
+			list_players[list_players_cnt] = nullptr;
 		}
 	}
 
@@ -897,7 +899,7 @@ short LookupTeamID(short id, short * teamID, short * subTeamID)
 
 short LookupTeamID(short id)
 {
-	return LookupTeamID(id, NULL, NULL);
+	return LookupTeamID(id, nullptr, nullptr);
 }
 
 CPlayer * GetPlayerFromGlobalID(short iGlobalID)
@@ -908,7 +910,7 @@ CPlayer * GetPlayerFromGlobalID(short iGlobalID)
 			return list_players[i];
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 sfxSound * g_PlayingSoundChannels[NUM_SOUND_CHANNELS];
@@ -920,7 +922,7 @@ void DECLSPEC soundfinished(int channel)
 	else
 	{
 		g_PlayingSoundChannels[channel]->clearchannel();
-		g_PlayingSoundChannels[channel] = NULL;
+		g_PlayingSoundChannels[channel] = nullptr;
 	}
 }
 
@@ -981,7 +983,7 @@ gv game_values;
 //MenuContext menu_context;
 
 //Joystick-Init
-SDL_Joystick **joysticks = NULL;
+SDL_Joystick **joysticks = nullptr;
 short joystickcount = 0;
 
 #ifdef _DEBUG
@@ -1529,7 +1531,7 @@ int main(int argc, char *argv[])
 	//Call to setup input optimization
 	game_values.playerInput.CheckIfMouseUsed();
 
-	srand((unsigned int)time(NULL));
+	srand((unsigned int)time(nullptr));
 
 	bool fLoadOK = LoadAndSplashScreen();
 
@@ -1611,7 +1613,7 @@ int main(int argc, char *argv[])
 //Return to dash on xbox
 #ifdef _XBOX
 	LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
-	XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
+	XLaunchNewImage( nullptr, (LAUNCH_DATA*)&LaunchData );
 #endif
 
 	return 0;
@@ -1733,7 +1735,7 @@ void RunGame()
 				short teamid, subteamid;
 				LookupTeamID(iPlayer, &teamid, &subteamid);
 
-				CPlayerAI * ai = NULL;
+				CPlayerAI * ai = nullptr;
 				if(game_values.playercontrol[iPlayer] == 2)
 					ai = new CPlayerAI();
 
@@ -2012,7 +2014,7 @@ void RunGame()
 					short y = (list_players[k]->iy + HALFPH) / TILESIZE;
 
 					int tile = tile_flag_nonsolid;
-					IO_Block * block = NULL;
+					IO_Block * block = nullptr;
 					short blocktype = -1;
 
 					if(list_players[k]->iy + HALFPH >= 0 && list_players[k]->iy + HALFPH < 480)
@@ -2065,7 +2067,7 @@ void RunGame()
 						for(short j = 0; j < 2; j++)
 						{
 							int tile = tile_flag_nonsolid;
-							IO_Block * block = NULL;
+							IO_Block * block = nullptr;
 							short blocktype = -1;
 
 							if(actualvalues[0][j] >= 0 && actualvalues[0][j] < 640 && actualvalues[1][i] > 0 && actualvalues[1][i] < 480)
@@ -2390,6 +2392,14 @@ void RunGame()
 							//Stop the pwings sound if it is on
 							if(sfx_flyingsound.isplaying())
 								ifsoundonstop(sfx_flyingsound);
+							fInvincibleMusicWasPlaying = sfx_invinciblemusic.isplaying();
+							if(fInvincibleMusicWasPlaying)
+								sfx_invinciblemusic.pause();
+						}
+						else if(fInvincibleMusicWasPlaying)
+						{
+							sfx_invinciblemusic.resume();
+							fInvincibleMusicWasPlaying = false;
 						}
 
 						//ifsoundonpause(sfx_invinciblemusic);
@@ -3902,7 +3912,7 @@ void LoadMapObjects(bool fPreview)
 			}
 			else
 			{
-				g_map.blockdata[x][y] = NULL;
+				g_map.blockdata[x][y] = nullptr;
 			}
 		}
 	}
@@ -3914,7 +3924,7 @@ void LoadMapObjects(bool fPreview)
 		iCountWeight += game_values.powerupweights[iPowerup];
 
 	short iThrowBoxCount = 0;
-	bool * fBoxHasCoin = NULL;
+	bool * fBoxHasCoin = nullptr;
 
 	if(game_values.gamemode->gamemode == game_mode_boxes_minigame)
 	{
@@ -4017,7 +4027,7 @@ void LoadMapObjects(bool fPreview)
 	if(fBoxHasCoin)
 	{
 		delete [] fBoxHasCoin;
-		fBoxHasCoin = NULL;
+		fBoxHasCoin = nullptr;
 	}
 
 	//Set all the 1x1 gaps up so players can run across them
@@ -4185,7 +4195,7 @@ void UpdateMusicWithOverrides()
 
 			override->mapname = pszName;
 			
-			char * pszMusic = strtok(NULL, ",\n");
+			char * pszMusic = strtok(nullptr, ",\n");
 			while(pszMusic)
 			{
 				std::string sPath = convertPath(pszMusic);
@@ -4195,7 +4205,7 @@ void UpdateMusicWithOverrides()
 					override->songs.push_back(sPath);
 				}
 
-				pszMusic = strtok(NULL, ",\n");
+				pszMusic = strtok(nullptr, ",\n");
 			}
 
 			//Don't add overrides that have no songs
@@ -4213,7 +4223,7 @@ void UpdateMusicWithOverrides()
 
 			override->worldname = pszName;
 			
-			char * pszMusic = strtok(NULL, ",\n");
+			char * pszMusic = strtok(nullptr, ",\n");
 			if(pszMusic)
 			{
 				std::string sPath = convertPath(pszMusic);

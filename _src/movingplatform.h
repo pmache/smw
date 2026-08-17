@@ -1,4 +1,4 @@
-#ifndef _MOVINGPLATFORM_H_
+﻿#ifndef _MOVINGPLATFORM_H_
 #define _MOVINGPLATFORM_H_
 
 class CPlayer;
@@ -18,7 +18,7 @@ class MovingPlatformPath
 
 		void SetPlatform(MovingPlatform * platform) {pPlatform = platform;}
 
-		short GetType() {return iType;}
+		short GetType() const {return iType;}
 
 	protected:
 
@@ -45,8 +45,8 @@ class StraightPath : public MovingPlatformPath
 		StraightPath(float vel, float startX, float startY, float endX, float endY, bool preview);
 		virtual ~StraightPath() {}
 
-		bool Move(short type);
-		void Reset();
+		bool Move(short type) override;
+		void Reset() override;
 
 	protected:
 		void SetVelocity(short type);
@@ -69,8 +69,8 @@ class StraightPathContinuous : public StraightPath
 		StraightPathContinuous(float vel, float startX, float startY, float angle, bool preview);
 		virtual ~StraightPathContinuous() {}
 
-		bool Move(short type);
-		void Reset();
+		bool Move(short type) override;
+		void Reset() override;
 
 	private:
 		float dEdgeX, dEdgeY;
@@ -87,9 +87,9 @@ class EllipsePath : public MovingPlatformPath
 		EllipsePath(float vel, float dAngle, float dRadiusX, float dRadiusY, float dCenterX, float dCenterY, bool preview);
 		virtual ~EllipsePath() {}
 
-		bool Move(short type);
+		bool Move(short type) override;
 		void SetPosition(short type);
-		void Reset();
+		void Reset() override;
 
 	private:
 		
@@ -108,8 +108,8 @@ class FallingPath : public MovingPlatformPath
 		FallingPath(float startX, float startY);
 		virtual ~FallingPath() {}
 
-		bool Move(short type);
-		void Reset();
+		bool Move(short type) override;
+		void Reset() override;
 
 	private:
 	

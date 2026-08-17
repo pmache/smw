@@ -118,17 +118,17 @@ class CPlayer
 		void AddKillsInRowInAirAward();
 		void SetupNewPlayer();
 
-		short getGlobalID() {return globalID;}
-		short getTeamID() {return teamID;}
-		short getColorID() {return colorID;}
+		short getGlobalID() const {return globalID;}
+		short getTeamID() const {return teamID;}
+		short getColorID() const {return colorID;}
 
 		bool bouncejump();
 
-		short GetWarpPlane() {return warpplane;}
-		bool IsPlayerFacingRight();
+		short GetWarpPlane() const {return warpplane;}
+		bool IsPlayerFacingRight() const;
 		
-		bool IsAcceptingItem() {return fAcceptingItem && statue_timer == 0 && iKuriboShoe == 0;}
-		bool PressedAcceptItemKey() {return fPressedAcceptItem;}
+		bool IsAcceptingItem() const {return fAcceptingItem && statue_timer == 0 && iKuriboShoe == 0;}
+		bool PressedAcceptItemKey() const {return fPressedAcceptItem;}
 		bool AcceptItem(MO_CarriedObject * item);
 
 		void SetPowerup(short iPowerup);
@@ -136,14 +136,14 @@ class CPlayer
 
 		void DecreaseProjectileLimit();
 
-		bool isready() {return state == player_ready;}
-		bool isspawning() {return state == player_spawning;}
-		bool iswarping() {return state > player_ready;}
-		bool isdead() {return state == player_dead;}
+		bool isready() const {return state == player_ready;}
+		bool isspawning() const {return state == player_spawning;}
+		bool iswarping() const {return state > player_ready;}
+		bool isdead() const {return state == player_dead;}
 
 		void SetKuriboShoe(short iType);
-		bool IsInvincibleOnBottom() {return invincible || shield || iKuriboShoe;}
-		bool IsSuperStomping() {return fSuperStomp;}
+		bool IsInvincibleOnBottom() const {return invincible || shield || iKuriboShoe;}
+		bool IsSuperStomping() const {return fSuperStomp;}
 
 		void SetStoredPowerup(short iPowerup);
 		void StripPowerups();

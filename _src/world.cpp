@@ -1,4 +1,4 @@
-#include "global.h"
+﻿#include "global.h"
 
 #include "savepng.h"
 
@@ -386,9 +386,9 @@ WorldMap::WorldMap()
 {
 	iWidth = 0;
 	iHeight = 0;
-	tiles = NULL;
-	vehicles = NULL;
-	warps = NULL;
+	tiles = nullptr;
+	vehicles = nullptr;
+	warps = nullptr;
 	iNumVehicles = 0;
 	iNumStages = 0;
 	iNumWarps = 0;
@@ -448,15 +448,15 @@ bool WorldMap::Load(short tilesize)
 			if(psz)
 				iVersion[0] = atoi(psz);
 
-			psz = strtok(NULL, ".\n");
+			psz = strtok(nullptr, ".\n");
 			if(psz)
 				iVersion[1] = atoi(psz);
 
-			psz = strtok(NULL, ".\n");
+			psz = strtok(nullptr, ".\n");
 			if(psz)
 				iVersion[2] = atoi(psz);
 
-			psz = strtok(NULL, ".\n");
+			psz = strtok(nullptr, ".\n");
 			if(psz)
 				iVersion[3] = atoi(psz);
 
@@ -501,7 +501,7 @@ bool WorldMap::Load(short tilesize)
 				WorldMapTile * tile = &tiles[iMapTileReadCol][iMapTileReadRow];
 				tile->iBackgroundWater = atoi(psz);
 				
-				psz = strtok(NULL, ",\n");
+				psz = strtok(nullptr, ",\n");
 			}
 
 			if(++iMapTileReadRow == iHeight)
@@ -527,7 +527,7 @@ bool WorldMap::Load(short tilesize)
 				tile->iCol = iMapTileReadCol;
 				tile->iRow = iMapTileReadRow;
 				
-				psz = strtok(NULL, ",\n");
+				psz = strtok(nullptr, ",\n");
 			}
 
 			if(++iMapTileReadRow == iHeight)
@@ -565,7 +565,7 @@ bool WorldMap::Load(short tilesize)
 				if(!tile->fAnimated)
 					tile->fAnimated = iForegroundSprite >= WORLD_FOREGROUND_SPRITE_ANIMATED_OFFSET && iForegroundSprite <= WORLD_FOREGROUND_SPRITE_ANIMATED_OFFSET + 29;
 				
-				psz = strtok(NULL, ",\n");
+				psz = strtok(nullptr, ",\n");
 			}
 
 			if(++iMapTileReadRow == iHeight)
@@ -586,7 +586,7 @@ bool WorldMap::Load(short tilesize)
 				WorldMapTile * tile = &tiles[iMapTileReadCol][iMapTileReadRow];
 				tile->iConnectionType = atoi(psz);
 		
-				psz = strtok(NULL, ",\n");
+				psz = strtok(nullptr, ",\n");
 			}
 
 			if(++iMapTileReadRow == iHeight)
@@ -628,7 +628,7 @@ bool WorldMap::Load(short tilesize)
 				
 				tile->iCompleted = tile->iType <= 5 ? -1 : -2;
 
-				psz = strtok(NULL, ",\n");
+				psz = strtok(nullptr, ",\n");
 			}
 
 			if(++iMapTileReadRow == iHeight)
@@ -649,7 +649,7 @@ bool WorldMap::Load(short tilesize)
 				WorldMapTile * tile = &tiles[iMapTileReadCol][iMapTileReadRow];
 				tile->iVehicleBoundary = atoi(psz);
 
-				psz = strtok(NULL, ",\n");
+				psz = strtok(nullptr, ",\n");
 			}
 
 			if(++iMapTileReadRow == iHeight)
@@ -708,19 +708,19 @@ bool WorldMap::Load(short tilesize)
 			if(iCol1 < 0)
 				iCol1 = 0;
 
-			psz = strtok(NULL, ",\n");
+			psz = strtok(nullptr, ",\n");
 
 			short iRow1 = atoi(psz);
 			if(iRow1 < 0)
 				iRow1 = 0;
 
-			psz = strtok(NULL, ",\n");
+			psz = strtok(nullptr, ",\n");
 
 			short iCol2 = atoi(psz);
 			if(iCol2 < 0)
 				iCol2 = 0;
 
-			psz = strtok(NULL, ",\n");
+			psz = strtok(nullptr, ",\n");
 
 			short iRow2 = atoi(psz);
 			if(iRow2 < 0)
@@ -755,41 +755,41 @@ bool WorldMap::Load(short tilesize)
 
 			short iSprite = atoi(psz);
 
-			psz = strtok(NULL, ",\n");
+			psz = strtok(nullptr, ",\n");
 
 			short iStage = atoi(psz);
 
 			if(iStage > iNumStages)
 				iStage = 0;
 
-			psz = strtok(NULL, ",\n");
+			psz = strtok(nullptr, ",\n");
 			short iCol = atoi(psz);
 
-			psz = strtok(NULL, ",\n");
+			psz = strtok(nullptr, ",\n");
 			short iRow = atoi(psz);
 
-			psz = strtok(NULL, ",\n");
+			psz = strtok(nullptr, ",\n");
 			short iMinMoves = atoi(psz);
 
 			if(iMinMoves < 0)
 				iMinMoves = 0;
 
-			psz = strtok(NULL, ",\n");
+			psz = strtok(nullptr, ",\n");
 			short iMaxMoves = atoi(psz);
 
 			if(iMaxMoves < iMinMoves)
 				iMaxMoves = iMinMoves;
 
-			psz = strtok(NULL, ",\n");
+			psz = strtok(nullptr, ",\n");
 			bool fSpritePaces = atoi(psz) == 1;
 
-			psz = strtok(NULL, ",\n");
+			psz = strtok(nullptr, ",\n");
 			short iInitialDirection = atoi(psz);
 
 			if(iInitialDirection != 0)
 				iInitialDirection = 1;
 
-			psz = strtok(NULL, ",\n");
+			psz = strtok(nullptr, ",\n");
 			short iBoundary = atoi(psz);
 
 			vehicles[iCurrentVehicle].Init(iCol, iRow, iStage, iSprite, iMinMoves, iMaxMoves, fSpritePaces, iInitialDirection, iBoundary, iTileSize);
@@ -803,7 +803,7 @@ bool WorldMap::Load(short tilesize)
 
 			iNumInitialBonuses = 0;
 
-			while(psz != NULL)
+			while(psz != nullptr)
 			{
 				//0 indicates no initial bonuses
 				if(psz[0] == '0')
@@ -825,7 +825,7 @@ bool WorldMap::Load(short tilesize)
 				else
 					iInitialBonuses[31] = iBonus;
 
-				psz = strtok(NULL, ",\n");
+				psz = strtok(nullptr, ",\n");
 			}
 
 			iReadType = 17;
@@ -1125,7 +1125,7 @@ void WorldMap::Clear()
 	if(vehicles)
 	{
 		delete [] vehicles;
-		vehicles = NULL;
+		vehicles = nullptr;
 	}
 
 	iNumVehicles = 0;
@@ -1133,7 +1133,7 @@ void WorldMap::Clear()
 	if(warps)
 	{
 		delete [] warps;
-		warps = NULL;
+		warps = nullptr;
 	}
 
 	iNumWarps = 0;
@@ -1159,7 +1159,7 @@ void WorldMap::New(short w, short h)
 void WorldMap::Resize(short w, short h)
 {
 	//Copy tiles from old map
-	WorldMapTile ** tempTiles = NULL;
+	WorldMapTile ** tempTiles = nullptr;
 	short iOldWidth = iWidth;
 	short iOldHeight = iHeight;
 
@@ -1450,13 +1450,13 @@ void WorldMap::Cleanup()
 
 		delete [] tiles;
 
-		tiles = NULL;
+		tiles = nullptr;
 	}
 
 	if(vehicles)
 	{
 		delete [] vehicles;
-		vehicles = NULL;
+		vehicles = nullptr;
 	}
 
 	iNumVehicles = 0;
@@ -1464,7 +1464,7 @@ void WorldMap::Cleanup()
 	if(warps)
 	{
 		delete [] warps;
-		warps = NULL;
+		warps = nullptr;
 	}
 
 	iNumWarps = 0;
@@ -1779,7 +1779,7 @@ short WorldMap::GetNextInterestingMove(short iCol, short iRow)
 	{
 		WorldMapTile * tile = next.front();
 		
-		if(tile == NULL)
+		if(tile == nullptr)
 			return -1;
 
 		next.pop();

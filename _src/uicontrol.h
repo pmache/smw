@@ -78,9 +78,9 @@ class MI_Image : public UI_Control
 	public:
 		MI_Image(gfxSprite * nspr, short x, short y, short srcx, short srcy, short w, short h, short numxframes, short numyframes, short speed);
 		virtual ~MI_Image();
-		
-		void Update();
-		void Draw();
+
+		void Update() override;
+		void Draw() override;
 
 		void SetPosition(short x, short y) {ix = x; iy = y;}
 		void SetAnimationSpeed(short speed) {iSpeed = speed;}
@@ -126,9 +126,9 @@ class MI_Text : public UI_Control
 	public:
 		MI_Text(const char * text, short x, short y, short w, short size, short justified);
 		virtual ~MI_Text();
-		
+
 		void SetText(const char * text);
-		void Draw();
+		void Draw() override;
 
 	private:
 		char * szText;
@@ -142,8 +142,8 @@ class MI_ScoreText : public UI_Control
 	public:
 		MI_ScoreText(short x, short y);
 		virtual ~MI_ScoreText() {}
-		
-		void Draw();
+
+		void Draw() override;
 		void SetScore(short iScore);
 
 	private:
@@ -164,14 +164,14 @@ class MI_IPField : public UI_Control
 		virtual ~MI_IPField();
 
 		char * GetValue();
-		
-		void Update();
-		void Draw();
-		
-		MenuCodeEnum SendInput(CPlayerInput * playerInput);
-		MenuCodeEnum Modify(bool modify);
-		
-		MenuCodeEnum MouseClick(short iMouseX, short iMouseY);
+
+		void Update() override;
+		void Draw() override;
+
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
+		MenuCodeEnum Modify(bool modify) override;
+
+		MenuCodeEnum MouseClick(short iMouseX, short iMouseY) override;
 
 	private:
 
@@ -258,23 +258,23 @@ class MI_SelectField : public UI_Control
 		SF_ListItem GetValue() {return **current;}
 
 		//Called when user selects this control to change it's value
-		MenuCodeEnum Modify(bool modify);
+		MenuCodeEnum Modify(bool modify) override;
 
 		//Adds an item to the list
 		void Add(std::string name, short ivalue, std::string svalue, bool fvalue, bool fhidden, bool fGoodRandom = true, short iIconOverride = -1);
 		void Clear() {items.clear();}
 
-		bool HideItem(short iID, bool fhide);
+		bool HideItem(short iID, bool fHide);
 		void HideAllItems(bool fHide);
 
 		//Updates animations or other events every frame
-		void Update();
+		void Update() override;
 
 		//Draws every frame
-		virtual void Draw();
+		void Draw() override;
 
 		//Sends player input to control on every frame
-		virtual MenuCodeEnum SendInput(CPlayerInput * playerInput);
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
 
 		//When the item is changed, this code will be returned from SendInput()
 		void SetItemChangedCode(MenuCodeEnum code) {mcItemChangedCode = code;}
@@ -283,9 +283,9 @@ class MI_SelectField : public UI_Control
 		//Set where the data of this control is written to (some member of game_values probably)
 		void SetData(short * ivalue, std::string * svalue, bool * fvalue) {iValue = ivalue; sValue = svalue; fValue = fvalue;}
 		
-		MenuCodeEnum MouseClick(short iMouseX, short iMouseY);
+		MenuCodeEnum MouseClick(short iMouseX, short iMouseY) override;
 
-		void Refresh();
+		void Refresh() override;
 
 		void SetValues();
 
@@ -334,7 +334,7 @@ class MI_ImageSelectField : public MI_SelectField
 		MI_ImageSelectField(gfxSprite * nspr, gfxSprite * nspr_image, short x, short y, const char * name, short width, short indent, short imageHeight, short imageWidth);
 		virtual ~MI_ImageSelectField();
 
-		void Draw();
+		void Draw() override;
 		
 	private:
 
@@ -349,16 +349,16 @@ class MI_Button : public UI_Control
 		MI_Button(gfxSprite * nspr, short x, short y, const char * name, short width, short justified);
 		~MI_Button() {}
 
-		MenuCodeEnum Modify(bool fModify);
+		MenuCodeEnum Modify(bool fModify) override;
 
-		void Draw();
-		MenuCodeEnum SendInput(CPlayerInput * playerInput);
+		void Draw() override;
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
 
 		void SetName(const char * name);
 		void SetCode(MenuCodeEnum code) {menuCode = code;}
 		void SetImage(gfxSprite * nsprImage, short x, short y, short w, short h);
 
-		MenuCodeEnum MouseClick(short iMouseX, short iMouseY);
+		MenuCodeEnum MouseClick(short iMouseX, short iMouseY) override;
 
 	protected:
 
@@ -393,9 +393,9 @@ class MI_SliderField : public MI_SelectField
 		void SetPosition(short x, short y);
 
 		//Draws every frame
-		virtual void Draw();
+		void Draw() override;
 		//Sends player input to control on every frame
-		MenuCodeEnum SendInput(CPlayerInput * playerInput);
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
 
 	protected:
 
@@ -412,7 +412,7 @@ class MI_PowerupSlider : public MI_SliderField
 		virtual ~MI_PowerupSlider();
 
 		//Draws every frame
-		void Draw();
+		void Draw() override;
 
 	protected:
 
@@ -428,20 +428,20 @@ class MI_FrenzyModeOptions : public UI_Control
 		MI_FrenzyModeOptions(short x, short y, short width, short numlines);
 		virtual ~MI_FrenzyModeOptions();
 
-		MenuCodeEnum Modify(bool modify);
-		MenuCodeEnum SendInput(CPlayerInput * playerInput);
+		MenuCodeEnum Modify(bool modify) override;
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
 
-		void Update();
-		void Draw();
+		void Update() override;
+		void Draw() override;
 
 		void MoveNext();
 		void MovePrev();
 
 		void SetRandomGameModeSettings();
 
-		MenuCodeEnum MouseClick(short iMouseX, short iMouseY);
+		MenuCodeEnum MouseClick(short iMouseX, short iMouseY) override;
 
-		void Refresh();
+		void Refresh() override;
 
 	private:
 		
@@ -478,18 +478,18 @@ class MI_TextField : public UI_Control
 		char * GetValue() {return szValue;}
 
 		//Called when user selects this control to change it's value
-		MenuCodeEnum Modify(bool modify);
+		MenuCodeEnum Modify(bool modify) override;
 
 		void Clear() {szValue[0] = 0; iCursorIndex = 0; iNumChars = 1;}
 
 		//Updates animations or other events every frame
-		void Update();
+		void Update() override;
 
 		//Draws every frame
-		virtual void Draw();
+		void Draw() override;
 
 		//Sends player input to control on every frame
-		virtual MenuCodeEnum SendInput(CPlayerInput * playerInput);
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
 
 		//When the item is changed, this code will be returned from SendInput()
 		void SetItemChangedCode(MenuCodeEnum code) {mcItemChangedCode = code;}
@@ -497,10 +497,10 @@ class MI_TextField : public UI_Control
 
 		//Set where the data of this control is written to (some member of game_values probably)
 		void SetData(char * value, short maxchars);
-		
-		MenuCodeEnum MouseClick(short iMouseX, short iMouseY);
 
-		void Refresh();
+		MenuCodeEnum MouseClick(short iMouseX, short iMouseY) override;
+
+		void Refresh() override;
 
 		void SetDisallowedChars(const char * chars);
 
@@ -540,16 +540,16 @@ class MI_MapField : public UI_Control
 		virtual ~MI_MapField();
 
 		//Called when user selects this control to change it's value
-		MenuCodeEnum Modify(bool modify);
+		MenuCodeEnum Modify(bool modify) override;
 
 		//Updates animations or other events every frame
-		void Update();
+		void Update() override;
 
 		//Draws every frame
-		void Draw();
+		void Draw() override;
 
 		//Sends player input to control on every frame
-		MenuCodeEnum SendInput(CPlayerInput * playerInput);
+		MenuCodeEnum SendInput(CPlayerInput * playerInput) override;
 
 		void AdjustIndicators();
 
@@ -563,7 +563,7 @@ class MI_MapField : public UI_Control
 
 		MenuCodeEnum ChooseRandomMap();
 
-		MenuCodeEnum MouseClick(short iMouseX, short iMouseY);
+		MenuCodeEnum MouseClick(short iMouseX, short iMouseY) override;
 
 		bool MovePrev(bool fScrollFast);
 		bool MoveNext(bool fScrollFast);

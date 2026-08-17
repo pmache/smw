@@ -1,4 +1,4 @@
-/*----------------------------------------------------------+
+﻿/*----------------------------------------------------------+
 | Super Mario War Leveleditor								|
 |															|
 | based on the jnrdev #1/#2 level editor					|
@@ -12,11 +12,12 @@
 | start:		18.12.2003									|
 | last changes:	 3.12.2007									|
 |															|
-|	� 2003-2009 Florian Hufsky <florian.hufsky@gmail.com>	|
+|	ďż˝ 2003-2009 Florian Hufsky <florian.hufsky@gmail.com>	|
 +----------------------------------------------------------*/
 
 #define _SMW_EDITOR
 #include "global.h"
+#include "movingplatform.h"
 
 #ifdef PNG_SAVE_FORMAT
 	#include "savepng.h"
@@ -28,7 +29,9 @@
 
 #ifdef _WIN32
 	#include <windows.h>
+#endif
 
+#if defined(_WIN32) && defined(_MSC_VER)
 	#ifndef _XBOX
 		#pragma comment(linker, "/NODEFAULTLIB:libc.lib")
 
@@ -67,7 +70,7 @@ class MapPlatform
 			for(short i = 0; i < MAPWIDTH; i++)
 				tiles[i] = new TilesetTile[MAPHEIGHT];
 
-			preview = NULL;
+			preview = nullptr;
 		}
 
 		~MapPlatform()
@@ -89,7 +92,7 @@ class MapPlatform
 				SDL_SetColorKey(preview, SDL_TRUE, SDL_MapRGB(preview->format, 255, 0, 255));
 			}
 
-			SDL_FillRect(preview, NULL, SDL_MapRGB(preview->format, 255, 0, 255));
+			SDL_FillRect(preview, nullptr, SDL_MapRGB(preview->format, 255, 0, 255));
 
 			for(short iPlatformX = 0; iPlatformX < MAPWIDTH; iPlatformX++)
 			{
@@ -273,7 +276,7 @@ gfxSprite		spr_poof;
 sfxSound		sfx_transform;
 gfxSprite		spr_overlay, spr_overlayhole;
 
-IO_MovingObject * createpowerup(short iType, short ix, short iy, bool side, bool spawn) {return NULL;}
+IO_MovingObject * createpowerup(short iType, short ix, short iy, bool side, bool spawn) {return nullptr;}
 ///////
 
 gfxSprite spr_eyecandy;
@@ -843,7 +846,7 @@ int editor_edit()
 			//handle messages
 			while(SDL_PollEvent(&event))
 			{
-				const Uint8 * keystate = SDL_GetKeyboardState(NULL);
+				const Uint8 * keystate = SDL_GetKeyboardState(nullptr);
 
 				switch(event.type)
 				{
@@ -1614,7 +1617,7 @@ int editor_edit()
 		}
 		else
 		{
-			SDL_FillRect(screen, NULL, 0x0);
+			SDL_FillRect(screen, nullptr, 0x0);
 			menu_font_large.drawCentered(320, 200, "Map has been deleted.");
 		}
 
@@ -1828,7 +1831,7 @@ void drawlayer(int layer, bool fUseCopied, short iBlockSize)
 	{
 		for(short j = 0; j < MAPHEIGHT; j++)
 		{
-			TilesetTile * tile = NULL;
+			TilesetTile * tile = nullptr;
 			if((move_mode == 1 || move_mode == 3) && i - move_offset_x >= 0 && i - move_offset_x < MAPWIDTH &&
 				j - move_offset_y >= 0 && j - move_offset_y < MAPHEIGHT && 
 				selectedtiles[i - move_offset_x][j - move_offset_y])
@@ -1925,7 +1928,7 @@ void drawmap(bool fScreenshot, short iBlockSize, bool fWithPlatforms)
 
 		SDL_Rect rSrc = {0, 0, iBlockSize, iBlockSize};
 
-		MapBlock * block = NULL;
+		MapBlock * block = nullptr;
 		for(int j = 0; j < MAPHEIGHT; j++)
 		{
 			for(int i = 0; i < MAPWIDTH; i++)
@@ -2042,7 +2045,7 @@ void drawmap(bool fScreenshot, short iBlockSize, bool fWithPlatforms)
 		{
 			for(int i = 0; i < MAPWIDTH; i++)
 			{
-				Warp * warp = NULL;
+				Warp * warp = nullptr;
 				if((move_mode == 1 || move_mode == 3) && i - move_offset_x >= 0 && i - move_offset_x < MAPWIDTH &&
 					j - move_offset_y >= 0 && j - move_offset_y < MAPHEIGHT && 
 					selectedtiles[i - move_offset_x][j - move_offset_y])
@@ -2134,7 +2137,7 @@ int editor_warp()
 		drawmap(false, TILESIZE);
 		menu_shade.draw(0, 0);
 
-		SDL_BlitSurface(spr_warps[0].getSurface(), NULL, screen, &r);
+		SDL_BlitSurface(spr_warps[0].getSurface(), nullptr, screen, &r);
 		menu_font_small.drawRightJustified(640, 0, maplist.currentFilename());
 
 		DrawMessage();
@@ -2181,7 +2184,7 @@ int editor_eyecandy()
 						return EDITOR_EDIT;	
 					}
 				}
-
+				// fall through
 				case SDL_MOUSEBUTTONDOWN:
 				{
 					if(event.button.button == SDL_BUTTON_LEFT)
@@ -2286,7 +2289,7 @@ short * GetBlockProperty(short x, short y, short iBlockCol, short iBlockRow, sho
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 int editor_properties(short iBlockCol, short iBlockRow)
@@ -2324,7 +2327,7 @@ int editor_properties(short iBlockCol, short iBlockRow)
 						short * piSetting = GetBlockProperty(iMouseX, iMouseY, iBlockCol, iBlockRow, &iSettingIndex);
 
 						//If shift is held, set all powerups to this setting
-						short iValue = event.key.keysym.sym - SDLK_0;
+    int iValue = event.key.keysym.sym - SDLK_0;
 
 						if(event.key.keysym.sym == SDLK_0)
 							iValue = 10;
@@ -2333,7 +2336,7 @@ int editor_properties(short iBlockCol, short iBlockRow)
 						else if(event.key.keysym.sym == SDLK_d)
 							iValue = g_iDefaultPowerupPresets[0][iSettingIndex];
 						
-						const Uint8 * keystate = SDL_GetKeyboardState(NULL);
+						const Uint8 * keystate = SDL_GetKeyboardState(nullptr);
 						if (keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]) 
 						{
 							for(short iSetting = 0; iSetting < NUM_BLOCK_SETTINGS; iSetting++)
@@ -2350,7 +2353,7 @@ int editor_properties(short iBlockCol, short iBlockRow)
 						}
 					}
 				}
-
+				// fall through
 				case SDL_MOUSEBUTTONDOWN:
 				{
 					short iHiddenCheckboxY = 0;
@@ -2921,7 +2924,7 @@ int editor_platforms()
 						}
 						else if(PLATFORM_EDIT_STATE_PATH == iPlatformEditState)
 						{
-							const Uint8 * keystate = SDL_GetKeyboardState(NULL);
+							const Uint8 * keystate = SDL_GetKeyboardState(nullptr);
 							if(g_Platforms[iEditPlatform].iPathType == 2 && (keystate[SDL_SCANCODE_Z] || keystate[SDL_SCANCODE_X] || keystate[SDL_SCANCODE_C]))
 							{
 								UpdatePlatformPathRadius(iEditPlatform, event.button.x, event.button.y, keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT], keystate[SDL_SCANCODE_Z] != 0, keystate[SDL_SCANCODE_C] != 0);
@@ -2950,7 +2953,7 @@ int editor_platforms()
 						}
 						else if(PLATFORM_EDIT_STATE_PATH == iPlatformEditState)
 						{
-							const Uint8 * keystate = SDL_GetKeyboardState(NULL);
+							const Uint8 * keystate = SDL_GetKeyboardState(nullptr);
 							if(g_Platforms[iEditPlatform].iPathType == 0)
 							{
 								UpdatePlatformPathEnd(iEditPlatform, event.button.x, event.button.y, keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]);
@@ -2962,6 +2965,7 @@ int editor_platforms()
 						}
 					}
 				}
+				// fall through
 				case SDL_MOUSEMOTION:
 				{
 					short ix = event.button.x / TILESIZE;
@@ -3010,7 +3014,7 @@ int editor_platforms()
 					{
 						if(event.motion.state == SDL_BUTTON(SDL_BUTTON_LEFT))
 						{
-							const Uint8 * keystate = SDL_GetKeyboardState(NULL);
+							const Uint8 * keystate = SDL_GetKeyboardState(nullptr);
 							if(g_Platforms[iEditPlatform].iPathType == 2 && (keystate[SDL_SCANCODE_Z] || keystate[SDL_SCANCODE_X] || keystate[SDL_SCANCODE_C]))
 							{
 								UpdatePlatformPathRadius(iEditPlatform, event.button.x, event.button.y, keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT], keystate[SDL_SCANCODE_Z] != 0, keystate[SDL_SCANCODE_C] != 0);
@@ -3022,7 +3026,7 @@ int editor_platforms()
 						}
 						else if(event.motion.state == SDL_BUTTON(SDL_BUTTON_RIGHT))
 						{
-							const Uint8 * keystate = SDL_GetKeyboardState(NULL);
+							const Uint8 * keystate = SDL_GetKeyboardState(nullptr);
 							if(g_Platforms[iEditPlatform].iPathType == 0)
 							{
 								UpdatePlatformPathEnd(iEditPlatform, event.button.x, event.button.y, keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]);
@@ -3514,7 +3518,7 @@ int editor_maphazards()
 					{
 						if(MAPHAZARD_EDIT_STATE_SELECT == iEditState)
 						{
-							short iHazard = event.key.keysym.sym - SDLK_1;
+    int iHazard = event.key.keysym.sym - SDLK_1;
 							if(iHazard < g_map.iNumMapHazards)
 							{
 								iEditMapHazard = iHazard;
@@ -3774,6 +3778,7 @@ int editor_maphazards()
 						}
 					}
 				}
+				// fall through
 				case SDL_MOUSEMOTION:
 				{
 					short iClickX = event.button.x;
@@ -3986,7 +3991,7 @@ void AdjustMapHazardRadius(MapHazard * hazard, short iClickX, short iClickY)
 	if(angle < 0.0f)
 		angle += TWO_PI;
 
-	const Uint8 * keystate = SDL_GetKeyboardState(NULL);
+	const Uint8 * keystate = SDL_GetKeyboardState(nullptr);
 	if(keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT])
 	{
 		float dSector = TWO_PI / 16;
@@ -4278,7 +4283,7 @@ int editor_tiles()
 		
 		//drawmap(false, TILESIZE);
 		//menu_shade.draw(0, 0);
-		SDL_FillRect(screen, NULL, 0xFF888888);
+		SDL_FillRect(screen, nullptr, 0xFF888888);
 
 		SDL_Rect rectSrc;
 		rectSrc.x = view_tileset_x << 5;
@@ -4594,7 +4599,7 @@ int editor_modeitems()
 						}
 					}
 				}
-
+				// fall through
 				case SDL_MOUSEBUTTONDOWN:
 				{
 					if(event.button.button == SDL_BUTTON_LEFT)
@@ -4650,7 +4655,7 @@ int editor_modeitems()
 				{
 					if(dragmodeitem >= 0 && event.motion.state == SDL_BUTTON(SDL_BUTTON_LEFT))
 					{
-						const Uint8 * keystate = SDL_GetKeyboardState(NULL);
+						const Uint8 * keystate = SDL_GetKeyboardState(nullptr);
 						bool fShiftDown = keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT];
 							
 						if(modeitemmode == 0)
@@ -5127,7 +5132,7 @@ int editor_animation()
 
 		//drawmap(false, TILESIZE);
 		//menu_shade.draw(0, 0);
-		SDL_FillRect(screen, NULL, 0xFF888888);
+		SDL_FillRect(screen, nullptr, 0xFF888888);
 
 		for(short iCol = view_animated_tileset_x; iCol < view_animated_tileset_x + 20; iCol++)
 		{
@@ -5444,7 +5449,7 @@ bool dialog(const char * title, const char * instructions, char * input, int inp
 							//insert character into fileName and onScreenText and increment current char
 							Uint8 key = event.key.keysym.sym;
 
-							const Uint8 * keystate = SDL_GetKeyboardState(NULL);
+							const Uint8 * keystate = SDL_GetKeyboardState(nullptr);
 							if (keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]) 
 							{
 								if(event.key.keysym.sym == 45)
@@ -5712,7 +5717,7 @@ void insert_platforms_into_map()
 		float fStartX = (float)(g_Platforms[iPlatform].iStartX);
 		float fStartY = (float)(g_Platforms[iPlatform].iStartY);
 				
-		MovingPlatformPath * path = NULL;
+		MovingPlatformPath * path = nullptr;
 		
 		if(g_Platforms[iPlatform].iPathType == 0)
 		{
@@ -6162,7 +6167,7 @@ bool ReadAnimatedTileTypeFile(const char * szFile)
 	if(File_Exists(szFile))
 	{
 		FILE * tsf = fopen(szFile, "rb");
-		if(tsf == NULL)
+		if(tsf == nullptr)
 		{
 			printf("ERROR: couldn't open tileset file: %s\n", szFile);
 			return false;
@@ -6194,7 +6199,7 @@ bool ReadAnimatedTileTypeFile(const char * szFile)
 bool WriteAnimatedTileTypeFile(const char * szFile)
 {
 	FILE * tsf = fopen(szFile, "wb");
-	if(tsf == NULL)
+	if(tsf == nullptr)
 	{
 		printf("ERROR: couldn't open tileset file to save tile types: %s\n", szFile);
 		return false;

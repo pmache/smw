@@ -1,4 +1,4 @@
-#include "global.h"
+﻿#include "global.h"
 #include <math.h>
 
 extern	gfxFont font[3];
@@ -300,9 +300,9 @@ void CGameMode::init()  //called once when the game is started
 	if(goal == 1000)
 		goal = 999; //Cap goal for 3 digit scoreboard
 
-	chicken = NULL; 
-	tagged = NULL;
-	frenzyowner = NULL;
+	chicken = nullptr; 
+	tagged = nullptr;
+	frenzyowner = nullptr;
 
 	winningteam = -1; 
 	gameover = false; 
@@ -472,7 +472,7 @@ short CGameMode::GetScoreRankedPlayerList(CPlayer * players[4], bool fGetHighest
 	return iNumPlayersInList;
 }
 
-short CGameMode::GetClosestGoal(short iGoal)
+short CGameMode::GetClosestGoal(short iGoal) const
 {
 	short iDifference = 16000;
 	short iOptionValue = 0;
@@ -927,7 +927,7 @@ short CGM_Chicken::playerkilledself(CPlayer &player, killstyle style)
 		player.diedas = 1; //flag to use chocobo corpse sprite
 
 		if(!gameover)
-			chicken = NULL;
+			chicken = nullptr;
 	}
 
 	return player_kill_normal;
@@ -1055,7 +1055,7 @@ void CGM_Tag::think()
 		if(tagged->score->score <= 0)
 		{
 			RemoveTeam(tagged->teamID);
-			tagged = NULL;
+			tagged = nullptr;
 		}
 	}
 }
@@ -1258,7 +1258,7 @@ void CGM_ShyGuyTag::think()
 		{
 			scorecounter = 0;
 
-			CPlayer * pCheckWinner = NULL;
+			CPlayer * pCheckWinner = nullptr;
 			bool fAlreadyScored[4] = {false, false, false, false};
 			for(short iPlayer = 0; iPlayer < list_players_cnt; iPlayer++)
 			{
@@ -1637,27 +1637,27 @@ void CGM_Frenzy::think()
 		if(0 == iSelectedPowerup)
 		{
 			if(!frenzyowner->bobomb)
-				frenzyowner = NULL;
+				frenzyowner = nullptr;
 		}
 		else if(5 > iSelectedPowerup)
 		{
 			if(frenzyowner->powerup != iSelectedPowerup)
-				frenzyowner = NULL;
+				frenzyowner = nullptr;
 		}
 		else if(5 == iSelectedPowerup)
 		{
 			if(game_values.gamepowerups[frenzyowner->globalID] != 9)
-				frenzyowner = NULL;
+				frenzyowner = nullptr;
 		}
 		else if(6 == iSelectedPowerup)
 		{
 			if(game_values.gamepowerups[frenzyowner->globalID] != 16)
-				frenzyowner = NULL;
+				frenzyowner = nullptr;
 		}
 		else if(7 == iSelectedPowerup)
 		{
 			if(game_values.gamepowerups[frenzyowner->globalID] != 10)
-				frenzyowner = NULL;
+				frenzyowner = nullptr;
 		}
 	}
 }
@@ -1785,7 +1785,7 @@ short CGM_Domination::playerkilledself(CPlayer &player, killstyle style)
 	CGameMode::playerkilledself(player, style);
 
 	//Update areas the dead player owned
-	objectcontainer[0].adjustPlayerAreas(NULL, &player);
+	objectcontainer[0].adjustPlayerAreas(nullptr, &player);
 
 	return player_kill_normal;
 }
@@ -2495,8 +2495,8 @@ void CGM_Star::init()
 
 	for(short iStar = 0; iStar < 3; iStar++)
 	{
-		starItem[iStar] = NULL;
-		starPlayer[iStar] = NULL;
+		starItem[iStar] = nullptr;
+		starPlayer[iStar] = nullptr;
 	}
 
 	SetupMode();
@@ -2511,10 +2511,10 @@ void CGM_Star::SetupMode()
 		{
 			starItem[iStar]->Drop();
 			starItem[iStar]->dead = true;
-			starItem[iStar] = NULL;
+			starItem[iStar] = nullptr;
 		}
 
-		starPlayer[iStar] = NULL;
+		starPlayer[iStar] = nullptr;
 	}
 
 	//If multi star, add more stars
@@ -2609,7 +2609,7 @@ void CGM_Star::think()
 				if(starPlayer[0]->score->score <= 0)
 				{
 					fDisplayTimer = !RemoveTeam(starPlayer[0]->teamID);
-					starPlayer[0] = NULL;
+					starPlayer[0] = nullptr;
 				}
 			}
 
@@ -2793,7 +2793,7 @@ bool CGM_Star::isplayerstar(CPlayer * player)
 
 CPlayer * CGM_Star::swapplayer(short id, CPlayer * player)
 {
-	CPlayer * oldstar = NULL;
+	CPlayer * oldstar = nullptr;
 	if(starPlayer[id])
 	{
 		oldstar = starPlayer[id];
@@ -2857,7 +2857,7 @@ void CGM_CaptureTheFlag::init()
 
 	if(game_values.gamemodesettings.flag.centerflag)
 	{
-		CO_Flag * centerflag = new CO_Flag(&spr_flags, NULL, -1, -1);
+		CO_Flag * centerflag = new CO_Flag(&spr_flags, nullptr, -1, -1);
 		objectcontainer[1].add(centerflag);
 	}
 }

@@ -1,4 +1,4 @@
-#include <ctype.h>
+﻿#include <ctype.h>
 #include <string.h>
 
 #ifdef _DEBUG
@@ -10,16 +10,16 @@
 bool CopyFile(const char *src, const char *dest, bool dontOverwrite)
 {
     struct stat fileinfo;
-    FILE *s = NULL, *d = NULL;
+    FILE *s = nullptr, *d = nullptr;
     char buf[BUFSIZ];
     size_t actual_bufsiz;
 
     if ((dontOverwrite && stat(dest, &fileinfo) != -1) ||
-        (s = fopen(src, "rb")) == NULL || (d = fopen(dest, "wb")) == NULL)
+        (s = fopen(src, "rb")) == nullptr || (d = fopen(dest, "wb")) == nullptr)
     {
-        if (s != NULL)
+        if (s != nullptr)
              fclose(s);
-        if (d != NULL)
+        if (d != nullptr)
              fclose(d);
         return false;
     }

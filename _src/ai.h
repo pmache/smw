@@ -1,6 +1,7 @@
-#ifndef _AI_H
+﻿#ifndef _AI_H
 #define _AI_H
 
+class CPlayer;
 class CObject;
 
 class NearestObjects
@@ -11,11 +12,11 @@ class NearestObjects
 
 		void Reset()
 		{
-			player = NULL;
-			goal = NULL;
-			stomp = NULL;
-			teammate = NULL;
-			threat = NULL;
+			player = nullptr;
+			goal = nullptr;
+			stomp = nullptr;
+			teammate = nullptr;
+			threat = nullptr;
 
 			playerdistance = 640000;
 			goaldistance = 640000;
@@ -94,7 +95,7 @@ class CSimpleAI : public CPlayerAI
 	public:
 		CSimpleAI() {}
 		~CSimpleAI() {}
-		void Think(COutputControl * playerKeys);
+		void Think(COutputControl * playerKeys) override;
 
 };
 

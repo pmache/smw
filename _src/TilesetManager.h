@@ -1,4 +1,4 @@
-#ifndef __TILESETMANAGER_H_
+﻿#ifndef __TILESETMANAGER_H_
 #define __TILESETMANAGER_H_
 
 class CTileset
@@ -16,12 +16,12 @@ class CTileset
 		
 		void Draw(SDL_Surface * dstSurface, short iTileSize, SDL_Rect * srcRect, SDL_Rect * dstRect);
 
-		short GetHeight() {return iHeight;}
-		short GetWidth() {return iWidth;}
+		short GetHeight() const {return iHeight;}
+		short GetWidth() const {return iWidth;}
 		
 		void SaveTileset();
 
-		SDL_Surface * GetSurface(short iIndex) { if(iIndex < 0 || iIndex > 2) return NULL;  return sSurfaces[iIndex];}
+		SDL_Surface * GetSurface(short iIndex) { if(iIndex < 0 || iIndex > 2) return nullptr;  return sSurfaces[iIndex];}
 
 	private:
 		char szName[256];
@@ -54,7 +54,7 @@ class CTilesetManager : public SimpleDirectoryList
 		void SaveTilesets();
 
 		CTileset * GetClassicTileset() {return tClassicTileset;}
-		short GetClassicTilesetIndex() {return iClassicTilesetIndex;}
+		short GetClassicTilesetIndex() const {return iClassicTilesetIndex;}
 
 		CTileset * GetTileset(short iID);
 		SDL_Rect rRects[3][32][32];

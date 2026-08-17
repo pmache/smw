@@ -1,4 +1,4 @@
-#include "SDL_mixer.h"
+﻿#include "SDL_mixer.h"
 #include "SDL.h"
 #include <string>
 
@@ -22,6 +22,8 @@ class sfxSound
 		int playloop(int iLoop);
 		void stop();
 		void sfx_pause();
+		void pause();
+		void resume();
 
 		void resetpause() {paused = false;}
 

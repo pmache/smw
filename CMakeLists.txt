@@ -1,4 +1,4 @@
-# CMakeLists.txt for Super Mario War
+﻿# CMakeLists.txt for Super Mario War
 #
 # Builds three executables:
 #   smw        - the game
@@ -25,12 +25,16 @@ endif()
 #------------------------------------------------------------------------------
 # C++ standard
 #
-# The codebase is old C++98; it also compiles under C++11.  C++98 is the
+# C++11 standard (compiles under gnu++11 on GCC/Clang)
 # faithful target.  CMAKE_CXX_EXTENSIONS is left at its default (ON) so that
-# gnu++98 is used on GCC/Clang, which is more permissive for legacy code.
+# CMAKE_CXX_EXTENSIONS=ON so gnu++11 with GNU extensions
 #------------------------------------------------------------------------------
-set(CMAKE_CXX_STANDARD 98)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Enable all common warnings (C++ only — SFont.c is compiled as C and doesn't support -Woverloaded-virtual)
+add_compile_options(-Wall -Wextra -Wno-unused-parameter)
+add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-Wno-overloaded-virtual>)
 
 #------------------------------------------------------------------------------
 # Dependencies

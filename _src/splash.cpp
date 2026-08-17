@@ -1,4 +1,4 @@
-#ifdef _XBOX
+﻿#ifdef _XBOX
 	#include <xtl.h>
 #endif
 
@@ -633,7 +633,7 @@ bool LoadAndSplashScreen()
 			}
 		}
 
-		SDL_FillRect(screen, NULL, 0x0);
+		SDL_FillRect(screen, nullptr, 0x0);
 
 		if(state == 0 || state == 1 || state == 2)
 		{

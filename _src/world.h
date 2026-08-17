@@ -1,4 +1,4 @@
-#ifndef __WORLD_H_
+﻿#ifndef __WORLD_H_
 #define __WORLD_H_
 
 #include <queue>
@@ -89,7 +89,7 @@ class WorldVehicle : public WorldMovingObject
 		void Init(short iCol, short iRow, short iAction, short iSprite, short iMinMoves, short iMaxMoves, bool fSpritePaces, short iInitialDirection, short iBoundary, short tilesize);
 		void Move();
 		
-		bool Update();
+		bool Update() override;
 		void Draw(short iWorldOffsetX, short iWorldOffsetY, bool fVehiclesSleeping);
 
 	private:
@@ -209,7 +209,7 @@ class WorldMap
 
 		void SetInitialPowerups();
 
-		short GetMusicCategory() {return iMusicCategory;}
+		short GetMusicCategory() const {return iMusicCategory;}
 
 		const char * GetWorldName() {return worldName.c_str();}
 

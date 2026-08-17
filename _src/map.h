@@ -1,6 +1,9 @@
-
+﻿
 #ifndef SMW_MAP_H
 #define SMW_MAP_H
+
+class CPlayer;
+class IO_MovingObject;
 
 enum TileType{tile_nonsolid = 0, tile_solid = 1, tile_solid_on_top = 2, tile_ice = 3, tile_death = 4, tile_death_on_top = 5, tile_death_on_bottom = 6, tile_death_on_left = 7, tile_death_on_right = 8, tile_ice_on_top = 9, tile_ice_death_on_bottom = 10, tile_ice_death_on_left = 11, tile_ice_death_on_right = 12, tile_super_death = 13, tile_super_death_top = 14, tile_super_death_bottom = 15, tile_super_death_left = 16, tile_super_death_right = 17, tile_player_death = 18, tile_gap = 19};
 enum ReadType{read_type_full = 0, read_type_preview = 1, read_type_summary = 2};
@@ -148,7 +151,7 @@ class CMap
 		void UpdateAllTileGaps();
 		void UpdateTileGap(short i, short j);
 
-		void loadPlatforms(FILE * mapfile, bool fPreview, int version[4], short * translationid = NULL, short * tilesetwidths = NULL, short * tilesetheights = NULL, short iMaxTilesetID = -1);
+		void loadPlatforms(FILE * mapfile, bool fPreview, int version[4], short * translationid = nullptr, short * tilesetwidths = nullptr, short * tilesetheights = nullptr, short iMaxTilesetID = -1);
 
 		//void convertMap();
 
@@ -174,7 +177,7 @@ class CMap
 
 		//returns the tiletype at the specific position (map coordinates) of the
 		//front most visible tile
-		int map(int x, int y)
+		int map(int x, int y) const
 		{
 			return mapdatatop[x][y].iFlags;
 		}
@@ -194,7 +197,7 @@ class CMap
 			return &objectdata[x][y];
 		}
 
-		bool spawn(short iType, short x, short y)
+		bool spawn(short iType, short x, short y) const
 		{
 			return !nospawn[iType][x][y];
 		}
@@ -208,7 +211,7 @@ class CMap
 		void movingPlatformCollision(IO_MovingObject * object);
 		bool movingPlatformCheckSides(IO_MovingObject * object);
 
-		bool isconnectionlocked(int connection) {return warplocked[connection];}
+		bool isconnectionlocked(int connection) const {return warplocked[connection];}
 		void lockconnection(int connection);
 
 		WarpExit * getRandomWarpExit(int connection, int currentID);

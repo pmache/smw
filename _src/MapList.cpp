@@ -1,4 +1,4 @@
-
+﻿
 #ifdef _XBOX
 	#include <xtl.h>
 #endif
@@ -560,7 +560,7 @@ void MapList::ReadFilters()
 				bool fErrorReading = false;
 				for(short iFilter = 0; iFilter < NUM_AUTO_FILTERS; iFilter++)
 				{
-					char * psz = strtok(NULL, ",\n");
+					char * psz = strtok(nullptr, ",\n");
 					
 					if(psz)
 					{
@@ -615,17 +615,18 @@ void MapList::ReadFilters()
 				if(psz)
 					iVersion[0] = atoi(psz);
 
-				psz = strtok(NULL, ".\n");
+				psz = strtok(nullptr, ".\n");
 				if(psz)
 					iVersion[1] = atoi(psz);
 
-				psz = strtok(NULL, ".\n");
+				psz = strtok(nullptr, ".\n");
 				if(psz)
 					iVersion[2] = atoi(psz);
 
-				psz = strtok(NULL, ".\n");
+				psz = strtok(nullptr, ".\n");
 				if(psz)
 					iVersion[3] = atoi(psz);
+				(void)iVersion;  // suppress -Wunused-but-set-variable (version read but not consumed)
 
 				iReadState = 1;
 				continue;

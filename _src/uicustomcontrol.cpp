@@ -1,4 +1,4 @@
-#include "global.h"
+﻿#include "global.h"
 #include <math.h>
 
 extern const char * Joynames[30];
@@ -30,7 +30,7 @@ MI_InputControlField::MI_InputControlField(gfxSprite * nspr, short x, short y, c
 	fSelected = false;
 
 	iDevice = DEVICE_KEYBOARD;
-	iKey = NULL;
+	iKey = nullptr;
 	iType = 0;
 	iKeyIndex = 0;
 	iPlayerIndex = 0;
@@ -327,7 +327,7 @@ void MI_InputControlField::Draw()
 
 	menu_font_large.drawChopRight(ix + 16, iy + 5, iIndent - 8, szName);
 
-	if(iKey == NULL)
+	if(iKey == nullptr)
 		menu_font_large.drawChopRight(ix + iIndent + 8, iy + 5, iWidth - iIndent - 16, "Unassigned");
 	else if(fModifying)
 		menu_font_large.drawChopRight(ix + iIndent + 8, iy + 5, iWidth - iIndent - 16, "(Press Button)");
@@ -416,26 +416,26 @@ MI_InputControlContainer::MI_InputControlContainer(gfxSprite * spr_button, short
 	mInputMenu->AddNonControl(miImage[1]);
 	mInputMenu->AddNonControl(miText);
 
-	mInputMenu->AddControl(miDeviceSelectField, miBackButton, miInputTypeButton, NULL, miBackButton);
-	mInputMenu->AddControl(miInputTypeButton, miDeviceSelectField, miGameInputControlFields[0], NULL, miBackButton);
-	mInputMenu->AddControl(miGameInputControlFields[0], miInputTypeButton, miGameInputControlFields[1], NULL, miBackButton);
-	mInputMenu->AddControl(miGameInputControlFields[1], miGameInputControlFields[0], miGameInputControlFields[2], NULL, miBackButton);
-	mInputMenu->AddControl(miGameInputControlFields[2], miGameInputControlFields[1], miGameInputControlFields[3], NULL, miBackButton);
-	mInputMenu->AddControl(miGameInputControlFields[3], miGameInputControlFields[2], miGameInputControlFields[4], NULL, miBackButton);
-	mInputMenu->AddControl(miGameInputControlFields[4], miGameInputControlFields[3], miGameInputControlFields[5], NULL, miBackButton);
-	mInputMenu->AddControl(miGameInputControlFields[5], miGameInputControlFields[4], miGameInputControlFields[6], NULL, miBackButton);
-	mInputMenu->AddControl(miGameInputControlFields[6], miGameInputControlFields[5], miGameInputControlFields[7], NULL, miBackButton);
-	mInputMenu->AddControl(miGameInputControlFields[7], miGameInputControlFields[6], miMenuInputControlFields[0], NULL, miBackButton);
-	mInputMenu->AddControl(miMenuInputControlFields[0], miGameInputControlFields[7], miMenuInputControlFields[1], NULL, miBackButton);
-	mInputMenu->AddControl(miMenuInputControlFields[1], miMenuInputControlFields[0], miMenuInputControlFields[2], NULL, miBackButton);
-	mInputMenu->AddControl(miMenuInputControlFields[2], miMenuInputControlFields[1], miMenuInputControlFields[3], NULL, miBackButton);
-	mInputMenu->AddControl(miMenuInputControlFields[3], miMenuInputControlFields[2], miMenuInputControlFields[4], NULL, miBackButton);
-	mInputMenu->AddControl(miMenuInputControlFields[4], miMenuInputControlFields[3], miMenuInputControlFields[5], NULL, miBackButton);
-	mInputMenu->AddControl(miMenuInputControlFields[5], miMenuInputControlFields[4], miMenuInputControlFields[6], NULL, miBackButton);
-	mInputMenu->AddControl(miMenuInputControlFields[6], miMenuInputControlFields[5], miMenuInputControlFields[7], NULL, miBackButton);
-	mInputMenu->AddControl(miMenuInputControlFields[7], miMenuInputControlFields[6], miBackButton, NULL, miBackButton);
+	mInputMenu->AddControl(miDeviceSelectField, miBackButton, miInputTypeButton, nullptr, miBackButton);
+	mInputMenu->AddControl(miInputTypeButton, miDeviceSelectField, miGameInputControlFields[0], nullptr, miBackButton);
+	mInputMenu->AddControl(miGameInputControlFields[0], miInputTypeButton, miGameInputControlFields[1], nullptr, miBackButton);
+	mInputMenu->AddControl(miGameInputControlFields[1], miGameInputControlFields[0], miGameInputControlFields[2], nullptr, miBackButton);
+	mInputMenu->AddControl(miGameInputControlFields[2], miGameInputControlFields[1], miGameInputControlFields[3], nullptr, miBackButton);
+	mInputMenu->AddControl(miGameInputControlFields[3], miGameInputControlFields[2], miGameInputControlFields[4], nullptr, miBackButton);
+	mInputMenu->AddControl(miGameInputControlFields[4], miGameInputControlFields[3], miGameInputControlFields[5], nullptr, miBackButton);
+	mInputMenu->AddControl(miGameInputControlFields[5], miGameInputControlFields[4], miGameInputControlFields[6], nullptr, miBackButton);
+	mInputMenu->AddControl(miGameInputControlFields[6], miGameInputControlFields[5], miGameInputControlFields[7], nullptr, miBackButton);
+	mInputMenu->AddControl(miGameInputControlFields[7], miGameInputControlFields[6], miMenuInputControlFields[0], nullptr, miBackButton);
+	mInputMenu->AddControl(miMenuInputControlFields[0], miGameInputControlFields[7], miMenuInputControlFields[1], nullptr, miBackButton);
+	mInputMenu->AddControl(miMenuInputControlFields[1], miMenuInputControlFields[0], miMenuInputControlFields[2], nullptr, miBackButton);
+	mInputMenu->AddControl(miMenuInputControlFields[2], miMenuInputControlFields[1], miMenuInputControlFields[3], nullptr, miBackButton);
+	mInputMenu->AddControl(miMenuInputControlFields[3], miMenuInputControlFields[2], miMenuInputControlFields[4], nullptr, miBackButton);
+	mInputMenu->AddControl(miMenuInputControlFields[4], miMenuInputControlFields[3], miMenuInputControlFields[5], nullptr, miBackButton);
+	mInputMenu->AddControl(miMenuInputControlFields[5], miMenuInputControlFields[4], miMenuInputControlFields[6], nullptr, miBackButton);
+	mInputMenu->AddControl(miMenuInputControlFields[6], miMenuInputControlFields[5], miMenuInputControlFields[7], nullptr, miBackButton);
+	mInputMenu->AddControl(miMenuInputControlFields[7], miMenuInputControlFields[6], miBackButton, nullptr, miBackButton);
 
-	mInputMenu->AddControl(miBackButton, miMenuInputControlFields[7], miDeviceSelectField, miDeviceSelectField, NULL);
+	mInputMenu->AddControl(miBackButton, miMenuInputControlFields[7], miDeviceSelectField, miDeviceSelectField, nullptr);
 		
 	mInputMenu->SetHeadControl(miDeviceSelectField);
 
@@ -641,12 +641,14 @@ void MI_TeamSelect::Draw()
 
 	miImage->Draw();
 
-	short iPlayerCount = 0;
+	// short iPlayerCount = 0;  // set but never used — commented out
 	
 	for(short iPlayer = 0; iPlayer < 4; iPlayer++)
 	{
 		if(game_values.playercontrol[iPlayer] > 0)
-			iPlayerCount++;
+		{
+			// iPlayerCount++;
+		}
 	}
 
 	for(short iTeam = 0; iTeam < 4; iTeam++)
@@ -1241,7 +1243,7 @@ MI_PowerupSelection::MI_PowerupSelection(short x, short y, short width, short nu
 	miOverride->Add("Game Only", 1, "", false, false);
 	miOverride->Add("Basic Average", 2, "", false, false);
 	miOverride->Add("Weighted Average", 3, "", false, false);
-	miOverride->SetData(&game_values.overridepowerupsettings, NULL, NULL);
+	miOverride->SetData(&game_values.overridepowerupsettings, nullptr, nullptr);
 	miOverride->SetKey(game_values.overridepowerupsettings);
 	//miOverride->SetItemChangedCode(MENU_CODE_POWERUP_OVERRIDE_CHANGED);
 
@@ -1263,7 +1265,7 @@ MI_PowerupSelection::MI_PowerupSelection(short x, short y, short width, short nu
 	miPreset->Add("Super Mario Bros 2", 14, "", false, false);
 	miPreset->Add("Super Mario Bros 3", 15, "", false, false);
 	miPreset->Add("Super Mario World", 16, "", false, false);
-	miPreset->SetData(&game_values.poweruppreset, NULL, NULL);
+	miPreset->SetData(&game_values.poweruppreset, nullptr, nullptr);
 	miPreset->SetKey(game_values.poweruppreset);
 	miPreset->SetItemChangedCode(MENU_CODE_POWERUP_PRESET_CHANGED);
 
@@ -1282,7 +1284,7 @@ MI_PowerupSelection::MI_PowerupSelection(short x, short y, short width, short nu
 		miPowerupSlider[iPowerup]->Add("", 9, "", false, false);
 		miPowerupSlider[iPowerup]->Add("", 10, "", false, false);
 		miPowerupSlider[iPowerup]->SetNoWrap(true);
-		miPowerupSlider[iPowerup]->SetData(&game_values.powerupweights[iPowerupPositionMap[iPowerup]], NULL, NULL);
+		miPowerupSlider[iPowerup]->SetData(&game_values.powerupweights[iPowerupPositionMap[iPowerup]], nullptr, nullptr);
 		miPowerupSlider[iPowerup]->SetKey(game_values.powerupweights[iPowerupPositionMap[iPowerup]]);
 		miPowerupSlider[iPowerup]->SetItemChangedCode(MENU_CODE_POWERUP_SETTING_CHANGED);
 	}
@@ -1309,8 +1311,8 @@ MI_PowerupSelection::MI_PowerupSelection(short x, short y, short width, short nu
 	miDialogYesButton->Show(false);
 	miDialogNoButton->Show(false);
 
-	mMenu->AddControl(miOverride, NULL, miPreset, NULL, NULL);
-	mMenu->AddControl(miPreset, miOverride, miPowerupSlider[0], NULL, NULL);
+	mMenu->AddControl(miOverride, nullptr, miPreset, nullptr, nullptr);
+	mMenu->AddControl(miPreset, miOverride, miPowerupSlider[0], nullptr, nullptr);
 
 	miUpArrow = new MI_Image(&menu_verticalarrows, 310, 128, 20, 0, 20, 20, 1, 4, 8);
 	miDownArrow = new MI_Image(&menu_verticalarrows, 310, 406, 0, 0, 20, 20, 1, 4, 8);
@@ -1318,40 +1320,40 @@ MI_PowerupSelection::MI_PowerupSelection(short x, short y, short width, short nu
 
 	for(short iPowerup = 0; iPowerup < NUM_POWERUPS; iPowerup++)
 	{
-		UI_Control * upcontrol = NULL;
+		UI_Control * upcontrol = nullptr;
 		if(iPowerup == 0)
 			upcontrol = miPreset;
 		else
 			upcontrol = miPowerupSlider[iPowerup - 2];
 
-		UI_Control * downcontrol = NULL;
+		UI_Control * downcontrol = nullptr;
 		if(iPowerup >= NUM_POWERUPS - 2)
 			downcontrol = miRestoreDefaultsButton;
 		else
 			downcontrol = miPowerupSlider[iPowerup + 2];
 
-		mMenu->AddControl(miPowerupSlider[iPowerup], upcontrol, downcontrol, NULL, miPowerupSlider[iPowerup + 1]);
+		mMenu->AddControl(miPowerupSlider[iPowerup], upcontrol, downcontrol, nullptr, miPowerupSlider[iPowerup + 1]);
 
 		if(++iPowerup < NUM_POWERUPS)
 		{
-			upcontrol = NULL;
+			upcontrol = nullptr;
 			if(iPowerup == 1)
 				upcontrol = miPreset;
 			else
 				upcontrol = miPowerupSlider[iPowerup - 2];
 
-			UI_Control * downcontrol = NULL;
+			UI_Control * downcontrol = nullptr;
 			if(iPowerup >= NUM_POWERUPS - 2)
 				downcontrol = miClearButton;
 			else
 				downcontrol = miPowerupSlider[iPowerup + 2];
 
-			mMenu->AddControl(miPowerupSlider[iPowerup], upcontrol, downcontrol, miPowerupSlider[iPowerup - 1], NULL);
+			mMenu->AddControl(miPowerupSlider[iPowerup], upcontrol, downcontrol, miPowerupSlider[iPowerup - 1], nullptr);
 		}
 	}
 
-	mMenu->AddControl(miRestoreDefaultsButton, miPowerupSlider[NUM_POWERUPS - 2], NULL, NULL, miClearButton);
-	mMenu->AddControl(miClearButton, miPowerupSlider[NUM_POWERUPS - 1], NULL, miRestoreDefaultsButton, NULL);
+	mMenu->AddControl(miRestoreDefaultsButton, miPowerupSlider[NUM_POWERUPS - 2], nullptr, nullptr, miClearButton);
+	mMenu->AddControl(miClearButton, miPowerupSlider[NUM_POWERUPS - 1], nullptr, miRestoreDefaultsButton, nullptr);
 
 	//Setup positions and visible powerups
 	SetupPowerupFields();
@@ -1363,8 +1365,8 @@ MI_PowerupSelection::MI_PowerupSelection(short x, short y, short width, short nu
 	mMenu->AddNonControl(miDialogAreYouText);
 	mMenu->AddNonControl(miDialogSureText);
 
-	mMenu->AddControl(miDialogYesButton, NULL, NULL, NULL, miDialogNoButton);
-	mMenu->AddControl(miDialogNoButton, NULL, NULL, miDialogYesButton, NULL);
+	mMenu->AddControl(miDialogYesButton, nullptr, nullptr, nullptr, miDialogNoButton);
+	mMenu->AddControl(miDialogNoButton, nullptr, nullptr, miDialogYesButton, nullptr);
 
 	mMenu->AddNonControl(miUpArrow);
 	mMenu->AddNonControl(miDownArrow);
@@ -1402,7 +1404,7 @@ void MI_PowerupSelection::EnablePowerupFields(bool fEnable)
 		miPowerupSlider[iPowerup]->Disable(!fEnable);
 	}
 
-	miPreset->SetNeighbor(1, fEnable ? miPowerupSlider[0] : NULL);
+	miPreset->SetNeighbor(1, fEnable ? miPowerupSlider[0] : nullptr);
 }
 
 MenuCodeEnum MI_PowerupSelection::Modify(bool modify)
@@ -1592,7 +1594,7 @@ MI_WorldPreviewDisplay::~MI_WorldPreviewDisplay()
 	if(sMapSurface)
 	{
 		SDL_FreeSurface(sMapSurface);
-		sMapSurface = NULL;
+		sMapSurface = nullptr;
 	}
 }
 
@@ -2108,7 +2110,7 @@ MI_StoredPowerupResetButton::MI_StoredPowerupResetButton(gfxSprite * nspr, short
 	fSelected = false;
 	menuCode = MENU_CODE_NONE;
 
-	sprImage = NULL;
+	sprImage = nullptr;
 	iImageSrcX = 0;
 	iImageSrcY = 0;
 	iImageW = 0;
@@ -2277,7 +2279,7 @@ void MI_TourStop::Refresh(short iTourStop)
 	{
 		miModeField->Clear();
 
-		CGameMode * gamemode = NULL;
+		CGameMode * gamemode = nullptr;
 		short tourstopicon = 0;
 		if(tourstop->iMode == game_mode_pipe_minigame)
 		{
@@ -2383,27 +2385,27 @@ MI_TournamentScoreboard::MI_TournamentScoreboard(gfxSprite * spr_background, sho
 	sprBackground = spr_background;
 	fCreated = false;
 
-	worldScore = NULL;
-	worldScoreModifier = NULL;
+	worldScore = nullptr;
+	worldScoreModifier = nullptr;
 
 	for(short iTeam = 0; iTeam < 4; iTeam++)
 	{
-		tourScores[iTeam] = NULL;
+		tourScores[iTeam] = nullptr;
 		
 		for(short iBonus = 0; iBonus < MAX_WORLD_BONUSES_AWARDED; iBonus++)
-			worldBonus[iTeam][iBonus] = NULL;
+			worldBonus[iTeam][iBonus] = nullptr;
 
-		worldPlace[iTeam] = NULL;
-		worldPointsBackground[iTeam] = NULL;
+		worldPlace[iTeam] = nullptr;
+		worldPointsBackground[iTeam] = nullptr;
 	}
 
 	for(short iGame = 0; iGame < 10; iGame++)
 	{
-		tourPoints[iGame] = NULL;
-		tourBonus[iGame] = NULL;
+		tourPoints[iGame] = nullptr;
+		tourBonus[iGame] = nullptr;
 	}
 
-	miTourPointBar = NULL;
+	miTourPointBar = nullptr;
 }
 
 MI_TournamentScoreboard::~MI_TournamentScoreboard()
@@ -2435,13 +2437,13 @@ void MI_TournamentScoreboard::FreeScoreboard()
 		if(tourScores[iTeam])
 		{
 			delete tourScores[iTeam];
-			tourScores[iTeam] = NULL;
+			tourScores[iTeam] = nullptr;
 		}
 
 		if(worldPlace[iTeam])
 		{
 			delete worldPlace[iTeam];
-			worldPlace[iTeam] = NULL;
+			worldPlace[iTeam] = nullptr;
 		}
 
 		for(short iBonus = 0; iBonus < MAX_WORLD_BONUSES_AWARDED; iBonus++)
@@ -2449,14 +2451,14 @@ void MI_TournamentScoreboard::FreeScoreboard()
 			if(worldBonus[iTeam][iBonus])
 			{
 				delete worldBonus[iTeam][iBonus];
-				worldBonus[iTeam][iBonus] = NULL;
+				worldBonus[iTeam][iBonus] = nullptr;
 			}
 		}
 
 		if(worldPointsBackground[iTeam])
 		{
 			delete worldPointsBackground[iTeam];
-			worldPointsBackground[iTeam] = NULL;
+			worldPointsBackground[iTeam] = nullptr;
 		}
 	}
 
@@ -2465,32 +2467,32 @@ void MI_TournamentScoreboard::FreeScoreboard()
 		if(tourPoints[iGame])
 		{
 			delete tourPoints[iGame];
-			tourPoints[iGame] = NULL;
+			tourPoints[iGame] = nullptr;
 		}
 
 		if(tourBonus[iGame])
 		{
 			delete tourBonus[iGame];
-			tourBonus[iGame] = NULL;
+			tourBonus[iGame] = nullptr;
 		}
 	}
 
 	if(miTourPointBar)
 	{
 		delete miTourPointBar;
-		miTourPointBar = NULL;
+		miTourPointBar = nullptr;
 	}
 
 	if(worldScore)
 	{
 		delete worldScore;
-		worldScore = NULL;
+		worldScore = nullptr;
 	}
 
 	if(worldScoreModifier)
 	{
 		delete worldScoreModifier;
-		worldScoreModifier = NULL;
+		worldScoreModifier = nullptr;
 	}
 	
 	delete [] miPlayerImages;
@@ -3012,7 +3014,7 @@ void MI_TournamentScoreboard::StopSwirl()
 MI_BonusWheel::MI_BonusWheel(short x, short y) :
 	UI_Control(x, y)
 {
-	miPlayerImages = NULL;
+	miPlayerImages = nullptr;
 	fCpuControlled = false;
 
 	for(short iImage = 0; iImage < NUMBONUSITEMSONWHEEL; iImage++)
@@ -3035,11 +3037,9 @@ MI_BonusWheel::MI_BonusWheel(short x, short y) :
 
 MI_BonusWheel::~MI_BonusWheel()
 {
-	if(miBonusImages)
-	{
-		for(int iImage = 0; iImage < NUMBONUSITEMSONWHEEL; iImage++)
-			delete miBonusImages[iImage];
-	}
+	// miBonusImages is a fixed-size array — its address is never NULL
+	for(int iImage = 0; iImage < NUMBONUSITEMSONWHEEL; iImage++)
+		delete miBonusImages[iImage];
 
 	if(miPlayerImages)
 	{
@@ -3672,7 +3672,7 @@ MI_MapBrowser::MI_MapBrowser() :
 	UI_Control(0, 0)
 {
 	for(short iSurface = 0; iSurface < 9; iSurface++)
-		mapSurfaces[iSurface] = NULL;
+		mapSurfaces[iSurface] = nullptr;
 
 	srcRectBackground.x = 0;
 	srcRectBackground.y = 0;
@@ -3694,7 +3694,7 @@ MI_MapBrowser::~MI_MapBrowser()
 		if(mapSurfaces[iSurface])
 		{
 			SDL_FreeSurface(mapSurfaces[iSurface]);
-			mapSurfaces[iSurface] = NULL;
+			mapSurfaces[iSurface] = nullptr;
 		}
 	}
 }
@@ -4003,13 +4003,13 @@ MI_World::~MI_World()
 	if(sMapSurface[0])
 	{
 		SDL_FreeSurface(sMapSurface[0]);
-		sMapSurface[0] = NULL;
+		sMapSurface[0] = nullptr;
 	}
 	
 	if(sMapSurface[1])
 	{
 		SDL_FreeSurface(sMapSurface[1]);
-		sMapSurface[1] = NULL;
+		sMapSurface[1] = nullptr;
 	}
 }
 
@@ -4062,7 +4062,7 @@ void MI_World::Init()
 	game_values.worldpointsbonus = -1;
 
 	iPressSelectTimer = 0;
-	pressSelectKeys = NULL;
+	pressSelectKeys = nullptr;
 
 	iDrawWidth = g_worldmap.iWidth < 20 ? g_worldmap.iWidth << 5 : 640;
 	iDrawHeight = g_worldmap.iHeight < 15 ? g_worldmap.iHeight << 5 : 480;
@@ -4585,7 +4585,7 @@ MenuCodeEnum MI_World::SendInput(CPlayerInput * playerInput)
 					short iNextMove = g_worldmap.GetNextInterestingMove(iPlayerCurrentTileX, iPlayerCurrentTileY);
 
 					//Clear out all input from cpu controlled team
-					COutputControl * playerKeys = NULL;
+					COutputControl * playerKeys = nullptr;
 					for(iTeamMember = 0; iTeamMember < game_values.teamcounts[iControllingTeam]; iTeamMember++)
 					{
 						playerKeys = &game_values.playerInput.outputControls[game_values.teamids[iControllingTeam][iTeamMember]];

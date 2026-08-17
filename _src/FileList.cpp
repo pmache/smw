@@ -1,4 +1,4 @@
-
+﻿
 #ifdef _XBOX
 	#include <xtl.h>
 #endif
@@ -116,7 +116,7 @@ const char * SimpleFileList::GetIndex(unsigned int index)
 	if(index < filelist.size())
 		return filelist[index].c_str();
 
-	return NULL;
+	return nullptr;
 }
 
 
@@ -178,7 +178,7 @@ const char * SkinList::GetIndex(unsigned int index)
 	if(index < skins.size())
 		return skins[index]->sSkinPath.c_str();
 
-	return NULL;
+	return nullptr;
 }
 
 const char * SkinList::GetSkinName(unsigned int index)
@@ -186,7 +186,7 @@ const char * SkinList::GetSkinName(unsigned int index)
 	if(index < skins.size())
 		return skins[index]->sSkinName.c_str();
 
-	return NULL;
+	return nullptr;
 }
 
 ///////////// SimpleDirectoryList ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -429,7 +429,7 @@ MusicEntry::MusicEntry(const std::string & musicdirectory)
 						backgroundoverride[pszName] = new MusicOverride();
 				}
 
-				char * pszMusic = strtok(NULL, ",\n");
+				char * pszMusic = strtok(nullptr, ",\n");
 				while(pszMusic)
 				{
 					std::string sPath = musicdirectory + getDirectorySeperator() + convertPartialPath(std::string(pszMusic));
@@ -451,7 +451,7 @@ MusicEntry::MusicEntry(const std::string & musicdirectory)
 
 						iNumFile++;
 					}
-					pszMusic = strtok(NULL, ",\n");
+					pszMusic = strtok(nullptr, ",\n");
 				}
 			}
 			else
@@ -831,7 +831,7 @@ WorldMusicEntry::WorldMusicEntry(const std::string & musicdirectory)
 			if(!pszName)
 				continue;
 
-			char * pszMusic = strtok(NULL, ",\n");
+			char * pszMusic = strtok(nullptr, ",\n");
 			
 			if(!pszMusic)
 				continue;
@@ -860,7 +860,8 @@ string WorldMusicEntry::GetMusic(unsigned int musicID, const char * szWorldName)
 		return worldoverride[szWorldName];
 	}
 
-    if (musicID < 0 || musicID > WORLDMUSICSLEEP)
+    // musicID is unsigned — the < 0 check is always false; only keep the > test
+    if (musicID > WORLDMUSICSLEEP)
         return songFileNames[0];
 
     return songFileNames[musicID];

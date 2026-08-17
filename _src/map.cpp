@@ -1,8 +1,9 @@
-#if defined(__MACOSX__)
+﻿#if defined(__MACOSX__)
 #include <sys/stat.h>
 #endif
 
 #include "global.h"
+#include "movingplatform.h"
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -11,7 +12,7 @@ using std::endl;
 	#include "savepng.h"
 #endif
 
-#ifdef _WIN32
+#if defined(_WIN32) && defined(_MSC_VER)
 	#ifndef _XBOX
 		#pragma comment(linker, "/NODEFAULTLIB:libc.lib")
 
@@ -39,12 +40,12 @@ short g_iTileTypeConversion[NUMTILETYPES] = {0, 1, 2, 5, 121, 9, 17, 33, 65, 6, 
 
 CMap::CMap()
 {
-	platforms = NULL;
+	platforms = nullptr;
 	iNumPlatforms = 0;
 	iNumMapItems = 0;
 	iNumMapHazards = 0;
 
-	animatedTilesSurface = NULL;
+	animatedTilesSurface = nullptr;
 
 	for(short iSwitch = 0; iSwitch < 4; iSwitch++)
 		iSwitches[iSwitch] = 0;
@@ -146,7 +147,7 @@ void CMap::clearPlatforms()
 		}
 
 		delete [] platforms;
-		platforms = NULL;
+		platforms = nullptr;
 	}
 
 	iNumPlatforms = 0;
@@ -190,7 +191,9 @@ void CMap::loadMap(const std::string& file, ReadType iReadType)
 	short i, j, k;
 
 	/*
-    cout << "loading map " << file;
+#ifdef _DEBUG
+        cout << "loading map " << file;
+#endif
 	
 	if(iReadType == read_type_preview)
 		cout << " (preview)";
@@ -201,7 +204,7 @@ void CMap::loadMap(const std::string& file, ReadType iReadType)
 	*/
 
 	mapfile = fopen(file, "rb");
-	if(mapfile == NULL)
+	if(mapfile == nullptr)
 	{
         cout << endl << " ERROR: Couldn't open map" << endl;
 		return;
@@ -234,7 +237,9 @@ void CMap::loadMap(const std::string& file, ReadType iReadType)
 
 		clearPlatforms();
 
-		cout << "loading map " << file;
+#ifdef _DEBUG
+				cout << "loading map " << file;
+#endif
 	
 		if(iReadType == read_type_preview)
 			cout << " (preview)";
@@ -564,7 +569,9 @@ void CMap::loadMap(const std::string& file, ReadType iReadType)
 
 		clearPlatforms();
 
-		cout << "loading map " << file;
+#ifdef _DEBUG
+				cout << "loading map " << file;
+#endif
 	
 		if(iReadType == read_type_preview)
 			cout << " (preview)";
@@ -877,7 +884,9 @@ void CMap::loadMap(const std::string& file, ReadType iReadType)
 
 		clearPlatforms();
 
-		cout << "loading map " << file;
+#ifdef _DEBUG
+				cout << "loading map " << file;
+#endif
 
         cout << "[Version " << version[0] << '.' << version[1] << '.'
             << version[2] << '.' << version[3] << " Map Detected]\n";
@@ -1092,7 +1101,9 @@ void CMap::loadMap(const std::string& file, ReadType iReadType)
 
 		clearPlatforms();
 
-		cout << "loading map " << file;
+#ifdef _DEBUG
+				cout << "loading map " << file;
+#endif
 		cout << "[Version 1.5 Map Detected]\n";
 
 		//Reset position of read cursor
@@ -1216,9 +1227,9 @@ void CMap::SetTileGap(short i, short j)
 	int topCenterTile = 0;
 	int topRightTile = 0;
 
-	IO_Block * topLeftBlock = NULL;
-	IO_Block * topCenterBlock = NULL;
-	IO_Block * topRightBlock = NULL;
+	IO_Block * topLeftBlock = nullptr;
+	IO_Block * topCenterBlock = nullptr;
+	IO_Block * topRightBlock = nullptr;
 
 	if(j > 0)
 	{
@@ -1374,7 +1385,7 @@ void CMap::loadPlatforms(FILE * mapfile, bool fPreview, int version[4], short * 
 
 		//printf("PathType: %d\n", iPathType);
 
-		MovingPlatformPath * path = NULL;
+		MovingPlatformPath * path = nullptr;
 		if(iPathType == 0) //segment path
 		{
 			float fStartX = ReadFloat(mapfile);
@@ -1429,7 +1440,7 @@ void CMap::saveMap(const std::string& file)
     cout << "saving map " << file << " ... ";
 
 	mapfile = fopen(file, "wb");
-	if(mapfile == NULL)
+	if(mapfile == nullptr)
 	{
         cout << endl << " ERROR: couldn't save map" << endl;
 		return;
@@ -2165,7 +2176,7 @@ SDL_Surface * CMap::createThumbnailSurface(bool fUseClassicPack)
 	if(!sBackground)
 	{
 		printf("ERROR: Couldn't convert thumbnail background to diplay pixel format: %s\n", SDL_GetError());
-		return NULL;
+		return nullptr;
 	}
 
 	SDL_FreeSurface(temp);
@@ -2176,7 +2187,7 @@ SDL_Surface * CMap::createThumbnailSurface(bool fUseClassicPack)
 	if(SDL_BlitScaled(sBackground, &srcRectBackground, sThumbnail, &dstRectBackground) < 0)
 	{
 		fprintf(stderr, "SDL_BlitScaled error: %s\n", SDL_GetError());
-		return NULL;
+		return nullptr;
 	}
 
 	SDL_FreeSurface(sBackground);
@@ -2492,7 +2503,7 @@ void CMap::draw(SDL_Surface *targetSurface, int layer)
 					
 					animatedtile->fBackgroundAnimated = false;
 					animatedtile->fForegroundAnimated = false;
-					animatedtile->pPlatform = NULL;
+					animatedtile->pPlatform = nullptr;
 
 					for(short iLayer = 0; iLayer < 4; iLayer++)
 					{
@@ -2746,7 +2757,7 @@ void CMap::preDrawPreviewBlocks(SDL_Surface * targetSurface, bool fThumbnail)
 {
 	if(!fThumbnail)
 	{
-		SDL_FillRect(targetSurface, NULL, SDL_MapRGB(targetSurface->format, 255, 0, 255));
+		SDL_FillRect(targetSurface, nullptr, SDL_MapRGB(targetSurface->format, 255, 0, 255));
 		SDL_SetColorKey(targetSurface, SDL_TRUE, SDL_MapRGB(targetSurface->format, 255, 0, 255));
 		SDL_Delay(10);
 	}
@@ -2759,7 +2770,7 @@ void CMap::preDrawPreviewForeground(SDL_Surface * targetSurface, bool fThumbnail
 {
 	if(!fThumbnail)
 	{
-		SDL_FillRect(targetSurface, NULL, SDL_MapRGB(targetSurface->format, 255, 0, 255));
+		SDL_FillRect(targetSurface, nullptr, SDL_MapRGB(targetSurface->format, 255, 0, 255));
 		SDL_SetColorKey(targetSurface, SDL_TRUE, SDL_MapRGB(targetSurface->format, 255, 0, 255));
 		SDL_Delay(10);
 	}
@@ -2887,7 +2898,7 @@ void CMap::predrawbackground(gfxSprite &background, gfxSprite &mapspr)
 	r.w = 640;
 	r.h = 480;
 
-	SDL_BlitSurface(background.getSurface(), NULL, mapspr.getSurface(), &r);
+	SDL_BlitSurface(background.getSurface(), nullptr, mapspr.getSurface(), &r);
 	
 	draw(mapspr.getSurface(), 0);
 	draw(mapspr.getSurface(), 1);
@@ -2926,7 +2937,7 @@ void CMap::predrawbackground(gfxSprite &background, gfxSprite &mapspr)
 
 void CMap::predrawforeground(gfxSprite &foregroundspr)
 {
-	SDL_FillRect(foregroundspr.getSurface(), NULL, SDL_MapRGB(foregroundspr.getSurface()->format, 255, 0, 255));
+	SDL_FillRect(foregroundspr.getSurface(), nullptr, SDL_MapRGB(foregroundspr.getSurface()->format, 255, 0, 255));
 	SDL_SetColorKey(foregroundspr.getSurface(), SDL_TRUE, SDL_MapRGB(foregroundspr.getSurface()->format, 255, 0, 255));
 
 	draw(foregroundspr.getSurface(), 2);
@@ -2946,7 +2957,7 @@ void CMap::SetupAnimatedTiles()
 	if(animatedTilesSurface)
 	{
 		SDL_FreeSurface(animatedTilesSurface);
-		animatedTilesSurface = NULL;
+		animatedTilesSurface = nullptr;
 	}
 
 	if(iAnimatedTileCount > 0)
@@ -3107,7 +3118,7 @@ void CMap::SetupAnimatedTiles()
 
 			tile->fBackgroundAnimated = false;
 			tile->fForegroundAnimated = false;
-			tile->pPlatform = NULL;
+			tile->pPlatform = nullptr;
 
 			++iter;
 		}
@@ -3284,7 +3295,7 @@ WarpExit * CMap::getRandomWarpExit(int connection, int currentID)
 	int indices[MAXWARPS];
 	int numIndices = 0;
 
-	WarpExit * currentWarp = NULL;
+	WarpExit * currentWarp = nullptr;
 
 	for(int k = 0; k < numwarpexits; k++)
 	{
@@ -3499,8 +3510,8 @@ void CMap::drawfrontlayer()
 
 bool CMap::checkforwarp(short iData1, short iData2, short iData3, short iDirection)
 {
-	Warp * warp1 = NULL;
-	Warp * warp2 = NULL;
+	Warp * warp1 = nullptr;
+	Warp * warp2 = nullptr;
 
 	if(iDirection == 0 || iDirection == 2)
 	{

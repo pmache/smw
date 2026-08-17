@@ -1,4 +1,4 @@
-# SMW 2.0 — Session state (2026-06-30)
+# SMW 2.0 — Session state (2026-07-05)
 
 ## Faza 1.1-1.2 — CMake + SDL2 migration: DONE 
 
@@ -25,21 +25,24 @@ with tolower() char-by-char loop. Added #include <cctype>, const string& params.
 4 files: sfx.cpp (+NULL guard w play() + Mix_HookMusicFinished unhook), FileList.cpp (+empty guards + exit(0)→warning), FileList.h (+GetCount + guards), main.cpp (+isready checks + auto-disable).
 7 steps, build OK.
 
-### Faza 1.5 — Skin memory crash (0xbaadfood)
-File: gfx.cpp (gfxSprite::draw — add if(!m_picture) return false;)
+### Faza 1.5 — Skin memory crash (0xbaadfood): DONE ✅ (2026-07-05)
+gfx.cpp — 3 null guards in gfxSprite::draw/drawStretch
 
-### Faza 1.6 — Invincibility music resume after pause
-Files: sfx.cpp, main.cpp (pause logic)
-Track invincible music playing state, resume on unpause.
+### Faza 1.6 — Invincibility music resume after pause: DONE ✅ (2026-07-05)
+sfx.h/cpp + main.cpp — pause()/resume() methods, invincible music save/restore
 
-### Faza 1.7 — Goomba sprite flipping
-File: objectgame.cpp (MO_Goomba::draw, add fFacingRight with SDL_RendererFlip)
+### Faza 1.7 — Goomba sprite flipping: DONE ✅ (2026-07-05)
+objectgame.cpp — MO_Goomba::draw() uses velx direction for frozen sprite frame
 
-### Low-priority cleanup
-- _src/global.cpp:68 — stale comment about SDL_GetKeyName() (we now use it)
-- _src/savepng.cpp:147 — pre-existing info_ptr leak in png_destroy_write_struct
-- _src/leveleditor.cpp, worldeditor.cpp — remaining short→SDL_Keycode narrowing
-- Xbox #ifdef _XBOX blocks in gfx.cpp — broken for SDL2, deferred
+### Faza 1.8 — Remove hardcoded splash/loading graphics from code: DONE ✅ (2026-07-05)
+The game printed loading messages for embedded splash screens (splash_72dpi.png, splash_contest_winners.png, etc.).
+All debug-only printfs wrapped in `#ifdef _DEBUG` — 14 total across 3 files:
+- **gfx.cpp** (7 couts) — splash/loading texture prints
+- **sfx.cpp** (2 couts) — audio init/debug prints
+- **map.cpp** (5 couts) — map loading filename prints
+Release builds now produce zero console noise during startup.
+
+### Low-priority cleanup: DONE ✅ (2026-07-05) — stale comment removed, info_ptr leak fixed, 3 short→int narrowing in leveleditor/worldeditor. Xbox #ifdef _XBOX deferred.
 
 ## Full plan document
 See the comprehensive plan produced by the plan agent (5 phases, ~17-25 weeks total).

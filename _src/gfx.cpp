@@ -1,4 +1,4 @@
-
+﻿
 #include "gfx.h"
 #include "global.h"
 
@@ -13,7 +13,7 @@ extern SDL_Surface *screen;
 
 // The SDL2 window. Created by gfx_init(), destroyed by gfx_close().
 // `screen` is the window's surface (SDL_GetWindowSurface(g_window)).
-SDL_Window *g_window = NULL;
+SDL_Window *g_window = nullptr;
 
 #define GFX_BPP		16
 #ifdef _XBOX
@@ -71,11 +71,11 @@ bool gfx_init(int w, int h, bool fullscreen)
 
 	for(int k = 0; k < 3; k++)
 	{
-		colorcodes[k] = NULL;
+		colorcodes[k] = nullptr;
 
 		for(int i = 0; i < 4; i++)
 			for(int j = 0; j < NUM_SCHEMES; j++)
-				colorschemes[i][j][k] = NULL;
+				colorschemes[i][j][k] = nullptr;
 	}
 
 	return true;
@@ -99,7 +99,7 @@ bool gfx_loadpalette()
 
 	SDL_Surface * palette = IMG_Load(convertPathCP("gfx/packs/palette.bmp", gamegraphicspacklist.current_name()));
 
-	if ( palette == NULL ) 
+	if ( palette == nullptr ) 
 	{
         printf("Couldn't load color palette: %s\n", SDL_GetError());
 		return false;
@@ -152,7 +152,9 @@ bool gfx_loadpalette()
 	}
 	
     if (SDL_MUSTLOCK(palette))
+    {
         SDL_UnlockSurface(palette);
+    }
 
 	SDL_FreeSurface(palette);
 
@@ -192,8 +194,8 @@ void gfx_close()
 	if(g_window)
 	{
 		SDL_DestroyWindow(g_window);
-		g_window = NULL;
-		screen = NULL;
+		g_window = nullptr;
+		screen = nullptr;
 	}
 }
 
@@ -286,14 +288,14 @@ SDL_Surface * gfx_createskinsurface(SDL_Surface * skin, short spriteindex, Uint8
 	if( SDL_SetColorKey(temp, SDL_TRUE, SDL_MapRGB(temp->format, r, g, b)) < 0)
 	{
 		printf("\n ERROR: Couldn't set ColorKey + RLE for new skin surface: %s\n", SDL_GetError());
-		return NULL;
+		return nullptr;
 	}
 
 	SDL_Surface * final = SDL_ConvertSurfaceFormat(temp, SDL_GetWindowPixelFormat(g_window), 0);
 	if(!final)
 	{
 		printf("\n ERROR: Couldn't create new surface using SDL_ConvertSurfaceFormat(): %s\n", SDL_GetError());
-		return NULL;
+		return nullptr;
 	}
 	SDL_FreeSurface(temp);
 
@@ -309,7 +311,7 @@ bool gfx_loadmenuskin(gfxSprite ** gSprite, const std::string& filename, Uint8 r
 	if(!ValidSkinSurface(skin))
 		return false;
 
-    if (skin == NULL)
+    if (skin == nullptr)
 	{
         cout << endl << " ERROR: Couldn't load " << filename << ": "
              << SDL_GetError() << endl;
@@ -320,7 +322,7 @@ bool gfx_loadmenuskin(gfxSprite ** gSprite, const std::string& filename, Uint8 r
 	{
 		SDL_Surface * skinSurface = gfx_createskinsurface(skin, iSprite, r, g, b, colorScheme, true, false);
 
-		if (skinSurface == NULL)
+		if (skinSurface == nullptr)
 		{
 			cout << endl << " ERROR: Couldn't create menu skin from " << filename
 				<< ": " << SDL_GetError() << endl;
@@ -337,7 +339,7 @@ bool gfx_loadmenuskin(gfxSprite ** gSprite, const std::string& filename, Uint8 r
 		{
 			SDL_Surface * skinSurface = gfx_createskinsurface(skin, iSprite, r, g, b, colorScheme, true, true);
 
-			if (skinSurface == NULL)
+			if (skinSurface == nullptr)
 			{
 				cout << endl << " ERROR: Couldn't create menu skin from " << filename
 					<< ": " << SDL_GetError() << endl;
@@ -363,7 +365,7 @@ bool gfx_loadfullskin(gfxSprite ** gSprites, const std::string& filename, Uint8 
 	if(!ValidSkinSurface(skin))
 		return false;
 
-    if (skin == NULL)
+    if (skin == nullptr)
 	{
         cout << endl << " ERROR: Couldn't load " << filename
              << ": " << SDL_GetError() << endl;
@@ -376,7 +378,7 @@ bool gfx_loadfullskin(gfxSprite ** gSprites, const std::string& filename, Uint8 
 		{
 			SDL_Surface * skinSurface = gfx_createskinsurface(skin, k, r, g, b, colorScheme, true, j != 0);
 
-			if (skinSurface == NULL)
+			if (skinSurface == nullptr)
 			{
                 cout << endl << " ERROR: Couldn't create menu skin from "
                      << filename << ": " << SDL_GetError() << endl;
@@ -391,7 +393,7 @@ bool gfx_loadfullskin(gfxSprite ** gSprites, const std::string& filename, Uint8 
 	//Dead Flying Sprite
 	SDL_Surface * skinSurface = gfx_createskinsurface(skin, 4, r, g, b, colorScheme, true, false);
 
-	if (skinSurface == NULL)
+	if (skinSurface == nullptr)
 	{
         cout << endl << " ERROR: Couldn't create menu skin from " << filename << ": " << SDL_GetError() << endl;
 		SDL_FreeSurface(skin);
@@ -403,7 +405,7 @@ bool gfx_loadfullskin(gfxSprite ** gSprites, const std::string& filename, Uint8 
 	//Dead Stomped Sprite
 	skinSurface = gfx_createskinsurface(skin, 5, r, g, b, colorScheme, true, false);
 
-	if (skinSurface == NULL)
+	if (skinSurface == nullptr)
 	{
         cout << endl << " ERROR: Couldn't create menu skin from "
              << filename << ": " << SDL_GetError() << endl;
@@ -514,7 +516,7 @@ SDL_Surface * gfx_createteamcoloredsurface(SDL_Surface * sImage, short iColor, U
 	if( SDL_SetColorKey(sTempImage, SDL_TRUE, SDL_MapRGB(sTempImage->format, r, g, b)) < 0)
 	{
 		printf("\n ERROR: Couldn't set ColorKey + RLE for new team colored surface: %s\n", SDL_GetError());
-		return NULL;
+		return nullptr;
 	}
 
 	if(a < 255)
@@ -522,7 +524,7 @@ SDL_Surface * gfx_createteamcoloredsurface(SDL_Surface * sImage, short iColor, U
 		if(SDL_SetSurfaceAlphaMod(sTempImage, a) < 0)
 		{
 			cout << endl << " ERROR: Couldn't set per-surface alpha: " << SDL_GetError() << endl;
-			return NULL;
+			return nullptr;
 		}
 		SDL_SetSurfaceBlendMode(sTempImage, SDL_BLENDMODE_BLEND);
 	}
@@ -531,7 +533,7 @@ SDL_Surface * gfx_createteamcoloredsurface(SDL_Surface * sImage, short iColor, U
 	if(!sFinalImage)
 	{
 		printf("\n ERROR: Couldn't create new surface using SDL_ConvertSurfaceFormat(): %s\n", SDL_GetError());
-		return NULL;
+		return nullptr;
 	}
 	SDL_FreeSurface(sTempImage);
 
@@ -543,7 +545,7 @@ bool gfx_loadteamcoloredimage(gfxSprite ** gSprites, const std::string& filename
 	//Load the image into a surface
 	SDL_Surface * sImage = IMG_Load(filename.c_str());
 
-    if (sImage == NULL)
+    if (sImage == nullptr)
 	{
         cout << endl << " ERROR: Couldn't load " << filename << ": " << SDL_GetError() << endl;
         return false;
@@ -553,7 +555,7 @@ bool gfx_loadteamcoloredimage(gfxSprite ** gSprites, const std::string& filename
 	{
 		SDL_Surface * sTeamColoredSurface = gfx_createteamcoloredsurface(sImage, k, r, g, b, a);
 
-		if (sTeamColoredSurface == NULL)
+		if (sTeamColoredSurface == nullptr)
 		{
             cout << endl << " ERROR: Couldn't create menu skin from " << filename << ": " << SDL_GetError() << endl;
 			SDL_FreeSurface(sTeamColoredSurface);
@@ -575,7 +577,7 @@ bool gfx_loadteamcoloredimage(gfxSprite * gSprites, const std::string& filename,
 	//Load the image into a surface
 	SDL_Surface * sImage = IMG_Load(filename.c_str());
 
-    if (sImage == NULL)
+    if (sImage == nullptr)
 	{
         cout << endl << " ERROR: Couldn't load " << filename << ": " << SDL_GetError() << endl;
         return false;
@@ -583,7 +585,7 @@ bool gfx_loadteamcoloredimage(gfxSprite * gSprites, const std::string& filename,
 
 	SDL_Surface * sTeamColoredSurface = gfx_createteamcoloredsurface(sImage, fVertical ? -1 : -2, r, g, b, a);
 
-	if (sTeamColoredSurface == NULL)
+	if (sTeamColoredSurface == nullptr)
 	{
         cout << endl << " ERROR: Couldn't create menu skin from " << filename << ": " << SDL_GetError() << endl;
 		SDL_FreeSurface(sTeamColoredSurface);
@@ -837,7 +839,7 @@ void gfxSprite::clearSurface()
 	m_bltrect.y = 0;
 	m_bltrect.w = 0;
 	m_bltrect.h = 0;
-	m_picture = NULL;
+	m_picture = nullptr;
 
 	fHiddenPlane = false;
 	iHiddenDirection = 0;
@@ -853,7 +855,7 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, boo
 	if(m_picture)
 	{
 		SDL_FreeSurface(m_picture);
-		m_picture = NULL;
+		m_picture = nullptr;
 	}
 
     // Load the BMP file into a surface
@@ -887,7 +889,9 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, boo
 	m_bltrect.w = (Uint16)m_picture->w;
 	m_bltrect.h = (Uint16)m_picture->h;
 
-    cout << "done" << endl;
+#ifdef _DEBUG
+        cout << "done" << endl;
+#endif
 	return true;
 }
 
@@ -898,7 +902,7 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, Uin
 	if(m_picture)
 	{
 		SDL_FreeSurface(m_picture);
-		m_picture = NULL;
+		m_picture = nullptr;
 	}
 
     // Load the BMP file into a surface
@@ -940,7 +944,9 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, Uin
 	m_bltrect.w = (Uint16)m_picture->w;
 	m_bltrect.h = (Uint16)m_picture->h;
 
-    cout << "done" << endl;
+#ifdef _DEBUG
+        cout << "done" << endl;
+#endif
 	return true;
 }
 
@@ -951,7 +957,7 @@ bool gfxSprite::init(const std::string& filename)
 	if(m_picture)
 	{
 		SDL_FreeSurface(m_picture);
-		m_picture = NULL;
+		m_picture = nullptr;
 	}
 
     // Load the BMP file into a surface
@@ -984,17 +990,20 @@ bool gfxSprite::init(const std::string& filename)
 	m_srcrect.w = (Uint16)m_picture->w;
 	m_srcrect.h = (Uint16)m_picture->h;
 
-    cout << "done" << endl;
+#ifdef _DEBUG
+        cout << "done" << endl;
+#endif
 	return true;
 }
 
 
 bool gfxSprite::draw(short x, short y)
 {
+	if(!m_picture) return false;
 	m_bltrect.x = x + x_shake;
 	m_bltrect.y = y + y_shake;
 
-	if(SDL_BlitSurface(m_picture, NULL, blitdest, &m_bltrect) < 0)
+	if(SDL_BlitSurface(m_picture, nullptr, blitdest, &m_bltrect) < 0)
 	{
 		fprintf(stderr, "BlitSurface error: %s\n", SDL_GetError());
 		return false;
@@ -1007,7 +1016,7 @@ bool gfxSprite::draw(short x, short y)
 			m_bltrect.x = x - iWrapSize + x_shake;
 			m_bltrect.y = y + y_shake;
 
-			if(SDL_BlitSurface(m_picture, NULL, blitdest, &m_bltrect) < 0)
+			if(SDL_BlitSurface(m_picture, nullptr, blitdest, &m_bltrect) < 0)
 			{
 				fprintf(stderr, "SDL_BlitSurface error: %s\n", SDL_GetError());
 				return false;
@@ -1018,7 +1027,7 @@ bool gfxSprite::draw(short x, short y)
 			m_bltrect.x = x + iWrapSize + x_shake;
 			m_bltrect.y = y + y_shake;
 
-			if(SDL_BlitSurface(m_picture, NULL, blitdest, &m_bltrect) < 0)
+			if(SDL_BlitSurface(m_picture, nullptr, blitdest, &m_bltrect) < 0)
 			{
 				fprintf(stderr, "SDL_BlitSurface error: %s\n", SDL_GetError());
 				return false;
@@ -1030,8 +1039,8 @@ bool gfxSprite::draw(short x, short y)
 }
 
 //TODO Perf Optimization: Set w/h once when sprite is initialized, set srcx/srcy just when animation frame advance happens
-bool gfxSprite::draw(short x, short y, short srcx, short srcy, short w, short h, short iHiddenDirection, short iHiddenValue)
-{
+bool gfxSprite::draw(short x, short y, short srcx, short srcy, short w, short h, short iHiddenDirection, short iHiddenValue) {
+	if(!m_picture) return false;
 	m_bltrect.x = x + x_shake;
 	m_bltrect.y = y + y_shake;
 	m_bltrect.w = w;
@@ -1096,8 +1105,8 @@ bool gfxSprite::draw(short x, short y, short srcx, short srcy, short w, short h,
 	return true;
 }
 
-bool gfxSprite::drawStretch(short x, short y, short w, short h, short srcx, short srcy, short srcw, short srch)
-{
+bool gfxSprite::drawStretch(short x, short y, short w, short h, short srcx, short srcy, short srcw, short srch) {
+	if(!m_picture) return false;
 	m_bltrect.x = x + x_shake;
 	m_bltrect.y = y + y_shake;
 	m_bltrect.w = w;
@@ -1133,7 +1142,7 @@ void gfxSprite::freeSurface()
 	if(m_picture)
 	{
 		SDL_FreeSurface(m_picture);
-		m_picture = NULL;
+		m_picture = nullptr;
 	}
 }
 
@@ -1141,7 +1150,7 @@ void gfxSprite::freeSurface()
 // gfxFont
 gfxFont::gfxFont()
 {
-	m_font = NULL;
+	m_font = nullptr;
 }
 
 gfxFont::~gfxFont()
@@ -1158,7 +1167,7 @@ bool gfxFont::init(const std::string& filename)
 	cout << "loading font " << filename << " ... ";
 
 	SDL_Surface *fontsurf = IMG_Load(filename.c_str());
-	if(fontsurf == NULL)
+	if(fontsurf == nullptr)
 	{
         cout << endl << " ERROR: Couldn't load file "
              << filename << ": " << SDL_GetError() << endl;
@@ -1172,7 +1181,9 @@ bool gfxFont::init(const std::string& filename)
 		return false;
 	}
 
-    cout << "done" << endl;
+#ifdef _DEBUG
+        cout << "done" << endl;
+#endif
 	return true;
 }
 

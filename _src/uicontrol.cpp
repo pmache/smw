@@ -1,4 +1,5 @@
-#include "global.h"
+﻿#include "global.h"
+#include "objecthazard.h"
 #include <math.h>
 
 extern void LoadCurrentMapBackground();
@@ -17,9 +18,9 @@ UI_Control::UI_Control(short x, short y)
 	fShow = true;
 
 	for(int iNeighbor = 0; iNeighbor < 4; iNeighbor++)
-		neighborControls[iNeighbor] = NULL;
+		neighborControls[iNeighbor] = nullptr;
 
-	uiMenu = NULL;
+	uiMenu = nullptr;
 
 	iControllingTeam = -1;
 }
@@ -211,9 +212,9 @@ MI_SelectField::MI_SelectField(gfxSprite * nspr, short x, short y, const char * 
 	fAutoAdvance = false;
 	fNoWrap = false;
 
-	iValue = NULL;
-	sValue = NULL;
-	fValue = NULL;
+	iValue = nullptr;
+	sValue = nullptr;
+	fValue = nullptr;
 
 	iIndex = 0;
 
@@ -900,7 +901,7 @@ MI_FrenzyModeOptions::MI_FrenzyModeOptions(short x, short y, short width, short 
 	miQuantityField->Add("# Players + 1", 8, "", false, false, false);
 	miQuantityField->Add("# Players + 2", 9, "", false, false, false);
 	miQuantityField->Add("# Players + 3", 10, "", false, false, false);
-	miQuantityField->SetData(&game_values.gamemodemenusettings.frenzy.quantity, NULL, NULL);
+	miQuantityField->SetData(&game_values.gamemodemenusettings.frenzy.quantity, nullptr, nullptr);
 	miQuantityField->SetKey(game_values.gamemodemenusettings.frenzy.quantity);
 
 	miRateField = new MI_SelectField(&spr_selectfield, 120, 80, "Rate", 400, 180);
@@ -914,13 +915,13 @@ MI_FrenzyModeOptions::MI_FrenzyModeOptions(short x, short y, short width, short 
 	miRateField->Add("20 Seconds", 1240, "", false, false, false);
 	miRateField->Add("25 Seconds", 1550, "", false, false, false);
 	miRateField->Add("30 Seconds", 1860, "", false, false, false);
-	miRateField->SetData(&game_values.gamemodemenusettings.frenzy.rate, NULL, NULL);
+	miRateField->SetData(&game_values.gamemodemenusettings.frenzy.rate, nullptr, nullptr);
 	miRateField->SetKey(game_values.gamemodemenusettings.frenzy.rate);
 
 	miStoredShellsField = new MI_SelectField(&spr_selectfield, 120, 120, "Store Shells", 400, 180);
 	miStoredShellsField->Add("Off", 0, "", false, false);
 	miStoredShellsField->Add("On", 1, "", true, false);
-	miStoredShellsField->SetData(NULL, NULL, &game_values.gamemodemenusettings.frenzy.storedshells);
+	miStoredShellsField->SetData(nullptr, nullptr, &game_values.gamemodemenusettings.frenzy.storedshells);
 	miStoredShellsField->SetKey(game_values.gamemodemenusettings.frenzy.storedshells ? 1 : 0);
 	miStoredShellsField->SetAutoAdvance(true);
 
@@ -940,7 +941,7 @@ MI_FrenzyModeOptions::MI_FrenzyModeOptions(short x, short y, short width, short 
 		miPowerupSlider[iPowerup]->Add("", 9, "", false, false);
 		miPowerupSlider[iPowerup]->Add("", 10, "", false, false);
 		miPowerupSlider[iPowerup]->SetNoWrap(true);
-		miPowerupSlider[iPowerup]->SetData(&game_values.gamemodemenusettings.frenzy.powerupweight[iPowerup], NULL, NULL);
+		miPowerupSlider[iPowerup]->SetData(&game_values.gamemodemenusettings.frenzy.powerupweight[iPowerup], nullptr, nullptr);
 		miPowerupSlider[iPowerup]->SetKey(game_values.gamemodemenusettings.frenzy.powerupweight[iPowerup]);
 	}
 
@@ -951,47 +952,47 @@ MI_FrenzyModeOptions::MI_FrenzyModeOptions(short x, short y, short width, short 
 	miDownArrow = new MI_Image(&menu_verticalarrows, 310, 402, 0, 0, 20, 20, 1, 4, 8);
 	miUpArrow->Show(false);
 
-	mMenu->AddControl(miQuantityField, NULL, miRateField, NULL, NULL);
-	mMenu->AddControl(miRateField, miQuantityField, miStoredShellsField, NULL, NULL);
-	mMenu->AddControl(miStoredShellsField, miRateField, miPowerupSlider[0], NULL, NULL);
+	mMenu->AddControl(miQuantityField, nullptr, miRateField, nullptr, nullptr);
+	mMenu->AddControl(miRateField, miQuantityField, miStoredShellsField, nullptr, nullptr);
+	mMenu->AddControl(miStoredShellsField, miRateField, miPowerupSlider[0], nullptr, nullptr);
 
 	for(short iPowerup = 0; iPowerup < NUMFRENZYCARDS; iPowerup++)
 	{
-		UI_Control * upcontrol = NULL;
+		UI_Control * upcontrol = nullptr;
 		if(iPowerup == 0)
 			upcontrol = miStoredShellsField;
 		else
 			upcontrol = miPowerupSlider[iPowerup - 2];
 
-		UI_Control * downcontrol = NULL;
+		UI_Control * downcontrol = nullptr;
 		if(iPowerup >= NUMFRENZYCARDS - 2)
 			downcontrol = miBackButton;
 		else
 			downcontrol = miPowerupSlider[iPowerup + 2];
 
-		UI_Control * rightcontrol = NULL;
+		UI_Control * rightcontrol = nullptr;
 		if(iPowerup + 1 < NUMFRENZYCARDS)
 			rightcontrol = miPowerupSlider[iPowerup + 1];
 		else
 			rightcontrol = miBackButton;
 
-		mMenu->AddControl(miPowerupSlider[iPowerup], upcontrol, downcontrol, NULL, rightcontrol);
+		mMenu->AddControl(miPowerupSlider[iPowerup], upcontrol, downcontrol, nullptr, rightcontrol);
 
 		if(++iPowerup < NUMFRENZYCARDS)
 		{
-			upcontrol = NULL;
+			upcontrol = nullptr;
 			if(iPowerup == 1)
 				upcontrol = miStoredShellsField;
 			else
 				upcontrol = miPowerupSlider[iPowerup - 2];
 
-			UI_Control * downcontrol = NULL;
+			UI_Control * downcontrol = nullptr;
 			if(iPowerup >= NUMFRENZYCARDS - 2)
 				downcontrol = miBackButton;
 			else
 				downcontrol = miPowerupSlider[iPowerup + 2];
 
-			mMenu->AddControl(miPowerupSlider[iPowerup], upcontrol, downcontrol, miPowerupSlider[iPowerup - 1], NULL);
+			mMenu->AddControl(miPowerupSlider[iPowerup], upcontrol, downcontrol, miPowerupSlider[iPowerup - 1], nullptr);
 		}
 	}
 
@@ -1001,7 +1002,7 @@ MI_FrenzyModeOptions::MI_FrenzyModeOptions(short x, short y, short width, short 
 	mMenu->AddNonControl(miUpArrow);
 	mMenu->AddNonControl(miDownArrow);
 
-	mMenu->AddControl(miBackButton, miPowerupSlider[NUMFRENZYCARDS - 1], NULL, miPowerupSlider[NUMFRENZYCARDS - 1], NULL);
+	mMenu->AddControl(miBackButton, miPowerupSlider[NUMFRENZYCARDS - 1], nullptr, miPowerupSlider[NUMFRENZYCARDS - 1], nullptr);
 
 	mMenu->SetHeadControl(miQuantityField);
 	mMenu->SetCancelCode(MENU_CODE_BACK_TO_GAME_SETUP_MENU_FROM_MODE_SETTINGS);
@@ -1193,7 +1194,7 @@ MI_Button::MI_Button(gfxSprite * nspr, short x, short y, const char * name, shor
 	fSelected = false;
 	menuCode = MENU_CODE_NONE;
 
-	sprImage = NULL;
+	sprImage = nullptr;
 	iImageSrcX = 0;
 	iImageSrcY = 0;
 	iImageW = 0;
@@ -1540,7 +1541,7 @@ MI_TextField::MI_TextField(gfxSprite * nspr, short x, short y, const char * name
 	mcItemChangedCode = MENU_CODE_NONE;
 	mcControlSelectedCode = MENU_CODE_NONE;
 
-	szValue = NULL;
+	szValue = nullptr;
 
 	miModifyCursor = new MI_Image(nspr, ix + indent, iy + 4, 136, 64, 15, 24, 4, 1, 8);
 	miModifyCursor->SetBlink(true, 20);
@@ -1552,7 +1553,7 @@ MI_TextField::MI_TextField(gfxSprite * nspr, short x, short y, const char * name
 	iNumChars = 0;
 	iCursorIndex = 0;
 
-	szTempValue = NULL;
+	szTempValue = nullptr;
 
 	iStringWidth = 0;
 	iAllowedWidth = iWidth - iIndent - 24;
@@ -1589,7 +1590,7 @@ short number_key_map[10] = {41, 33, 64, 35, 36, 37, 94, 38, 42, 40};
 
 MenuCodeEnum MI_TextField::SendInput(CPlayerInput * playerInput)
 {
-	const Uint8 * keystate = SDL_GetKeyboardState(NULL);
+	const Uint8 * keystate = SDL_GetKeyboardState(nullptr);
 
 	for(int iPlayer = 0; iPlayer < 4; iPlayer++)
 	{
@@ -2108,11 +2109,11 @@ void MI_MapField::Draw()
 	menu_font_large.drawChopRight(ix + 16, iy + 5, iIndent - 8, szName);
 	menu_font_large.drawChopRight(ix + iIndent + 8, iy + 5, iWidth - iIndent - 24, szMapName);
 
-	SDL_BlitSurface(surfaceMapBackground, NULL, blitdest, &rectDst);
+	SDL_BlitSurface(surfaceMapBackground, nullptr, blitdest, &rectDst);
 
 	g_map.drawPlatforms(rectDst.x, rectDst.y, 0);
 
-	SDL_BlitSurface(surfaceMapBlockLayer, NULL, blitdest, &rectDst);
+	SDL_BlitSurface(surfaceMapBlockLayer, nullptr, blitdest, &rectDst);
 
 	g_map.drawPlatforms(rectDst.x, rectDst.y, 1);
 
@@ -2152,7 +2153,7 @@ void MI_MapField::Draw()
 	g_map.drawPlatforms(rectDst.x, rectDst.y, 2);
 
 	if(game_values.toplayer)
-		SDL_BlitSurface(surfaceMapForeground, NULL, blitdest, &rectDst);
+		SDL_BlitSurface(surfaceMapForeground, nullptr, blitdest, &rectDst);
 	
 	g_map.drawPlatforms(rectDst.x, rectDst.y, 3);
 	g_map.drawPlatforms(rectDst.x, rectDst.y, 4);

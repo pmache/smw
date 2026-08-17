@@ -1,4 +1,4 @@
-#include "global.h"
+﻿#include "global.h"
 #include <string.h>
 
 extern char szIPString[32];
@@ -147,11 +147,11 @@ NetServer::NetServer()
 	for (int i = 0; i < MAXCLIENTS; ++i )
 	{
 		clients[i].active = 0;
-		clients[i].sock = NULL;
+		clients[i].sock = nullptr;
 	}
 
-	tcpsock = NULL;
-	socketset = NULL;
+	tcpsock = nullptr;
+	socketset = nullptr;
 }
 
 NetServer::~NetServer()
@@ -163,19 +163,19 @@ bool NetServer::startserver()
 {
 	socketset = SDLNet_AllocSocketSet(MAXCLIENTS + 1);
 
-	if (socketset == NULL)
+	if (socketset == nullptr)
 	{
 		printf("Couldn't create socket set: %s\n", SDLNet_GetError());
 		return false;
 	}
 
-	SDLNet_ResolveHost(&ip, NULL, 12521);
+	SDLNet_ResolveHost(&ip, nullptr, 12521);
 
 	printf("Server IP: %x:%d\n", ip.host, ip.port);
 
 	tcpsock = SDLNet_TCP_Open(&ip);
 	
-	if (tcpsock == NULL)
+	if (tcpsock == nullptr)
 	{
 		cleanup();
 		printf("Couldn't create server socket: %s\n", SDLNet_GetError());
@@ -213,7 +213,7 @@ void NetServer::handleserver()
 
 	TCPsocket newsock = SDLNet_TCP_Accept(tcpsock);
 
-	if (newsock == NULL)
+	if (newsock == nullptr)
 		return;
 	
 	/* Look for unconnected person slot */
@@ -302,7 +302,7 @@ void NetServer::handleclient(int which)
 		
 		SDLNet_TCP_DelSocket(socketset, clients[which].sock);
 		SDLNet_TCP_Close(clients[which].sock);
-		clients[which].sock = NULL;
+		clients[which].sock = nullptr;
 	} 
 	else
 	{
@@ -387,16 +387,16 @@ void NetServer::broadcastmessage(char * szMsg)
 
 void NetServer::cleanup()
 {
-	if (tcpsock != NULL)
+	if (tcpsock != nullptr)
 	{
 		SDLNet_TCP_Close(tcpsock);
-		tcpsock = NULL;
+		tcpsock = nullptr;
 	}
 	
-	if (socketset != NULL)
+	if (socketset != nullptr)
 	{
 		SDLNet_FreeSocketSet(socketset);
-		socketset = NULL;
+		socketset = nullptr;
 	}
 }
 
@@ -431,7 +431,7 @@ bool NetClient::connecttoserver()
 
 	/* Allocate the socket set for polling the network */
 	socketset = SDLNet_AllocSocketSet(1);
-	if (socketset == NULL)
+	if (socketset == nullptr)
 	{
 		printf("Couldn't create socket set: %s\n", SDLNet_GetError());
 		return false;
@@ -466,7 +466,7 @@ void NetClient::handleserver()
 	{
 		SDLNet_TCP_DelSocket(socketset, tcpsock);
 		SDLNet_TCP_Close(tcpsock);
-		tcpsock = NULL;
+		tcpsock = nullptr;
 
 	}
 	else
@@ -573,16 +573,16 @@ int NetClient::handleserverdata(Uint8 *data)
 void NetClient::cleanup()
 {
 	/* Close the network connections */
-	if (tcpsock != NULL)
+	if (tcpsock != nullptr)
 	{
 		SDLNet_TCP_Close(tcpsock);
-		tcpsock = NULL;
+		tcpsock = nullptr;
 	}
 	
-	if ( socketset != NULL )
+	if ( socketset != nullptr )
 	{
 		SDLNet_FreeSocketSet(socketset);
-		socketset = NULL;
+		socketset = nullptr;
 	}
 }
 
@@ -591,7 +591,7 @@ void NetClient::sendjoin()
 	char join[1+1+256];
 	char * name = "TestClient";
 
-	if ( tcpsock != NULL )
+	if ( tcpsock != nullptr )
 	{
 		/* Construct the packet */
 		join[0] = NET_MSG_JOIN;
